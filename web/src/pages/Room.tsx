@@ -77,7 +77,7 @@ const Room: React.FC = () => {
         <div className="max-w-6xl mx-auto py-8">
           <div className="top-0 z-20 py-2 md:py-6 md:mb-6 px-2 md:px-0">
             <div className="flex mx-auto lg:max-w-4xl items-center justify-between">
-              <InviteButton linkToCopy={`http://localhost:3000/${id}`} />
+              <InviteButton linkToCopy={window.location.href} />
               <NameDisplay name={name} onEdit={() => setName("")} />
             </div>
           </div>
