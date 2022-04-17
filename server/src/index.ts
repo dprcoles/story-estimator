@@ -21,7 +21,7 @@ fastify.get("/ping", async (_request: any, reply: any) => {
   reply.send("pong 🏓");
 });
 
-fastify.listen(process.env.PORT || 4000, (err, address) => {
+fastify.listen(process.env.PORT || 4000, "0.0.0.0", (err, address) => {
   if (err) {
     fastify.log.error(err);
     process.exit(1);
