@@ -1,0 +1,13 @@
+# Dependency directory
+node_modules
+
+# Package generated files
+dist
+css
+build
+
+# Logs
+logs
+*.log
+
+.env
