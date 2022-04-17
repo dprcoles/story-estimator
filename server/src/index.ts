@@ -2,12 +2,18 @@ import "dotenv/config";
 import Fastify from "fastify";
 import short from "short-uuid";
 import { Server } from "socket.io";
+import fastifyCors from "fastify-cors";
 
 const fastify = Fastify();
 
+fastify.register(fastifyCors, {
+  origin: "*",
+  methods: ["GET", "POST"],
+});
+
 const io = new Server(fastify.server, {
   cors: {
-    origin: process.env.ORIGIN || "http://localhost:3000",
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
