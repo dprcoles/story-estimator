@@ -1,3 +1,3 @@
 build:
   docker:
-    server: server/Dockerfile
+    web: server/Dockerfile
