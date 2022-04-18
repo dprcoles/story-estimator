@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 import { motion } from "framer-motion";
@@ -8,9 +8,11 @@ import { FADE_IN } from "@/utils/variants";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
+  const [isJoining, setIsJoining] = useState(false);
   const { setSocket } = useSocketStore(state => state);
 
   const start = () => {
+    setIsJoining(true);
     const socket = io(
       process.env.REACT_APP_SERVER_URL || "http://localhost:4000"
     );
@@ -33,13 +35,14 @@ const Home: React.FC = () => {
             agile teams.
           </div>
           <motion.div
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+            whileHover={!isJoining ? { scale: 1.1 } : {}}
+            whileTap={!isJoining ? { scale: 0.9 } : {}}
             className="flex justify-center"
           >
             <button
               className="p-4 px-16 bg-dark-primary rounded-md text-2xl font-bold shadow-lg hover:bg-dark-secondary ease-linear transition-all duration-150"
               onClick={start}
+              disabled={isJoining}
             >
               Start
             </button>
