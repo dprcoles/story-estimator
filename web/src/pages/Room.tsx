@@ -2,20 +2,25 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 import Button from "@/components/Button";
+import InfoCard from "@/components/InfoCard";
 import InviteButton from "@/components/InviteButton";
 import NameDisplay from "@/components/NameDisplay";
 import NameModal from "@/components/NameModal";
 import Option from "@/components/Option";
-import Player from "@/types/player";
 import PlayerCard from "@/components/PlayerCard";
-import Results from "@/components/Results";
+import Player from "@/types/player";
 import { useSocketStore } from "@/stores/socketStore";
-import { OPTIONS } from "@/utils/constants";
+import { OPTIONS, STATUS } from "@/utils/constants";
+import { useInterval } from "../hooks/index";
 
 const Room: React.FC = () => {
   const [name, setName] = useState<string>("");
   const [players, setPlayers] = useState<Array<Player>>([]);
   const [showVotes, setShowVotes] = useState<boolean>(false);
+  const [countdown, setCountdown] = useState<number>(3);
+  const [countdownStatus, setCountdownStatus] = useState<string>(
+    STATUS.STOPPED
+  );
   const [vote, setVote] = useState<string>("");
 
   const { socket, setSocket } = useSocketStore(state => state);
@@ -34,9 +39,12 @@ const Room: React.FC = () => {
     const storedName = localStorage.getItem("name");
 
     if (!socket) {
-      const socket = io(process.env.SERVER_URL || "http://localhost:4000", {
-        query: { roomId: id },
-      });
+      const socket = io(
+        process.env.REACT_APP_SERVER_URL || "http://localhost:4000",
+        {
+          query: { roomId: id },
+        }
+      );
       setSocket(socket);
     }
 
@@ -44,7 +52,19 @@ const Room: React.FC = () => {
       setPlayerName(storedName);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [socket]);
+
+  useInterval(
+    () => {
+      if (countdown > 1) {
+        setCountdown(countdown - 1);
+      } else {
+        setCountdownStatus(STATUS.STOPPED);
+        setShowVotes(true);
+      }
+    },
+    countdownStatus === STATUS.STARTED ? 1000 : null
+  );
 
   if (!socket) return <div>Connecting...</div>;
 
@@ -61,11 +81,16 @@ const Room: React.FC = () => {
 
   socket.on("update", (playerList: Player[]) => setPlayers(playerList));
 
-  socket.on("show", () => setShowVotes(true));
+  const handleResetVotes = () => {
+    setShowVotes(false);
+    setCountdown(3);
+    setVote("");
+  };
+
+  socket.on("show", () => setCountdownStatus(STATUS.STARTED));
 
   socket.on("reset", () => {
-    setShowVotes(false);
-    setVote("");
+    handleResetVotes();
   });
 
   socket.on("ping", () => socket.emit("pong"));
@@ -97,16 +122,14 @@ const Room: React.FC = () => {
                 <Button onClick={reset}>Reset Estimate</Button>
               </div>
             </div>
-            <div className="my-8 bg-dark-secondary shadow-md mx-auto p-8 rounded-md">
-              {!showVotes && (
-                <div className="text-center">
-                  {vote
-                    ? "Waiting on other players..."
-                    : "Select from one of the options below to cast your vote!"}
-                </div>
-              )}
-              {showVotes && <Results players={players} options={OPTIONS} />}
-            </div>
+            <InfoCard
+              vote={vote}
+              showVotes={showVotes}
+              countdownStatus={countdownStatus}
+              countdown={countdown}
+              players={players}
+              options={OPTIONS}
+            />
             {!showVotes && (
               <div className="m-2 grid justify-center lg:grid-cols-9 md:grid-cols-6 grid-cols-3">
                 {OPTIONS.map((option: string) => (

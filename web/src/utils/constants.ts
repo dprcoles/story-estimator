@@ -10,4 +10,7 @@ export const OPTIONS: Array<string> = [
   "40",
   "100",
 ];
-
+export const STATUS = {
+  STARTED: "Started",
+  STOPPED: "Stopped",
+};
