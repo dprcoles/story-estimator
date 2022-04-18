@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
+import { motion } from "framer-motion";
 import Button from "@/components/Button";
 import InfoCard from "@/components/InfoCard";
 import InviteButton from "@/components/InviteButton";
@@ -12,6 +13,7 @@ import Player from "@/types/player";
 import { useSocketStore } from "@/stores/socketStore";
 import { OPTIONS, STATUS } from "@/utils/constants";
 import { useInterval } from "../hooks/index";
+import { FADE_IN, STAGGER } from "@/utils/variants";
 
 const Room: React.FC = () => {
   const [name, setName] = useState<string>("");
@@ -96,7 +98,7 @@ const Room: React.FC = () => {
   socket.on("ping", () => socket.emit("pong"));
 
   return (
-    <>
+    <motion.div variants={FADE_IN}>
       <NameModal name={name} setName={setPlayerName} />
       {name.length > 0 && (
         <div className="max-w-6xl mx-auto py-8">
@@ -115,11 +117,23 @@ const Room: React.FC = () => {
           </div>
           <div className="max-w-4xl mx-auto py-8">
             <div className="flex mb-8">
-              <Button onClick={show} disabled={showVotes || !roomHasVotes}>
+              <Button
+                onClick={show}
+                disabled={
+                  showVotes ||
+                  !roomHasVotes ||
+                  countdownStatus === STATUS.STARTED
+                }
+              >
                 Show Votes
               </Button>
               <div className="ml-auto">
-                <Button onClick={reset}>Reset Estimate</Button>
+                <Button
+                  onClick={reset}
+                  disabled={countdownStatus === STATUS.STARTED}
+                >
+                  Reset Estimate
+                </Button>
               </div>
             </div>
             <InfoCard
@@ -131,22 +145,28 @@ const Room: React.FC = () => {
               options={OPTIONS}
             />
             {!showVotes && (
-              <div className="m-2 grid justify-center lg:grid-cols-9 md:grid-cols-6 grid-cols-3">
-                {OPTIONS.map((option: string) => (
-                  <div className="text-center" key={`${option}-component`}>
-                    <Option
-                      value={option}
-                      onClick={() => submitVote(option)}
-                      selected={vote === option}
-                    />
-                  </div>
-                ))}
-              </div>
+              <motion.div variants={STAGGER}>
+                <div className="m-2 grid justify-center lg:grid-cols-9 md:grid-cols-6 grid-cols-3">
+                  {OPTIONS.map((option: string) => (
+                    <motion.div
+                      variants={FADE_IN}
+                      className="text-center"
+                      key={`${option}-component`}
+                    >
+                      <Option
+                        value={option}
+                        onClick={() => submitVote(option)}
+                        selected={vote === option}
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
             )}
           </div>
         </div>
       )}
-    </>
+    </motion.div>
   );
 };
 

@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 interface ButtonProps {
   onClick: () => void;
@@ -8,13 +9,19 @@ interface ButtonProps {
 
 const Button: React.FC<ButtonProps> = ({ children, onClick, disabled }) => {
   return (
-    <button
-      className="p-4 rounded-md border-2 border-dark-background bg-dark-primary hover:bg-dark-secondary shadow-md disabled:opacity-50"
-      onClick={onClick}
-      disabled={disabled}
+    <motion.div
+      whileHover={!disabled ? { scale: 1.1 } : {}}
+      whileTap={!disabled ? { scale: 0.9 } : {}}
+      className="flex justify-center"
     >
-      {children}
-    </button>
+      <button
+        className="p-4 rounded-md border-2 border-dark-background bg-dark-primary hover:bg-dark-secondary disabled:hover:bg-dark-primary shadow-md disabled:opacity-50 ease-linear transition-all duration-150"
+        onClick={onClick}
+        disabled={disabled}
+      >
+        {children}
+      </button>
+    </motion.div>
   );
 };
 

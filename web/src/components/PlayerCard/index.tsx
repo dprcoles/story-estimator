@@ -1,5 +1,7 @@
 import React from "react";
+import { motion } from "framer-motion";
 import Player from "@/types/player";
+import { FADE_IN, FADE_UP } from "@/utils/variants";
 
 interface PlayerCardProps {
   player: Player;
@@ -16,7 +18,9 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, showVote }) => {
           vote ? "border-blue-500" : "border-dark-primary"
         }`}
       >
-        {showVote ? vote : `${vote ? "❔" : "🤔"}`}
+        {showVote && <motion.div variants={FADE_IN}>{vote}</motion.div>}
+        {!showVote && vote && <motion.div variants={FADE_IN}>❔</motion.div>}
+        {!showVote && !vote && <motion.div variants={FADE_UP}>🤔</motion.div>}
       </div>
       <div className="mt-2 text-center text-lg font-semibold">{name}</div>
     </>
@@ -24,3 +28,4 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, showVote }) => {
 };
 
 export default PlayerCard;
+

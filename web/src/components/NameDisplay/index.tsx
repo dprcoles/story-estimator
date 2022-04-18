@@ -13,7 +13,7 @@ const NameDisplay: React.FC<NameDisplayProps> = ({ name, onEdit }) => {
         <span className="font-bold text-lg align-middle">{name}</span>
         <span className="ml-2">
           <button
-            className="align-middle items-center p-2 bg-dark-primary rounded-md shadow-sm hover:bg-dark-secondary"
+            className="align-middle items-center p-2 bg-dark-primary rounded-md shadow-sm hover:bg-dark-secondary ease-linear transition-all duration-150"
             onClick={onEdit}
           >
             <FaUserEdit />
