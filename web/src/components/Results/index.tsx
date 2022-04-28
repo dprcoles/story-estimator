@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import Player from "@/types/player";
+import { Player } from "@/types/player";
 import { FADE_IN, STAGGER } from "@/utils/variants";
 
 interface ResultsProps {

@@ -3,10 +3,11 @@ export enum PlayerType {
   Spectator = "spectator",
 }
 
-export interface Player {
+export type Player = {
   id: string;
   name: string;
-  vote: string;
-  roomId: string;
   type: PlayerType;
-}
+  roomId: string | string[];
+  vote: string | undefined;
+};
+

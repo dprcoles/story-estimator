@@ -54,3 +54,19 @@ export const FADE_DOWN: Variants = {
     },
   },
 };
+
+export const EXPAND_IN: Variants = {
+  initial: {
+    opacity: 0,
+    size: 0,
+  },
+  animate: {
+    opacity: 1,
+    size: 1,
+    transition: {
+      duration: 1,
+      ease: EASE,
+    },
+  },
+};
+

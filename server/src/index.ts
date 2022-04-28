@@ -3,6 +3,7 @@ import Fastify from "fastify";
 import short from "short-uuid";
 import { Server } from "socket.io";
 import fastifyCors from "fastify-cors";
+import { Player, PlayerType } from "./types";
 
 const fastify = Fastify();
 
@@ -35,7 +36,7 @@ fastify.listen(process.env.PORT || 4000, "0.0.0.0", (err, address) => {
   console.log(`🚀 Server listening at ${address}`);
 });
 
-let players: any[] = [];
+let players: Player[] = [];
 
 const updateRoom = (roomId: any) => {
   io.to(roomId).emit(
@@ -71,7 +72,13 @@ io.on("connection", socket => {
   socket.emit("room", roomId);
 
   socket.join(roomId);
-  players.push({ id: socket.id, name: "", roomId: roomId });
+  players.push({
+    id: socket.id,
+    name: "",
+    type: PlayerType.Voter,
+    roomId: roomId,
+    vote: undefined,
+  });
 
   socket.on("name", name => {
     const player = [...players].find(p => p.id === socket.id);
@@ -79,6 +86,17 @@ io.on("connection", socket => {
       players = [
         ...players.filter(p => p.id !== socket.id),
         { ...player, name },
+      ];
+    }
+    updateRoom(roomId);
+  });
+
+  socket.on("type", type => {
+    const player = [...players].find(p => p.id === socket.id);
+    if (player) {
+      players = [
+        ...players.filter(p => p.id !== socket.id),
+        { ...player, type, vote: undefined },
       ];
     }
     updateRoom(roomId);
@@ -93,8 +111,10 @@ io.on("connection", socket => {
       ];
     }
 
-    const playersInRoom = [...players].filter(p => p.roomId === roomId);
-    if (playersInRoom.every(p => p.vote)) {
+    const votersInRoom = [...players].filter(
+      p => p.roomId === roomId && p.type === PlayerType.Voter
+    );
+    if (votersInRoom.every(p => p.vote)) {
       io.to(roomId || "").emit("show");
     }
     updateRoom(roomId);
