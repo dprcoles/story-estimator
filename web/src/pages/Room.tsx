@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Button from "@/components/Button";
 import InfoCard from "@/components/InfoCard";
 import InviteButton from "@/components/InviteButton";
 import NameDisplay from "@/components/NameDisplay";
 import NameModal from "@/components/NameModal";
 import Option from "@/components/Option";
-import PlayerCard from "@/components/PlayerCard";
-import Player from "@/types/player";
+import { SpectatorCard, VoterCard } from "@/components/PlayerCard";
+import { Player, PlayerType } from "@/types/player";
 import { useSocketStore } from "@/stores/socketStore";
 import { OPTIONS, STATUS } from "@/utils/constants";
 import { useInterval } from "../hooks/index";
 import { FADE_IN, STAGGER } from "@/utils/variants";
+import TypeToggle from "@/components/TypeToggle";
 
 const Room: React.FC = () => {
   const [name, setName] = useState<string>("");
+  const [type, setType] = useState<PlayerType>(PlayerType.Voter);
   const [players, setPlayers] = useState<Array<Player>>([]);
   const [showVotes, setShowVotes] = useState<boolean>(false);
   const [countdown, setCountdown] = useState<number>(3);
@@ -35,10 +37,20 @@ const Room: React.FC = () => {
     localStorage.setItem("name", playerName);
   };
 
+  const setPlayerType = (playerType: PlayerType) => {
+    console.log(`🎮 Playing as a ${playerType}`);
+    setType(playerType);
+    emitType(playerType);
+    localStorage.setItem("type", playerType);
+  };
+
   const emitName = (playerName: string) => socket?.emit("name", playerName);
+
+  const emitType = (type: PlayerType) => socket?.emit("type", type);
 
   useEffect(() => {
     const storedName = localStorage.getItem("name");
+    const storedType = localStorage.getItem("type");
 
     if (!socket) {
       const socket = io(
@@ -52,6 +64,9 @@ const Room: React.FC = () => {
 
     if (storedName) {
       setPlayerName(storedName);
+    }
+    if (storedType) {
+      setPlayerType(storedType as PlayerType);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
@@ -97,23 +112,46 @@ const Room: React.FC = () => {
 
   socket.on("ping", () => socket.emit("pong"));
 
+  const voters = players.filter(p => p.type === PlayerType.Voter);
+  const spectators = players.filter(p => p.type === PlayerType.Spectator);
+
   return (
     <motion.div variants={FADE_IN}>
       <NameModal name={name} setName={setPlayerName} />
       {name.length > 0 && (
-        <div className="max-w-6xl mx-auto py-8">
+        <div className="max-w-6xl mx-auto">
           <div className="top-0 z-20 py-2 md:py-6 md:mb-6 px-2 md:px-0">
             <div className="flex mx-auto lg:max-w-4xl items-center justify-between">
               <InviteButton linkToCopy={window.location.href} />
               <NameDisplay name={name} onEdit={() => setName("")} />
             </div>
           </div>
+          <div className="p-8 flex justify-center grid-flow-row lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-1 space-x-6">
+            <AnimatePresence>
+              {spectators.map((player: Player) => (
+                <div key={`${player.id}-card`}>
+                  <SpectatorCard
+                    player={player}
+                    showVote={showVotes}
+                    countdownStatus={countdownStatus}
+                  />
+                </div>
+              ))}
+            </AnimatePresence>
+          </div>
+          <hr className="mx-auto lg:max-w-4xl border-blue-500 opacity-30" />
           <div className="p-16 flex justify-center grid-flow-row lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-1 space-x-6">
-            {players.map((player: Player) => (
-              <div key={`${player.id}-card`}>
-                <PlayerCard player={player} showVote={showVotes} />
-              </div>
-            ))}
+            <AnimatePresence>
+              {voters.map((player: Player) => (
+                <div key={`${player.id}-card`}>
+                  <VoterCard
+                    player={player}
+                    showVote={showVotes}
+                    countdownStatus={countdownStatus}
+                  />
+                </div>
+              ))}
+            </AnimatePresence>
           </div>
           <div className="max-w-4xl mx-auto py-8">
             <div className="flex mb-8">
@@ -127,14 +165,19 @@ const Room: React.FC = () => {
               >
                 Show Votes
               </Button>
-              <div className="ml-auto">
-                <Button
-                  onClick={reset}
+              <div className="mx-auto">
+                <TypeToggle
+                  type={type}
+                  setType={setPlayerType}
                   disabled={countdownStatus === STATUS.STARTED}
-                >
-                  Reset Estimate
-                </Button>
+                />
               </div>
+              <Button
+                onClick={reset}
+                disabled={countdownStatus === STATUS.STARTED}
+              >
+                Reset Votes
+              </Button>
             </div>
             <InfoCard
               vote={vote}
@@ -143,8 +186,9 @@ const Room: React.FC = () => {
               countdown={countdown}
               players={players}
               options={OPTIONS}
+              type={type}
             />
-            {!showVotes && (
+            {!showVotes && type === PlayerType.Voter && (
               <motion.div variants={STAGGER}>
                 <div className="m-2 grid justify-center lg:grid-cols-9 md:grid-cols-6 grid-cols-3">
                   {OPTIONS.map((option: string) => (
@@ -157,6 +201,7 @@ const Room: React.FC = () => {
                         value={option}
                         onClick={() => submitVote(option)}
                         selected={vote === option}
+                        disabled={countdownStatus === STATUS.STARTED}
                       />
                     </motion.div>
                   ))}
