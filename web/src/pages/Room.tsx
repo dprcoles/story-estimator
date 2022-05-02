@@ -44,13 +44,22 @@ const Room: React.FC = () => {
     localStorage.setItem("type", playerType);
   };
 
+  const setPlayerEmoji = (playerEmoji: string) => {
+    console.log(`🤓 Changed Emoji to ${playerEmoji}`);
+    emitEmoji(playerEmoji);
+    localStorage.setItem("emoji", playerEmoji);
+  };
+
   const emitName = (playerName: string) => socket?.emit("name", playerName);
 
   const emitType = (type: PlayerType) => socket?.emit("type", type);
 
+  const emitEmoji = (playerEmoji: string) => socket?.emit("emoji", playerEmoji);
+
   useEffect(() => {
     const storedName = localStorage.getItem("name");
     const storedType = localStorage.getItem("type");
+    const storedEmoji = localStorage.getItem("emoji");
 
     if (!socket) {
       const socket = io(
@@ -67,6 +76,11 @@ const Room: React.FC = () => {
     }
     if (storedType) {
       setPlayerType(storedType as PlayerType);
+    }
+    if (storedEmoji) {
+      setPlayerEmoji(storedEmoji);
+    } else {
+      setPlayerEmoji(type === PlayerType.Spectator ? "👀" : "🤔");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
@@ -134,6 +148,8 @@ const Room: React.FC = () => {
                     player={player}
                     showVote={showVotes}
                     countdownStatus={countdownStatus}
+                    setEmoji={setPlayerEmoji}
+                    isCurrentPlayer={player.name === name}
                   />
                 </div>
               ))}
@@ -148,6 +164,8 @@ const Room: React.FC = () => {
                     player={player}
                     showVote={showVotes}
                     countdownStatus={countdownStatus}
+                    setEmoji={setPlayerEmoji}
+                    isCurrentPlayer={player.name === name}
                   />
                 </div>
               ))}

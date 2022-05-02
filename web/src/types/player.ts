@@ -9,4 +9,5 @@ export interface Player {
   vote: string;
   roomId: string;
   type: PlayerType;
+  emoji: string;
 }

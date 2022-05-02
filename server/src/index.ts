@@ -76,6 +76,7 @@ io.on("connection", socket => {
     id: socket.id,
     name: "",
     type: PlayerType.Voter,
+    emoji: "🤔",
     roomId: roomId,
     vote: undefined,
   });
@@ -97,6 +98,17 @@ io.on("connection", socket => {
       players = [
         ...players.filter(p => p.id !== socket.id),
         { ...player, type, vote: undefined },
+      ];
+    }
+    updateRoom(roomId);
+  });
+
+  socket.on("emoji", emoji => {
+    const player = [...players].find(p => p.id === socket.id);
+    if (player) {
+      players = [
+        ...players.filter(p => p.id !== socket.id),
+        { ...player, emoji },
       ];
     }
     updateRoom(roomId);
