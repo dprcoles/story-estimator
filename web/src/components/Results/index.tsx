@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Player } from "@/types/player";
 import { FADE_IN, STAGGER } from "@/utils/variants";
+import { NON_NUMERIC_OPTIONS } from "@/utils/constants";
 
 interface ResultsProps {
   players: Array<Player>;
@@ -14,6 +15,7 @@ const Results: React.FC<ResultsProps> = ({ players, options }) => {
       .map(option => ({
         value: option,
         total: players.filter(p => p.vote === option).length,
+        isNumeric: !NON_NUMERIC_OPTIONS.includes(option),
       }))
       .filter(o => o.total > 0);
 
@@ -21,7 +23,7 @@ const Results: React.FC<ResultsProps> = ({ players, options }) => {
     let count = 0;
     let total = 0;
     for (const player of players) {
-      if (player.vote && player.vote !== "?") {
+      if (player.vote && !NON_NUMERIC_OPTIONS.includes(player.vote)) {
         total += parseInt(player.vote);
         count++;
       }
@@ -47,8 +49,10 @@ const Results: React.FC<ResultsProps> = ({ players, options }) => {
               >
                 <span className="rounded-md p-2 my-2 bg-blue-500">
                   <span className="font-bold">{x.total}</span> vote for{" "}
-                  <span className="font-bold">{x.value}</span> point
-                  {x.value === "1" ? "" : "s"}
+                  <span className="font-bold">{x.value}</span>
+                  {x.isNumeric && (
+                    <span> point{x.value === "1" ? "" : "s"}</span>
+                  )}
                 </span>
               </motion.div>
             ))}

@@ -1,4 +1,5 @@
 export const ROUTE_ROOM: string = "/room";
+export const NON_NUMERIC_OPTIONS = ["∞", "?", "☕️"];
 export const OPTIONS: Array<string> = [
   "1",
   "2",
@@ -9,8 +10,10 @@ export const OPTIONS: Array<string> = [
   "20",
   "40",
   "100",
+  ...NON_NUMERIC_OPTIONS,
 ];
 export const STATUS = {
   STARTED: "Started",
   STOPPED: "Stopped",
 };
+

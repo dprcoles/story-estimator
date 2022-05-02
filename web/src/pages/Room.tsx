@@ -133,45 +133,59 @@ const Room: React.FC = () => {
     <motion.div variants={FADE_IN}>
       <NameModal name={name} setName={setPlayerName} />
       {name.length > 0 && (
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <div className="top-0 z-20 py-2 md:py-6 md:mb-6 px-2 md:px-0">
-            <div className="flex mx-auto lg:max-w-4xl items-center justify-between">
+            <div className="flex mx-auto lg:max-w-5xl items-center justify-between">
               <InviteButton linkToCopy={window.location.href} />
               <NameDisplay name={name} onEdit={() => setName("")} />
             </div>
           </div>
-          <div className="p-8 flex justify-center grid-flow-row lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-1 space-x-6">
-            <AnimatePresence>
-              {spectators.map((player: Player) => (
-                <div key={`${player.id}-card`}>
-                  <SpectatorCard
-                    player={player}
-                    showVote={showVotes}
-                    countdownStatus={countdownStatus}
-                    setEmoji={setPlayerEmoji}
-                    isCurrentPlayer={player.name === name}
-                  />
+          {spectators.length > 0 && (
+            <>
+              <div>
+                <div className="-z-10 text-left absolute opacity-10 font-bold text-4xl">
+                  Spectators
                 </div>
-              ))}
-            </AnimatePresence>
-          </div>
-          <hr className="mx-auto lg:max-w-4xl border-blue-500 opacity-30" />
-          <div className="p-16 flex justify-center grid-flow-row lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-1 space-x-6">
-            <AnimatePresence>
-              {voters.map((player: Player) => (
-                <div key={`${player.id}-card`}>
-                  <VoterCard
-                    player={player}
-                    showVote={showVotes}
-                    countdownStatus={countdownStatus}
-                    setEmoji={setPlayerEmoji}
-                    isCurrentPlayer={player.name === name}
-                  />
+                <div className="p-8 flex justify-center grid-flow-row lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-1 space-x-6">
+                  <AnimatePresence>
+                    {spectators.map((player: Player) => (
+                      <div key={`${player.id}-card`}>
+                        <SpectatorCard
+                          player={player}
+                          showVote={showVotes}
+                          countdownStatus={countdownStatus}
+                          setEmoji={setPlayerEmoji}
+                          isCurrentPlayer={player.name === name}
+                        />
+                      </div>
+                    ))}
+                  </AnimatePresence>
                 </div>
-              ))}
-            </AnimatePresence>
+              </div>
+              <hr className="mx-auto lg:max-w-5xl border-blue-500 opacity-30 py-2" />
+            </>
+          )}
+          <div>
+            <div className="-z-10 text-left absolute opacity-10 font-bold text-4xl">
+              Voters
+            </div>
+            <div className="p-16 flex justify-center grid-flow-row lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-1 space-x-6">
+              <AnimatePresence>
+                {voters.map((player: Player) => (
+                  <div key={`${player.id}-card`}>
+                    <VoterCard
+                      player={player}
+                      showVote={showVotes}
+                      countdownStatus={countdownStatus}
+                      setEmoji={setPlayerEmoji}
+                      isCurrentPlayer={player.name === name}
+                    />
+                  </div>
+                ))}
+              </AnimatePresence>
+            </div>
           </div>
-          <div className="max-w-4xl mx-auto py-8">
+          <div className="max-w-5xl mx-auto py-8">
             <div className="flex mb-8">
               <Button
                 onClick={show}
@@ -192,7 +206,7 @@ const Room: React.FC = () => {
               </div>
               <Button
                 onClick={reset}
-                disabled={countdownStatus === STATUS.STARTED}
+                disabled={countdownStatus === STATUS.STARTED || !roomHasVotes}
               >
                 Reset Votes
               </Button>
@@ -208,7 +222,7 @@ const Room: React.FC = () => {
             />
             {!showVotes && type === PlayerType.Voter && (
               <motion.div variants={STAGGER}>
-                <div className="m-2 grid justify-center lg:grid-cols-9 md:grid-cols-6 grid-cols-3">
+                <div className="m-2 grid justify-center lg:grid-cols-12 md:grid-cols-6 grid-cols-3">
                   {OPTIONS.map((option: string) => (
                     <motion.div
                       variants={FADE_IN}
