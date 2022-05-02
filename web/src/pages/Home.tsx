@@ -40,11 +40,11 @@ const Home: React.FC = () => {
             className="flex justify-center"
           >
             <button
-              className="p-4 px-16 bg-dark-primary rounded-md text-2xl font-bold shadow-lg hover:bg-dark-secondary ease-linear transition-all duration-150"
+              className="p-4 px-16 bg-dark-primary rounded-md text-2xl font-bold shadow-lg hover:bg-dark-secondary ease-linear transition-all duration-150 disabled:hover:bg-dark-primary"
               onClick={start}
               disabled={isJoining}
             >
-              Start
+              {isJoining ? <span>Creating room...</span> : <span>Start</span>}
             </button>
           </motion.div>
         </div>

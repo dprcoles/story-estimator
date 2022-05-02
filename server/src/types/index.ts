@@ -7,6 +7,7 @@ export type Player = {
   id: string;
   name: string;
   type: PlayerType;
+  emoji: string;
   roomId: string | string[];
   vote: string | undefined;
 };
