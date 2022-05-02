@@ -43,7 +43,7 @@ const SpectatorCard: React.FC<SpectatorCardProps> = ({
         </div>
         <div
           className={`mt-2 text-center text-md font-semibold ${
-            isCurrentPlayer ? "text-blue-300" : ""
+            isCurrentPlayer ? "text-blue-500" : ""
           }`}
         >
           {name}
