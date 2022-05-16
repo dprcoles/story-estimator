@@ -33,7 +33,7 @@ const VoterCard: React.FC<VoterCardProps> = ({
     <>
       <motion.div variants={EXPAND_IN} exit={{ opacity: 0 }}>
         <div
-          className={`flex justify-center items-center mx-auto p-4 bg-dark-secondary rounded-md h-22 w-18 font-bold text-4xl border-2 ${
+          className={`flex justify-center items-center mx-auto p-4 bg-dark-secondary rounded-md h-22 w-16 font-bold text-4xl border-2 ${
             vote ? "border-blue-500" : "border-dark-primary"
           }`}
         >
