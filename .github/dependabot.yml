@@ -1,0 +1,27 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/server"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "npm"
+      - "dependencies"
+      - "server"
+    commit-message:
+      include: "scope"
+      prefix: "npm"
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: "npm"
+    directory: "/web"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "npm"
+      - "dependencies"
+      - "web"
+    commit-message:
+      include: "scope"
+      prefix: "npm"
+    open-pull-requests-limit: 5
