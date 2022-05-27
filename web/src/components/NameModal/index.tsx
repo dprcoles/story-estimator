@@ -46,7 +46,9 @@ const NameModal: React.FC<NameModalProps> = ({ name, setName }) => {
                     className="bg-blue-500 text-white active:bg-blue-600 px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 disabled:opacity-25"
                     type="button"
                     onClick={() => setName(value)}
-                    disabled={value.length === 0}
+                    disabled={
+                      value.replace(/^\s+|\s+$|\s+(?=\s)/g, "").length === 0
+                    }
                   >
                     Go to room
                   </button>
