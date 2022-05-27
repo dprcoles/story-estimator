@@ -97,6 +97,13 @@ const Room: React.FC = () => {
     countdownStatus === STATUS.STARTED ? 1000 : null
   );
 
+  useEffect(() => {
+    if (socket) {
+      if (!players.find((p: Player) => p.name === name)) setPlayerName("");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [players]);
+
   if (!socket) return <div>Connecting...</div>;
 
   const roomHasVotes = players && players.filter(p => p.vote).length > 0;
