@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
             href="https://github.com/dcolesDEV"
             target="_blank"
             rel="noreferrer"
-            className="text-blue-500 hover:text-blue-300 ml-1"
+            className="text-light-main hover:text-light-main dark:text-dark-main dark:hover:text-dark-main ml-1"
           >
             Daniel Coles
           </a>

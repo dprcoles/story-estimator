@@ -21,9 +21,11 @@ const Option: React.FC<OptionProps> = ({
       className="flex justify-center"
     >
       <button
-        className={`p-4 border-2 rounded-md bg-dark-primary hover:bg-dark-secondary shadow-md h-24 w-full text-2xl font-bold ease-linear transition-all duration-150 ${
-          selected ? "border-blue-500 " : "border-dark-background"
-        } disabled:hover:bg-dark-primary disabled:opacity-50`}
+        className={`p-4 border-2 rounded-md bg-light-primary hover:bg-light-secondary dark:bg-dark-primary dark:hover:bg-dark-secondary shadow-md h-24 w-full text-2xl font-bold ease-linear transition-all duration-150 ${
+          selected
+            ? "border-light-main dark:border-dark-main "
+            : "border-light-background dark:border-dark-background"
+        } disabled:hover:bg-light-primary dark:disabled:hover:bg-dark-primary disabled:opacity-50`}
         onClick={onClick}
         disabled={disabled}
       >
