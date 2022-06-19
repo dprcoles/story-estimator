@@ -11,6 +11,8 @@ const InviteButton: React.FC<InviteButtonProps> = ({ linkToCopy }) => {
   const handleClick = () => {
     navigator.clipboard.writeText(linkToCopy);
     setClicked(true);
+
+    setTimeout(() => setClicked(false), 3000);
   };
 
   return (
@@ -18,7 +20,7 @@ const InviteButton: React.FC<InviteButtonProps> = ({ linkToCopy }) => {
       <div className="ml-auto">
         <span className="ml-2">
           <button
-            className="flex align-middle items-center px-4 py-2 bg-dark-primary rounded-md shadow-md hover:bg-dark-secondary ease-linear transition-all duration-150"
+            className="flex align-middle items-center px-4 py-2 bg-light-primary hover:bg-light-secondary dark:bg-dark-primary dark:hover:bg-dark-secondary rounded-md shadow-md ease-linear transition-all duration-150"
             onClick={handleClick}
           >
             {!clicked ? (

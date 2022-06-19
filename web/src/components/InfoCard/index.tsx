@@ -24,7 +24,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
   type,
 }) => {
   return (
-    <div className="my-8 bg-dark-secondary shadow-md mx-auto p-8 rounded-md">
+    <div className="my-8 bg-light-secondary dark:bg-dark-secondary shadow-md mx-auto p-8 rounded-md">
       {!showVotes && countdownStatus === STATUS.STOPPED && (
         <div className="text-center">
           {vote || type === PlayerType.Spectator

@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Button from "@/components/Button";
 import InfoCard from "@/components/InfoCard";
 import InviteButton from "@/components/InviteButton";
-import NameDisplay from "@/components/NameDisplay";
+import UserActions from "@/components/UserActions";
 import NameModal from "@/components/NameModal";
 import Option from "@/components/Option";
 import { SpectatorCard, VoterCard } from "@/components/PlayerCard";
@@ -16,7 +16,12 @@ import { useInterval } from "../hooks/index";
 import { FADE_IN, STAGGER } from "@/utils/variants";
 import TypeToggle from "@/components/TypeToggle";
 
-const Room: React.FC = () => {
+interface RoomProps {
+  theme: string;
+  setTheme: (theme: string) => void;
+}
+
+const Room: React.FC<RoomProps> = ({ theme, setTheme }) => {
   const [name, setName] = useState<string>("");
   const [type, setType] = useState<PlayerType>(PlayerType.Voter);
   const [players, setPlayers] = useState<Array<Player>>([]);
@@ -144,7 +149,12 @@ const Room: React.FC = () => {
           <div className="top-0 z-20 py-2 md:py-6 md:mb-6 px-2 md:px-0">
             <div className="flex mx-auto lg:max-w-5xl items-center justify-between">
               <InviteButton linkToCopy={window.location.href} />
-              <NameDisplay name={name} onEdit={() => setName("")} />
+              <UserActions
+                name={name}
+                onEdit={() => setName("")}
+                theme={theme}
+                setTheme={setTheme}
+              />
             </div>
           </div>
           {spectators.length > 0 && (
@@ -169,7 +179,7 @@ const Room: React.FC = () => {
                   </AnimatePresence>
                 </div>
               </div>
-              <hr className="mx-auto lg:max-w-5xl border-blue-500 opacity-30 py-2" />
+              <hr className="mx-auto lg:max-w-5xl border-light-main dark:border-dark-main opacity-30 py-2" />
             </>
           )}
           <div>

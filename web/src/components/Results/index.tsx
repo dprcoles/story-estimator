@@ -33,7 +33,7 @@ const Results: React.FC<ResultsProps> = ({ players, options }) => {
 
   return (
     <motion.div variants={FADE_IN}>
-      <div className="border-b-dark-secondary border-b-2">
+      <div className="border-b-light-secondary dark:border-b-dark-secondary border-b-2">
         <div className="mb-2 text-lg">Average:</div>
         <div className="text-8xl font-bold mb-2">{getAverage()}</div>
       </div>
@@ -47,7 +47,7 @@ const Results: React.FC<ResultsProps> = ({ players, options }) => {
                 className="mb-2 text-lg"
                 key={`${x.value}-result`}
               >
-                <span className="rounded-md p-2 my-2 bg-blue-500">
+                <span className="rounded-md p-2 my-2 bg-light-main dark:bg-dark-main text-white dark:text-black">
                   <span className="font-bold">{x.total}</span> vote for{" "}
                   <span className="font-bold">{x.value}</span>
                   {x.isNumeric && (

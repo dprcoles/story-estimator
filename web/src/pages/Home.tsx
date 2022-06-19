@@ -6,7 +6,12 @@ import { ROUTE_ROOM } from "@/utils/constants";
 import { useSocketStore } from "@/stores/socketStore";
 import { FADE_IN } from "@/utils/variants";
 
-const Home: React.FC = () => {
+interface HomeProps {
+  theme: string;
+  setTheme: (theme: string) => void;
+}
+
+const Home: React.FC<HomeProps> = ({ theme, setTheme }) => {
   const navigate = useNavigate();
   const [isJoining, setIsJoining] = useState(false);
   const { setSocket } = useSocketStore(state => state);
@@ -31,8 +36,11 @@ const Home: React.FC = () => {
       <div className="flex max-w-2xl mx-auto py-8 h-screen">
         <div className="m-auto grid grid-flow-row grid-cols-2">
           <div className="text-4xl">
-            A <span className="text-blue-500">story estimation</span> tool for
-            agile teams.
+            A{" "}
+            <span className="text-light-main dark:text-dark-main">
+              story estimation
+            </span>{" "}
+            tool for agile teams.
           </div>
           <motion.div
             whileHover={!isJoining ? { scale: 1.1 } : {}}
@@ -40,7 +48,7 @@ const Home: React.FC = () => {
             className="flex justify-center"
           >
             <button
-              className="p-4 px-16 bg-dark-primary rounded-md text-2xl font-bold shadow-lg hover:bg-dark-secondary ease-linear transition-all duration-150 disabled:hover:bg-dark-primary"
+              className="p-4 px-16 bg-light-main dark:bg-dark-main hover:bg-light-main dark:hover:bg-dark-main disabled:hover:bg-light-primary dark:disabled:hover:bg-dark-primary text-white dark:text-black rounded-md text-2xl font-bold shadow-lg ease-linear transition-all duration-150"
               onClick={start}
               disabled={isJoining}
             >
