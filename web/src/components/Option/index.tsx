@@ -5,7 +5,7 @@ interface OptionProps {
   value: string;
   onClick: () => void;
   selected: boolean;
-  disabled: boolean;
+  disabled?: boolean;
 }
 
 const Option: React.FC<OptionProps> = ({

@@ -1,3 +1,5 @@
+import { Room } from "@/types/room";
+
 export const ROUTE_ROOM: string = "/room";
 export const NON_NUMERIC_OPTIONS = ["∞", "?", "☕️"];
 export const OPTIONS: Array<string> = [
@@ -12,12 +14,22 @@ export const OPTIONS: Array<string> = [
   "100",
   ...NON_NUMERIC_OPTIONS,
 ];
-export const STATUS = {
-  STARTED: "Started",
-  STOPPED: "Stopped",
-};
 
 export const THEME_STORAGE_KEY = "theme";
 export const DARK_THEME = "dark";
 export const LIGHT_THEME = "light";
+
+export const DEFAULT_ROOM: Room = {
+  id: "",
+  settings: {
+    countdown: true,
+    fastMode: false,
+  },
+};
+
+export const COUNTDOWN_DESCRIPTION =
+  "Enables a 3 second countdown before revealing the votes.";
+
+export const FAST_MODE_DESCRIPTION =
+  "Will force users to vote within a 10 second window after the first vote has been submitted.";
 

@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Player } from "@/types/player";
 import { EXPAND_IN, FADE_IN } from "@/utils/variants";
-import { STATUS } from "@/utils/constants";
 import EmojiPicker from "@/components/EmojiPicker";
+import { CountdownStatus } from "@/types/countdown";
 
 interface VoterCardProps {
   player: Player;
   showVote: boolean;
-  countdownStatus: string;
+  countdownStatus: CountdownStatus;
   setEmoji: (e: string) => void;
   isCurrentPlayer: boolean;
 }
@@ -39,11 +39,18 @@ const VoterCard: React.FC<VoterCardProps> = ({
               : "border-light-primary dark:border-dark-primary"
           }`}
         >
-          {showVote && <motion.div variants={FADE_IN}>{vote}</motion.div>}
-          {!showVote && vote && countdownStatus === STATUS.STARTED && (
+          {showVote && (
+            <motion.div variants={FADE_IN}>{vote ?? "-"}</motion.div>
+          )}
+          {!showVote && vote && countdownStatus === CountdownStatus.STARTED && (
             <motion.div variants={FADE_IN}>🔒</motion.div>
           )}
-          {!showVote && countdownStatus === STATUS.STOPPED && (
+          {!showVote &&
+            !vote &&
+            countdownStatus === CountdownStatus.STARTED && (
+              <motion.div variants={FADE_IN}>☕️</motion.div>
+            )}
+          {!showVote && countdownStatus === CountdownStatus.STOPPED && (
             <motion.div
               whileHover={isCurrentPlayer ? { scale: 1.05 } : {}}
               whileTap={isCurrentPlayer ? { scale: 0.95 } : {}}

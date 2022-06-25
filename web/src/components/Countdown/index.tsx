@@ -9,7 +9,7 @@ const Countdown: React.FC<CountdownProps> = ({ seconds }) => {
   return (
     <motion.div
       animate={{
-        scale: [0, 1, 0],
+        scale: [0.5, 1, 0.5],
       }}
       transition={{ repeat: Infinity, duration: 1, type: "spring" }}
     >
