@@ -11,7 +11,7 @@ import Option from "@/components/Option";
 import { SpectatorCard, VoterCard } from "@/components/PlayerCard";
 import { Player, PlayerType } from "@/types/player";
 import { useSocketStore } from "@/stores/socketStore";
-import { DEFAULT_ROOM, OPTIONS } from "@/utils/constants";
+import { OPTIONS } from "@/utils/constants";
 import { useInterval } from "../hooks/index";
 import { FADE_IN, STAGGER } from "@/utils/variants";
 import TypeToggle from "@/components/TypeToggle";
@@ -23,6 +23,10 @@ import {
   CountdownTimer,
   CountdownType,
 } from "@/types/countdown";
+import { Story } from "@/types/story";
+import StoryDescription from "@/components/StoryDescription";
+import TimeSpentDisplay from "@/components/TimeSpentDisplay";
+import { ShowType } from "@/types/show";
 
 interface RoomPageProps {
   theme: string;
@@ -33,7 +37,8 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
   const [name, setName] = useState<string>("");
   const [type, setType] = useState<PlayerType>(PlayerType.Voter);
   const [players, setPlayers] = useState<Array<Player>>([]);
-  const [room, setRoom] = useState<Room>(DEFAULT_ROOM);
+  const [room, setRoom] = useState<Room>();
+  const [stories, setStories] = useState<Array<Story>>([]);
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
   const [showVotes, setShowVotes] = useState<boolean>(false);
   const [countdown, setCountdown] = useState<number>(CountdownTimer.Standard);
@@ -73,6 +78,11 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
     emitSettings(roomSettings);
   };
 
+  const setDescription = (description: string) => {
+    console.log(`📖 Changed Story Description to ${description}`);
+    emitDescription(description);
+  };
+
   const emitName = (playerName: string) => socket?.emit("name", playerName);
 
   const emitType = (type: PlayerType) => socket?.emit("type", type);
@@ -81,6 +91,9 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
 
   const emitSettings = (roomSettings: Settings) =>
     socket?.emit("settings", roomSettings);
+
+  const emitDescription = (description: string) =>
+    socket?.emit("description", description);
 
   useEffect(() => {
     const storedName = localStorage.getItem("name");
@@ -132,46 +145,72 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
 
   if (!socket) return <div>Connecting...</div>;
 
-  const roomHasVotes = players && players.filter(p => p.vote).length > 0;
-
   const submitVote = (newVote: string) => {
     socket.emit("vote", newVote);
     setVote(newVote);
   };
 
-  const show = () => socket.emit("show");
+  const show = (type: ShowType) => socket.emit("show", type);
 
   const reset = () => socket.emit("reset");
+
+  const complete = (finalVote: string) => socket.emit("complete", finalVote);
 
   socket.on("update", (data: UpdateResponse) => {
     setPlayers(data.players);
     setRoom(data.room);
+    setStories(data.stories);
   });
 
   const handleResetVotes = () => {
     setShowVotes(false);
-    setCountdown(3);
+    setCountdownStatus(CountdownStatus.STOPPED);
+    setCountdown(
+      countdownType === CountdownType.Standard
+        ? CountdownTimer.Standard
+        : CountdownTimer.FastMode
+    );
     setVote("");
   };
 
-  const handleShow = () => {
-    if (room.settings.countdown) {
-      setCountdownStatus(CountdownStatus.STARTED);
-    } else {
+  const handleShow = (type: ShowType) => {
+    if (type === ShowType.Force) {
       setShowVotes(true);
       setCountdownStatus(CountdownStatus.STOPPED);
+      return;
     }
+
+    if (type === ShowType.Hurry) {
+      setCountdown(CountdownTimer.HurryMode);
+      setCountdownStatus(CountdownStatus.STARTED);
+      return;
+    }
+
+    if (room?.settings.countdown) {
+      setCountdown(CountdownTimer.Standard);
+      setCountdownStatus(CountdownStatus.STARTED);
+      return;
+    }
+
+    if (room?.settings.fastMode) {
+      setShowVotes(true);
+      setCountdownStatus(CountdownStatus.STOPPED);
+      return;
+    }
+
+    setShowVotes(true);
+    setCountdownStatus(CountdownStatus.STOPPED);
   };
 
   const handleOnVote = () => {
-    if (room.settings.fastMode) {
-      setCountdownType(CountdownType.FastMode);
+    if (room?.settings.fastMode) {
       setCountdown(CountdownTimer.FastMode);
+      setCountdownType(CountdownType.FastMode);
       setCountdownStatus(CountdownStatus.STARTED);
     }
   };
 
-  socket.on("show", () => handleShow());
+  socket.on("show", (type: ShowType) => handleShow(type));
 
   socket.on("reset", () => handleResetVotes());
 
@@ -181,6 +220,7 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
 
   const voters = players.filter(p => p.type === PlayerType.Voter);
   const spectators = players.filter(p => p.type === PlayerType.Spectator);
+  const currentStory = stories.find(s => !s.hasOwnProperty("endSeconds"));
 
   return (
     <motion.div variants={FADE_IN}>
@@ -188,7 +228,7 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
       <SettingsModal
         isOpen={isSettingsOpen}
         setIsOpen={setIsSettingsOpen}
-        settings={room.settings}
+        settings={room?.settings as Settings}
         setSettings={setRoomSettings}
       />
       {name.length > 0 && (
@@ -196,6 +236,10 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
           <div className="top-0 z-20 py-2 md:py-6 md:mb-6 px-2 md:px-0">
             <div className="flex mx-auto lg:max-w-5xl items-center justify-between">
               <InviteButton linkToCopy={window.location.href} />
+              <StoryDescription
+                description={currentStory?.description as string}
+                setDescription={setDescription}
+              />
               <UserActions
                 name={name}
                 onEdit={() => setName("")}
@@ -233,7 +277,7 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
             <div className="-z-10 text-left absolute opacity-10 font-bold text-4xl">
               Voters
             </div>
-            <div className="px-16 py-8 flex justify-center grid-flow-row lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-1 space-x-6">
+            <div className="py-8 flex justify-center grid-flow-row lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-1 space-x-6">
               <AnimatePresence>
                 {voters.map((player: Player) => (
                   <div key={`${player.id}-card`}>
@@ -250,47 +294,44 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
             </div>
           </div>
           <div className="max-w-5xl mx-auto py-8">
-            <div className="flex mb-4">
-              <Button
-                onClick={show}
-                disabled={
-                  showVotes ||
-                  !roomHasVotes ||
-                  countdownStatus === CountdownStatus.STARTED
-                }
-              >
-                Show Votes
-              </Button>
-              <div className="mx-auto">
+            <div className="grid grid-cols-3 mb-4">
+              <div className="mr-auto">
                 <TypeToggle
                   type={type}
                   setType={setPlayerType}
-                  disabled={countdownStatus === CountdownStatus.STARTED}
+                  disabled={
+                    countdownStatus === CountdownStatus.STARTED || showVotes
+                  }
                 />
               </div>
               <div className="mx-auto">
-                <Button onClick={() => setIsSettingsOpen(true)}>
+                <TimeSpentDisplay
+                  startTime={currentStory?.startSeconds as number}
+                />
+              </div>
+              <div className="ml-auto">
+                <Button
+                  onClick={() => setIsSettingsOpen(true)}
+                  disabled={
+                    countdownStatus === CountdownStatus.STARTED || showVotes
+                  }
+                >
                   Settings
                 </Button>
               </div>
-              <Button
-                onClick={reset}
-                disabled={
-                  countdownStatus === CountdownStatus.STARTED || !roomHasVotes
-                }
-              >
-                Reset Votes
-              </Button>
             </div>
             <InfoCard
               vote={vote}
               showVotes={showVotes}
+              handleShow={show}
               countdown={countdown}
               countdownStatus={countdownStatus}
-              countdownType={countdownType}
               players={players}
+              stories={stories}
               options={OPTIONS}
               type={type}
+              resetVotes={reset}
+              setFinalVote={complete}
             />
             {!showVotes && type === PlayerType.Voter && (
               <motion.div variants={STAGGER}>

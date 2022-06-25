@@ -1,5 +1,6 @@
 import React from "react";
 import { FaUserEdit } from "react-icons/fa";
+import ActionButton from "../ActionButton";
 import ThemeToggle from "../ThemeToggle";
 
 interface UserActionsProps {
@@ -19,14 +20,7 @@ const UserActions: React.FC<UserActionsProps> = ({
     <div className="flex">
       <div className="ml-auto">
         <span className="font-bold text-lg align-middle">{name}</span>
-        <span className="ml-2">
-          <button
-            className="align-middle items-center p-2 bg-light-primary hover:bg-light-secondary dark:bg-dark-primary dark:hover:bg-dark-secondary rounded-md shadow-sm ease-linear transition-all duration-150"
-            onClick={onEdit}
-          >
-            <FaUserEdit />
-          </button>
-        </span>
+        <ActionButton text={<FaUserEdit />} onClick={onEdit} />
         <span className="ml-2">
           <ThemeToggle theme={theme} setTheme={setTheme} />
         </span>

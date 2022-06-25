@@ -6,10 +6,12 @@ export enum CountdownStatus {
 export enum CountdownType {
   Standard = "standard",
   FastMode = "fastMode",
+  HurryMode = "hurryMode",
 }
 
 export enum CountdownTimer {
   Standard = 3,
   FastMode = 10,
+  HurryMode = 10,
 }
 

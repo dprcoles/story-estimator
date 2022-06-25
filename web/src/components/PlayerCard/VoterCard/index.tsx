@@ -43,12 +43,12 @@ const VoterCard: React.FC<VoterCardProps> = ({
             <motion.div variants={FADE_IN}>{vote ?? "-"}</motion.div>
           )}
           {!showVote && vote && countdownStatus === CountdownStatus.STARTED && (
-            <motion.div variants={FADE_IN}>🔒</motion.div>
+            <motion.div variants={FADE_IN}>✅</motion.div>
           )}
           {!showVote &&
             !vote &&
             countdownStatus === CountdownStatus.STARTED && (
-              <motion.div variants={FADE_IN}>☕️</motion.div>
+              <motion.div variants={FADE_IN}>{emoji}</motion.div>
             )}
           {!showVote && countdownStatus === CountdownStatus.STOPPED && (
             <motion.div

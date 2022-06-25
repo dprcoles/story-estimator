@@ -19,7 +19,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   settings,
   setSettings,
 }) => {
-  const [localSettings, setLocalSettings] = useState<Settings>(settings);
+  const [localSettings, setLocalSettings] = useState<Settings>();
 
   useEffect(() => {
     setLocalSettings(settings);
@@ -30,8 +30,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   };
 
   const handleSave = () => {
-    setSettings(localSettings);
-    setIsOpen(false);
+    if (localSettings) {
+      setSettings(localSettings);
+      setIsOpen(false);
+    }
   };
 
   return (
