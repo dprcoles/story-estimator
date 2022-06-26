@@ -8,16 +8,9 @@ import FinalEstimate from "../FinalEstimate";
 interface ResultsProps {
   players: Array<Player>;
   options: Array<string>;
-  setFinalVote: (finalVote: string) => void;
-  resetVotes: () => void;
 }
 
-const Results: React.FC<ResultsProps> = ({
-  players,
-  options,
-  setFinalVote,
-  resetVotes,
-}) => {
+const Results: React.FC<ResultsProps> = ({ players, options }) => {
   const getVotes = () =>
     options
       .map(option => ({
@@ -74,8 +67,6 @@ const Results: React.FC<ResultsProps> = ({
             options={getVotes()
               .sort((a, b) => a.total - b.total)
               .map(x => x.value)}
-            setFinalVote={setFinalVote}
-            resetVotes={resetVotes}
           />
         </div>
       </div>

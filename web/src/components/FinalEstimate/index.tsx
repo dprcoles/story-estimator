@@ -1,19 +1,17 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FADE_IN, STAGGER } from "@/utils/variants";
+import { useSocketStore } from "@/stores/socketStore";
+import { EmitEvent } from "@/types/server";
 
 interface FinalEstimateProps {
   options: Array<string>;
-  setFinalVote: (finalVote: string) => void;
-  resetVotes: () => void;
 }
 
-const FinalEstimate: React.FC<FinalEstimateProps> = ({
-  options,
-  setFinalVote,
-  resetVotes,
-}) => {
+const FinalEstimate: React.FC<FinalEstimateProps> = ({ options }) => {
   const [selected, setSelected] = useState<string>("");
+
+  const { emit } = useSocketStore();
 
   return (
     <div className="mt-2 md:mt-0 border-t-2 md:border-0 border-light-primary dark:border-dark-primary">
@@ -48,7 +46,7 @@ const FinalEstimate: React.FC<FinalEstimateProps> = ({
         >
           <button
             className="rounded-md p-2 my-2 border-light-background bg-light-primary hover:bg-light-secondary disabled:hover:bg-light-primary dark:border-dark-background dark:bg-dark-primary dark:hover:bg-dark-secondary dark:disabled:hover:bg-dark-primary shadow-md disabled:opacity-50 ease-linear transition-all duration-150"
-            onClick={resetVotes}
+            onClick={() => emit(EmitEvent.Reset)}
           >
             Reset Votes
           </button>
@@ -60,7 +58,7 @@ const FinalEstimate: React.FC<FinalEstimateProps> = ({
         >
           <button
             className="rounded-md p-2 my-2 text-white dark:text-black bg-light-main hover:bg-blue-500 disabled:hover:bg-light-main dark:bg-dark-main dark:hover:bg-yellow-300 dark:disabled:hover:bg-dark-main shadow-md disabled:opacity-50 ease-linear transition-all duration-150"
-            onClick={() => setFinalVote(selected)}
+            onClick={() => emit(EmitEvent.Complete, selected)}
             disabled={selected === ""}
           >
             Complete Estimate
