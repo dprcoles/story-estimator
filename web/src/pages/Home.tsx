@@ -6,12 +6,7 @@ import { ROUTE_ROOM } from "@/utils/constants";
 import { useSocketStore } from "@/stores/socketStore";
 import { FADE_IN } from "@/utils/variants";
 
-interface HomeProps {
-  theme: string;
-  setTheme: (theme: string) => void;
-}
-
-const Home: React.FC<HomeProps> = ({ theme, setTheme }) => {
+const Home: React.FC = () => {
   const navigate = useNavigate();
   const [isJoining, setIsJoining] = useState(false);
   const { setSocket } = useSocketStore(state => state);

@@ -4,10 +4,12 @@
 
 :root {
   --backgroundColor: theme("colors.light.background");
+  --toggleColor: theme("colors.light.main");
 }
 
 [class="dark"] {
   --backgroundColor: theme("colors.dark.background");
+  --toggleColor: theme("colors.dark.main");
 }
 
 html {
@@ -30,5 +32,9 @@ html {
 .emoji-picker__content {
   width: fit-content;
   margin: auto;
+}
+.toggle-button > input:checked ~ .dot {
+  transform: translateX(100%);
+  background-color: var(--toggleColor);
 }
 

@@ -10,18 +10,16 @@ interface TypeToggleProps {
 
 const TypeToggle: React.FC<TypeToggleProps> = ({ type, setType, disabled }) => {
   return (
-    <div className="flex justify-center">
-      <Button
-        onClick={() =>
-          setType(
-            type === PlayerType.Voter ? PlayerType.Spectator : PlayerType.Voter
-          )
-        }
-        disabled={disabled}
-      >
-        {type === PlayerType.Voter ? "Spectate" : "Join Voting"}
-      </Button>
-    </div>
+    <Button
+      onClick={() =>
+        setType(
+          type === PlayerType.Voter ? PlayerType.Spectator : PlayerType.Voter
+        )
+      }
+      disabled={disabled}
+    >
+      {type === PlayerType.Voter ? "Spectate" : "Join Voting"}
+    </Button>
   );
 };
 

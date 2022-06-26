@@ -28,7 +28,7 @@ const SpectatorCard: React.FC<SpectatorCardProps> = ({
   return (
     <>
       <motion.div variants={EXPAND_IN} exit={{ opacity: 0 }}>
-        <div className="flex justify-center items-center mx-auto p-4 bg-dark-secondary border-purple-500 dark:bg-dark-secondary dark:border-yellow-500 rounded-md h-18 w-12 font-bold text-2xl border-2">
+        <div className="flex justify-center items-center mx-auto p-4 bg-light-secondary border-purple-500 dark:bg-dark-secondary dark:border-yellow-500 rounded-md h-18 w-12 font-bold text-2xl border-2">
           <motion.div
             whileHover={isCurrentPlayer ? { scale: 1.05 } : {}}
             whileTap={isCurrentPlayer ? { scale: 0.95 } : {}}

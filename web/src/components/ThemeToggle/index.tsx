@@ -26,10 +26,7 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({ theme, setTheme }) => {
       >
         <button
           className="align-middle items-center p-2 bg-light-primary hover:bg-light-secondary dark:bg-dark-primary dark:hover:bg-dark-secondary rounded-md shadow-sm ease-linear transition-all duration-150"
-          onClick={e => {
-            e.preventDefault();
-            setTheme(isDark ? LIGHT_THEME : DARK_THEME);
-          }}
+          onClick={() => setTheme(isDark ? LIGHT_THEME : DARK_THEME)}
         >
           {mounted && isDark ? <FaSun /> : <FaMoon />}
         </button>

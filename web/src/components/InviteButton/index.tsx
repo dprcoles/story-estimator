@@ -20,17 +20,17 @@ const InviteButton: React.FC<InviteButtonProps> = ({ linkToCopy }) => {
       <div className="ml-auto">
         <span className="ml-2">
           <button
-            className="flex align-middle items-center px-4 py-2 bg-light-primary hover:bg-light-secondary dark:bg-dark-primary dark:hover:bg-dark-secondary rounded-md shadow-md ease-linear transition-all duration-150"
+            className="px-4 py-2 bg-light-primary hover:bg-light-secondary dark:bg-dark-primary dark:hover:bg-dark-secondary rounded-md shadow-md ease-linear transition-all duration-150"
             onClick={handleClick}
           >
             {!clicked ? (
-              <>
+              <span className="flex align-middle items-center">
                 Invite <FiCopy className="ml-2" />
-              </>
+              </span>
             ) : (
-              <>
+              <span className="flex align-middle items-center">
                 Copied <FiCheckSquare className="ml-2" />
-              </>
+              </span>
             )}
           </button>
         </span>
