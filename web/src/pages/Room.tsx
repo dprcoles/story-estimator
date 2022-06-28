@@ -145,6 +145,8 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
     setStories(data.stories);
   });
 
+  console.log(room);
+
   const handleResetVotes = () => {
     setShowVotes(false);
     setCountdownStatus(CountdownStatus.STOPPED);
@@ -191,6 +193,10 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
       setCountdown(CountdownTimer.FastMode);
       setCountdownType(CountdownType.FastMode);
       setCountdownStatus(CountdownStatus.STARTED);
+    } else {
+      setCountdown(CountdownTimer.Standard);
+      setCountdownType(CountdownType.Standard);
+      setCountdownStatus(CountdownStatus.STOPPED);
     }
   };
 

@@ -1,7 +1,9 @@
 import "emoji-mart/css/emoji-mart.css";
 import React from "react";
 import { EmojiData, Picker } from "emoji-mart";
+import { useThemeStore } from "@/stores/themeStore";
 
+type EmojiPickerTheme = "auto" | "light" | "dark" | undefined;
 interface EmojiPickerProps {
   onSelect: (e: string) => void;
   isOpen: boolean;
@@ -13,6 +15,8 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
   isOpen,
   setIsOpen,
 }) => {
+  const { theme } = useThemeStore();
+
   const handleOnSelect = (e: EmojiData) => {
     // @ts-ignore
     const sym = e.unified.split("-");
@@ -36,7 +40,7 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
             className="emoji-picker__content"
           >
             <Picker
-              theme="dark"
+              theme={theme as EmojiPickerTheme}
               title="Pick your emoji..."
               emoji="point_up"
               onSelect={handleOnSelect}

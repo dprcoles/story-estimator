@@ -11,8 +11,14 @@ const Countdown: React.FC<CountdownProps> = ({ seconds, playersToVote }) => {
   return (
     <div className="grid md:grid-cols-2">
       <div className="text-xl text-center mb-4">
-        <b>{playersToVote.map(x => x.name).join(", ")}</b>{" "}
-        {playersToVote.length === 1 ? "has" : "have"} not voted yet!
+        {playersToVote.length ? (
+          <>
+            <b>{playersToVote.map(x => x.name).join(", ")}</b>{" "}
+            {playersToVote.length === 1 ? "has" : "have"} not voted yet!
+          </>
+        ) : (
+          <>All players have voted!</>
+        )}
       </div>
       <div>
         <div className="font-bold text-xl text-center mb-4">
