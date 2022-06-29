@@ -47,7 +47,9 @@ const InfoCard: React.FC<InfoCardProps> = ({
     },
   ];
 
-  const playersToVote = players.filter(x => !x.vote);
+  const playersToVote = players.filter(
+    x => !x.vote && x.type === PlayerType.Voter
+  );
   const playersToVoteNumber = playersToVote.length;
 
   return (
