@@ -17,7 +17,7 @@ const FinalEstimate: React.FC<FinalEstimateProps> = ({ options }) => {
     <div className="mt-2 md:mt-0 border-t-2 md:border-0 border-light-primary dark:border-dark-primary">
       <div className="mb-2 text-lg">Select the agreed estimate:</div>
       <motion.div variants={STAGGER}>
-        <div className="mt-4 flex space-x-2">
+        <div className="mt-4 grid md:grid-cols-3 grid-cols-2 gap-y-6 gap-x-2">
           {options.map(x => (
             <motion.button
               variants={FADE_IN}

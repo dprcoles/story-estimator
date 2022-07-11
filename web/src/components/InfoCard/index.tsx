@@ -69,7 +69,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
           </button>
         ))}
       </div>
-      <div className="p-6">
+      <div className="p-2">
         {tab === InfoCardTab.CurrentStory && (
           <>
             {!showVotes && countdownStatus === CountdownStatus.STOPPED && (

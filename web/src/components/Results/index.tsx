@@ -34,14 +34,14 @@ const Results: React.FC<ResultsProps> = ({ players, options }) => {
 
   return (
     <motion.div variants={FADE_IN}>
-      <div className="grid grid-cols-1 md:grid-cols-2 space-x-2">
-        <div className="md:border-r-2 md:border-light-primary dark:md:border-dark-primary md:border-opacity-50">
+      <div className="grid grid-cols-1 md:grid-cols-5 space-x-2">
+        <div className="md:col-span-3 md:border-r-2 md:border-light-primary dark:md:border-dark-primary md:border-opacity-50">
           <div className="border-b-light-secondary dark:border-b-dark-secondary border-b-2">
             <div className="mb-2 text-lg">Average:</div>
             <div className="text-8xl font-bold mb-2">{getAverage()}</div>
           </div>
           <motion.div variants={STAGGER}>
-            <div className="mt-8 flex space-x-2">
+            <div className="mt-8 grid grid-cols-2 md:grid-cols-3 gap-y-6 gap-x-2">
               {getVotes()
                 .sort((a, b) => b.total - a.total)
                 .map(x => (
@@ -62,7 +62,7 @@ const Results: React.FC<ResultsProps> = ({ players, options }) => {
             </div>
           </motion.div>
         </div>
-        <div className="md:pl-4 md:pt-0">
+        <div className="md:col-span-2 md:pl-4 md:pt-0">
           <FinalEstimate
             options={getVotes()
               .sort((a, b) => a.total - b.total)
