@@ -3,7 +3,7 @@ import Fastify from "fastify";
 import short from "short-uuid";
 import { Server } from "socket.io";
 import fastifyCors from "fastify-cors";
-import { Player, PlayerType, Room, ShowType, Story } from "./types";
+import { Player, PlayerType, Room, ShowType } from "./types";
 
 const fastify = Fastify();
 
@@ -40,13 +40,11 @@ fastify.listen(process.env.PORT || 4000, "0.0.0.0", (err, address) => {
 
 let players: Player[] = [];
 let rooms: Room[] = [];
-let stories: Story[] = [];
 
 const updateRoom = (roomId: any) => {
   io.to(roomId).emit("update", {
     players: players.filter(p => p.roomId === roomId),
     room: rooms.find(r => r.id === roomId),
-    stories: stories.filter(s => s.roomId === roomId),
   });
 };
 
@@ -58,8 +56,46 @@ const resetGame = (roomId: any) => {
   io.to(roomId).emit("update", {
     players: roomPlayers,
     room: rooms.find(r => r.id === roomId),
-    stories: stories.filter(s => s.roomId === roomId),
   });
+};
+
+const getTotalTimeSpent = (
+  current: number | undefined,
+  start: number | undefined,
+  end: number | undefined
+) => {
+  if (
+    typeof start === "undefined" ||
+    typeof end === "undefined" ||
+    typeof current === "undefined"
+  )
+    return 0;
+  return current + Math.floor(end - start) * 1000;
+};
+
+const updateActiveStory = (roomId: any, nextActiveId: string | null) => {
+  const roomIndex = rooms.findIndex(r => r.id === roomId);
+  const activeStoryIndex = rooms[roomIndex].stories.findIndex(s => s.active);
+
+  rooms[roomIndex].stories[activeStoryIndex].active = false;
+  rooms[roomIndex].stories[activeStoryIndex].endSeconds = getTimeInSeconds();
+  rooms[roomIndex].stories[activeStoryIndex].totalTimeSpent = getTotalTimeSpent(
+    rooms[roomIndex].stories[activeStoryIndex].totalTimeSpent,
+    rooms[roomIndex].stories[activeStoryIndex].startSeconds,
+    rooms[roomIndex].stories[activeStoryIndex].endSeconds
+  );
+
+  if (nextActiveId) {
+    const nextStoryIndex = rooms[roomIndex].stories.findIndex(
+      s => s.id === nextActiveId
+    );
+
+    rooms[roomIndex].stories[nextStoryIndex].active = true;
+    rooms[roomIndex].stories[nextStoryIndex].startSeconds = getTimeInSeconds();
+    rooms[roomIndex].stories[nextStoryIndex].endSeconds = undefined;
+  }
+
+  resetGame(roomId);
 };
 
 const log = () => {
@@ -87,17 +123,18 @@ io.on("connection", socket => {
         countdown: true,
         fastMode: false,
       },
-    });
-  }
-
-  if (!stories.find(s => s.roomId === roomId)) {
-    stories.push({
-      id: short.generate(),
-      roomId: roomId as string,
-      description: "Story #1",
-      vote: undefined,
-      startSeconds: getTimeInSeconds(),
-      endSeconds: undefined,
+      stories: [
+        {
+          id: short.generate(),
+          roomId: roomId as string,
+          description: "Story #1",
+          active: true,
+          vote: undefined,
+          startSeconds: getTimeInSeconds(),
+          endSeconds: undefined,
+          totalTimeSpent: undefined,
+        },
+      ],
     });
   }
 
@@ -146,16 +183,6 @@ io.on("connection", socket => {
     updateRoom(roomId);
   });
 
-  socket.on("description", description => {
-    if (roomId) {
-      const storyIndex = stories.findIndex(
-        s => s.roomId === roomId && s.endSeconds === undefined
-      );
-      stories[storyIndex].description = description;
-    }
-    updateRoom(roomId);
-  });
-
   socket.on("vote", vote => {
     const player = [...players].find(p => p.id === socket.id);
     if (player) {
@@ -181,23 +208,64 @@ io.on("connection", socket => {
     resetGame(roomId);
   });
 
-  socket.on("complete", finalVote => {
+  socket.on("complete", ({ finalVote, storyId }) => {
     if (roomId) {
-      const storyIndex = stories.findIndex(
-        s => s.roomId === roomId && s.endSeconds === undefined
+      const roomIndex = rooms.findIndex(r => r.id === roomId);
+      const storyIndex = rooms[roomIndex].stories.findIndex(
+        s => s.id === storyId
       );
-      stories[storyIndex].endSeconds = getTimeInSeconds();
-      stories[storyIndex].vote = finalVote;
-      stories.push({
+
+      rooms[roomIndex].stories[storyIndex].vote = finalVote;
+
+      if (rooms[roomIndex].stories.filter(s => !s.vote).length === 0) {
+        updateActiveStory(roomId, null);
+        return;
+      }
+
+      if (
+        rooms[roomIndex].stories.length > storyIndex + 1 &&
+        !rooms[roomIndex].stories[storyIndex + 1].vote
+      ) {
+        updateActiveStory(roomId, rooms[roomIndex].stories[storyIndex + 1].id);
+      } else {
+        const nextIndex = rooms[roomIndex].stories.findIndex(s => !s.vote);
+        updateActiveStory(roomId, rooms[roomIndex].stories[nextIndex].id);
+      }
+    }
+  });
+
+  socket.on("addStory", story => {
+    if (roomId) {
+      const roomIndex = rooms.findIndex(r => r.id === roomId);
+      rooms[roomIndex].stories.push({
+        ...story,
         id: short.generate(),
         roomId: roomId as string,
-        description: `Story #${storyIndex + 2}`,
+        active: false,
         vote: undefined,
-        startSeconds: getTimeInSeconds(),
+        startSeconds: undefined,
         endSeconds: undefined,
+        totalTimeSpent: undefined,
       });
     }
-    resetGame(roomId);
+    updateRoom(roomId);
+  });
+
+  socket.on("editStory", story => {
+    if (roomId) {
+      const roomIndex = rooms.findIndex(r => r.id === roomId);
+      const storyIndex = rooms[roomIndex].stories.findIndex(
+        s => s.id === story.id
+      );
+      rooms[roomIndex].stories[storyIndex] = story;
+    }
+    updateRoom(roomId);
+  });
+
+  socket.on("setActiveStory", storyId => {
+    if (roomId) {
+      updateActiveStory(roomId, storyId);
+    }
   });
 
   socket.on("pong", () => {

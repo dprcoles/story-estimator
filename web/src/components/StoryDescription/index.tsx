@@ -29,22 +29,24 @@ const StoryDescription: React.FC<StoryDescriptionProps> = ({
         {showInput ? (
           <>
             <input
-              className="p-2 bg-light-primary dark:bg-dark-primary focus:outline-none rounded-md"
+              className="p-2 bg-light-primary dark:bg-dark-primary focus:outline-none rounded-md border-2 border-light-background dark:border-dark-background"
               value={localDescription}
               onChange={e => setLocalDescription(e.target.value)}
               onKeyDown={e =>
                 e.key === "Enter" && setDescription(localDescription)
               }
             />
-            <ActionButton text={<FaCheck />} onClick={handleSetDescription} />
-            <ActionButton
-              text={<FaTimes />}
-              onClick={() => setShowInput(false)}
-            />
+            <div className="pt-2 space-x-2">
+              <ActionButton text={<FaCheck />} onClick={handleSetDescription} />
+              <ActionButton
+                text={<FaTimes />}
+                onClick={() => setShowInput(false)}
+              />
+            </div>
           </>
         ) : (
           <span
-            className="p-2 font-bold rounded-md hover:bg-light-secondary dark:hover:bg-dark-secondary"
+            className="font-bold rounded-md hover:bg-light-secondary dark:hover:bg-dark-secondary"
             onClick={() => setShowInput(true)}
           >
             {description}

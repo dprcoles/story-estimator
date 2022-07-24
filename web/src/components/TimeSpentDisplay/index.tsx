@@ -3,16 +3,22 @@ import { useInterval } from "@/hooks/index";
 
 interface TimeSpentDisplayProps {
   startTime: number;
+  totalTimeSpent: number;
 }
 
-const TimeSpentDisplay: React.FC<TimeSpentDisplayProps> = ({ startTime }) => {
+const TimeSpentDisplay: React.FC<TimeSpentDisplayProps> = ({
+  startTime,
+  totalTimeSpent,
+}) => {
   const [timeSpent, setTimeSpent] = useState<string>("");
 
   useInterval(() => {
     const currentTimeSeconds = new Date().getTime() / 1000;
     const seconds = Math.floor(currentTimeSeconds - startTime);
 
-    setTimeSpent(new Date(seconds * 1000).toISOString().substr(14, 5));
+    setTimeSpent(
+      new Date(seconds * 1000 + totalTimeSpent).toISOString().substr(14, 5)
+    );
   }, 1000);
 
   return (

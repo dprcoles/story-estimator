@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Story } from "@/types/story";
 import { NON_NUMERIC_OPTIONS } from "@/utils/constants";
 import { FADE_IN, STAGGER } from "@/utils/variants";
+import { getTimeSpent } from "@/utils/functions";
 
 interface HistoryProps {
   stories: Array<Story>;
@@ -11,21 +12,17 @@ interface HistoryProps {
 const History: React.FC<HistoryProps> = ({ stories }) => {
   const completeStories = stories.filter(x => x.hasOwnProperty("endSeconds"));
 
-  const getTimeSpent = (start: number, end: number) => {
-    const date = Math.floor(end - start) * 1000;
-    return new Date(date).toISOString().substr(14, 5);
-  };
-
   const totalEstimate = completeStories
     .filter(x => !NON_NUMERIC_OPTIONS.includes(x.vote as string))
     .map(x => Number(x.vote))
     .reduce((x, y) => x + y, 0);
 
   const getTotalTimeSpent = () => {
-    const start = Math.min(...completeStories.map(x => x.startSeconds));
-    const end = Math.max(...completeStories.map(x => x.endSeconds as number));
+    const total = Math.max(
+      ...completeStories.map(x => x.totalTimeSpent as number)
+    );
 
-    return getTimeSpent(start, end);
+    return getTimeSpent(total);
   };
 
   if (completeStories.length === 0)
@@ -48,7 +45,7 @@ const History: React.FC<HistoryProps> = ({ stories }) => {
             <motion.tr variants={FADE_IN}>
               <td>{x.description}</td>
               <td>{x.vote}</td>
-              <td>{getTimeSpent(x.startSeconds, x.endSeconds as number)}</td>
+              <td>{getTimeSpent(x.totalTimeSpent)}</td>
             </motion.tr>
           ))}
           <motion.tr variants={FADE_IN} className="font-bold">

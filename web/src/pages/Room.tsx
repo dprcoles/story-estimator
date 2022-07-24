@@ -27,6 +27,7 @@ import { StorageItem } from "@/types/storage";
 import SpectatorsRow from "@/components/PlayerRows/SpectatorsRow";
 import VotersRow from "@/components/PlayerRows/VotersRow";
 import RoomNavbar from "@/components/RoomNavbar";
+import StoryBar from "@/components/StoryBar";
 
 interface RoomPageProps {
   theme: string;
@@ -54,33 +55,24 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
   const { id } = useParams();
 
   const setPlayerName = (playerName: string) => {
-    console.log(`🏷 Set Name: ${playerName}`);
     setName(playerName);
     emit(EmitEvent.Name, playerName);
     localStorage.setItem(StorageItem.Name, playerName);
   };
 
   const setPlayerType = (playerType: PlayerType) => {
-    console.log(`🎮 Playing as a ${playerType}`);
     setType(playerType);
     emit(EmitEvent.Type, playerType);
     localStorage.setItem(StorageItem.Type, playerType);
   };
 
   const setPlayerEmoji = (playerEmoji: string) => {
-    console.log(`${playerEmoji} Changed Emoji`);
     emit(EmitEvent.Emoji, playerEmoji);
     localStorage.setItem(StorageItem.Emoji, playerEmoji);
   };
 
   const setRoomSettings = (roomSettings: Settings) => {
-    console.log(`🔧 Updated Room Settings`);
     emit(EmitEvent.Settings, roomSettings);
-  };
-
-  const setDescription = (description: string) => {
-    console.log(`📖 Changed Story Description to ${description}`);
-    emit(EmitEvent.Description, description);
   };
 
   useEffect(() => {
@@ -142,7 +134,7 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
   socket.on(EmitEvent.Update, (data: UpdateResponse) => {
     setPlayers(data.players);
     setRoom(data.room);
-    setStories(data.stories);
+    setStories(data.room.stories);
   });
 
   console.log(room);
@@ -208,7 +200,7 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
 
   const voters = players.filter(p => p.type === PlayerType.Voter);
   const spectators = players.filter(p => p.type === PlayerType.Spectator);
-  const currentStory = stories.find(s => !s.hasOwnProperty("endSeconds"));
+  const currentStory = stories.find(s => s.active);
 
   return (
     <motion.div variants={FADE_IN}>
@@ -220,87 +212,99 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
         setSettings={setRoomSettings}
       />
       {name.length > 0 && (
-        <div className="max-w-5xl mx-auto">
-          <RoomNavbar
-            description={currentStory?.description as string}
-            setDescription={setDescription}
-            name={name}
-            setName={setPlayerName}
-            theme={theme}
-            setTheme={setTheme}
-          />
-          {spectators.length > 0 && (
-            <SpectatorsRow
+        <div className="md:max-w-7xl md:flex md:mx-auto md:space-x-8">
+          <div className="hidden md:max-w-1xl md:block pt-6">
+            <StoryBar stories={stories} />
+          </div>
+          <div className="md:max-w-6xl md:w-full">
+            <RoomNavbar
+              description={currentStory?.description as string}
+              name={name}
+              setName={setPlayerName}
+              theme={theme}
+              setTheme={setTheme}
+            />
+            {spectators.length > 0 && (
+              <SpectatorsRow
+                countdownStatus={countdownStatus}
+                name={name}
+                setPlayerEmoji={setPlayerEmoji}
+                showVotes={showVotes}
+                spectators={spectators}
+              />
+            )}
+            <VotersRow
               countdownStatus={countdownStatus}
               name={name}
               setPlayerEmoji={setPlayerEmoji}
               showVotes={showVotes}
-              spectators={spectators}
+              voters={voters}
             />
-          )}
-          <VotersRow
-            countdownStatus={countdownStatus}
-            name={name}
-            setPlayerEmoji={setPlayerEmoji}
-            showVotes={showVotes}
-            voters={voters}
-          />
-          <div className="max-w-5xl mx-auto py-8">
-            <div className="grid grid-cols-3 mb-4">
-              <div className="mr-auto">
-                <TypeToggle
-                  type={type}
-                  setType={setPlayerType}
-                  disabled={
-                    countdownStatus === CountdownStatus.STARTED || showVotes
-                  }
-                />
-              </div>
-              <div className="mx-auto">
-                <TimeSpentDisplay
-                  startTime={currentStory?.startSeconds as number}
-                />
-              </div>
-              <div className="ml-auto">
-                <Button
-                  onClick={() => setIsSettingsOpen(true)}
-                  disabled={
-                    countdownStatus === CountdownStatus.STARTED || showVotes
-                  }
-                >
-                  Settings
-                </Button>
-              </div>
-            </div>
-            <InfoCard
-              vote={vote}
-              showVotes={showVotes}
-              countdown={countdown}
-              countdownStatus={countdownStatus}
-              players={players}
-              stories={stories}
-              options={OPTIONS}
-              type={type}
-            />
-            {!showVotes && type === PlayerType.Voter && (
-              <motion.div variants={STAGGER}>
-                <div className="m-2 grid justify-center lg:grid-cols-12 md:grid-cols-6 grid-cols-3">
-                  {OPTIONS.map((option: string) => (
-                    <motion.div
-                      variants={FADE_IN}
-                      className="text-center"
-                      key={`${option}-component`}
-                    >
-                      <Option
-                        value={option}
-                        onClick={() => submitVote(option)}
-                        selected={vote === option}
-                      />
-                    </motion.div>
-                  ))}
+            <div className="mx-auto py-8">
+              <div className="grid grid-cols-3 mb-4">
+                <div className="mr-auto">
+                  <TypeToggle
+                    type={type}
+                    setType={setPlayerType}
+                    disabled={
+                      countdownStatus === CountdownStatus.STARTED || showVotes
+                    }
+                  />
                 </div>
-              </motion.div>
-            )}
+                <div className="mx-auto">
+                  <TimeSpentDisplay
+                    startTime={currentStory?.startSeconds as number}
+                    totalTimeSpent={
+                      typeof currentStory?.totalTimeSpent !== "undefined"
+                        ? currentStory.totalTimeSpent
+                        : 0
+                    }
+                  />
+                </div>
+                <div className="ml-auto">
+                  <Button
+                    onClick={() => setIsSettingsOpen(true)}
+                    disabled={
+                      countdownStatus === CountdownStatus.STARTED || showVotes
+                    }
+                  >
+                    Settings
+                  </Button>
+                </div>
+              </div>
+              <InfoCard
+                vote={vote}
+                showVotes={showVotes}
+                countdown={countdown}
+                countdownStatus={countdownStatus}
+                players={players}
+                stories={stories}
+                options={OPTIONS}
+                type={type}
+              />
+              {!showVotes && type === PlayerType.Voter && (
+                <motion.div variants={STAGGER}>
+                  <div className="m-2 grid justify-center lg:grid-cols-12 md:grid-cols-6 grid-cols-3">
+                    {OPTIONS.map((option: string) => (
+                      <motion.div
+                        variants={FADE_IN}
+                        className="text-center"
+                        key={`${option}-component`}
+                      >
+                        <Option
+                          value={option}
+                          onClick={() => submitVote(option)}
+                          selected={vote === option}
+                        />
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </div>
+          </div>
+          <div className="md:hidden py-6">
+            <StoryBar stories={stories} />
           </div>
         </div>
       )}

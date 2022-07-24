@@ -17,8 +17,8 @@ const InviteButton: React.FC<InviteButtonProps> = ({ linkToCopy }) => {
 
   return (
     <div className="flex">
-      <div className="ml-auto">
-        <span className="ml-2">
+      <div className="mr-auto">
+        <span>
           <button
             className="px-4 py-2 bg-light-primary hover:bg-light-secondary dark:bg-dark-primary dark:hover:bg-dark-secondary rounded-md shadow-md ease-linear transition-all duration-150"
             onClick={handleClick}

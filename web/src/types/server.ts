@@ -1,11 +1,9 @@
 import { Player } from "./player";
 import { Room } from "./room";
-import { Story } from "./story";
 
 export type UpdateResponse = {
   players: Player[];
   room: Room;
-  stories: Story[];
 };
 
 export enum EmitEvent {
@@ -13,11 +11,13 @@ export enum EmitEvent {
   Type = "type",
   Emoji = "emoji",
   Settings = "settings",
-  Description = "description",
   Vote = "vote",
   Show = "show",
   Reset = "reset",
   Complete = "complete",
+  AddStory = "addStory",
+  EditStory = "editStory",
+  SetActiveStory = "setActiveStory",
   Update = "update",
   Ping = "ping",
   Pong = "pong",

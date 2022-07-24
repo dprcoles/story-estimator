@@ -1,11 +1,9 @@
 import React from "react";
 import InviteButton from "../InviteButton";
-import StoryDescription from "../StoryDescription";
 import UserActions from "../UserActions";
 
 interface RoomNavbarProps {
   description: string;
-  setDescription: (description: string) => void;
   name: string;
   setName: (name: string) => void;
   theme: string;
@@ -14,7 +12,6 @@ interface RoomNavbarProps {
 
 const RoomNavbar: React.FC<RoomNavbarProps> = ({
   description,
-  setDescription,
   name,
   setName,
   theme,
@@ -22,12 +19,11 @@ const RoomNavbar: React.FC<RoomNavbarProps> = ({
 }) => {
   return (
     <div className="top-0 z-20 py-2 md:py-6 md:mb-6 px-2 md:px-0">
-      <div className="flex mx-auto lg:max-w-5xl items-center justify-between">
+      <div className="grid grid-cols-3">
         <InviteButton linkToCopy={window.location.href} />
-        <StoryDescription
-          description={description}
-          setDescription={setDescription}
-        />
+        <span className="p-2 font-bold rounded-md text-center">
+          {description}
+        </span>
         <UserActions
           name={name}
           onEdit={() => setName("")}
