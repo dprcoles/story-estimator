@@ -33,11 +33,6 @@ export const useThemeStore = () => {
   }, [theme]);
 
   const setTheme = (newTheme: string) => {
-    console.log(
-      `${newTheme === DARK_THEME ? "🌙" : "🔆"} Changed theme to ${
-        newTheme === DARK_THEME ? "Dark" : "Light"
-      }`
-    );
     window.localStorage.setItem(StorageItem.Theme, newTheme);
     setThemeState(newTheme);
   };

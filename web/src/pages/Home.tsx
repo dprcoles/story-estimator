@@ -18,10 +18,7 @@ const Home: React.FC = () => {
     );
     setSocket(socket);
 
-    console.log("🔄 Joining Room...");
-
     socket.on("room", (roomId: string) => {
-      console.log(`🃏 Joined Room: ${roomId}`);
       navigate(`${ROUTE_ROOM}/${roomId}`);
     });
   };

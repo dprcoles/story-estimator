@@ -137,8 +137,6 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
     setStories(data.room.stories);
   });
 
-  console.log(room);
-
   const handleResetVotes = () => {
     setShowVotes(false);
     setCountdownStatus(CountdownStatus.STOPPED);
