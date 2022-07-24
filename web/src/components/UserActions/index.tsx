@@ -19,7 +19,9 @@ const UserActions: React.FC<UserActionsProps> = ({
   return (
     <div className="flex">
       <div className="ml-auto">
-        <span className="font-bold text-lg align-middle">{name}</span>
+        <span className="hidden md:inline font-bold text-lg align-middle pr-2">
+          {name}
+        </span>
         <ActionButton text={<FaUserEdit />} onClick={onEdit} />
         <span className="ml-2">
           <ThemeToggle theme={theme} setTheme={setTheme} />

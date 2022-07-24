@@ -6,9 +6,13 @@ import { EmitEvent } from "@/types/server";
 
 interface FinalEstimateProps {
   options: Array<string>;
+  currentStoryId: string;
 }
 
-const FinalEstimate: React.FC<FinalEstimateProps> = ({ options }) => {
+const FinalEstimate: React.FC<FinalEstimateProps> = ({
+  options,
+  currentStoryId,
+}) => {
   const [selected, setSelected] = useState<string>("");
 
   const { emit } = useSocketStore();
@@ -58,7 +62,12 @@ const FinalEstimate: React.FC<FinalEstimateProps> = ({ options }) => {
         >
           <button
             className="rounded-md p-2 my-2 text-white dark:text-black bg-light-main hover:bg-blue-500 disabled:hover:bg-light-main dark:bg-dark-main dark:hover:bg-yellow-300 dark:disabled:hover:bg-dark-main shadow-md disabled:opacity-50 ease-linear transition-all duration-150"
-            onClick={() => emit(EmitEvent.Complete, selected)}
+            onClick={() =>
+              emit(EmitEvent.Complete, {
+                finalVote: selected,
+                storyId: currentStoryId,
+              })
+            }
             disabled={selected === ""}
           >
             Complete Estimate

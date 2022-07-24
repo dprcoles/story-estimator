@@ -1,3 +1,5 @@
+import { Story } from "@/types/story";
+
 export const ROUTE_ROOM: string = "/room";
 export const NON_NUMERIC_OPTIONS = ["∞", "?", "☕️"];
 export const OPTIONS: Array<string> = [
@@ -22,4 +24,15 @@ export const COUNTDOWN_DESCRIPTION =
 
 export const FAST_MODE_DESCRIPTION =
   "Will force users to vote within a 10 second window after the first vote has been submitted.";
+
+export const DEFAULT_STORY: Story = {
+  id: "",
+  description: "",
+  active: false,
+  endSeconds: undefined,
+  roomId: "",
+  startSeconds: undefined,
+  vote: undefined,
+  totalTimeSpent: 0,
+};
 

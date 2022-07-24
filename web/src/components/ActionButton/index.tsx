@@ -7,7 +7,7 @@ interface ActionButtonProps {
 
 const ActionButton: React.FC<ActionButtonProps> = ({ text, onClick }) => {
   return (
-    <span className="ml-2">
+    <span>
       <button
         className="align-middle items-center p-2 bg-light-primary hover:bg-light-secondary dark:bg-dark-primary dark:hover:bg-dark-secondary rounded-md shadow-sm ease-linear transition-all duration-150"
         onClick={onClick}

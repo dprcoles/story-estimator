@@ -36,6 +36,8 @@ const InfoCard: React.FC<InfoCardProps> = ({
 
   const { emit } = useSocketStore();
 
+  const currentStory = stories.find(s => s.active);
+
   const tabs = [
     {
       id: InfoCardTab.CurrentStory,
@@ -53,7 +55,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
   const playersToVoteNumber = playersToVote.length;
 
   return (
-    <div className="my-4 bg-light-secondary dark:bg-dark-secondary shadow-md mx-auto p-4   rounded-md">
+    <div className="my-4 bg-light-secondary dark:bg-dark-secondary shadow-md mx-auto p-4 rounded-md">
       <div className="space-x-2">
         {tabs.map(x => (
           <button
@@ -73,35 +75,49 @@ const InfoCard: React.FC<InfoCardProps> = ({
         {tab === InfoCardTab.CurrentStory && (
           <>
             {!showVotes && countdownStatus === CountdownStatus.STOPPED && (
-              <div className="text-center">
-                {vote || type === PlayerType.Spectator ? (
-                  <div className="grid md:grid-cols-2 items-center justify-between space-y-2 md:space-y-0">
-                    <span className="text-center">
-                      Waiting on <b>{playersToVoteNumber}</b> player
-                      {playersToVoteNumber === 1 ? "" : "s"} to vote...
-                    </span>
-                    <div className="flex space-x-4 mx-auto">
-                      <Button
-                        onClick={() => emit(EmitEvent.Show, ShowType.Hurry)}
-                      >
-                        Hurry other players
-                      </Button>
-                      <Button
-                        onClick={() => emit(EmitEvent.Show, ShowType.Force)}
-                      >
-                        Force show votes
-                      </Button>
-                    </div>
+              <>
+                <div className="mb-4 w-full border-b-2 border-gray-200 dark:border-gray-700">
+                  <div>Currently estimating:</div>
+                  <div className="text-4xl font-bold mt-2 mb-4">
+                    {currentStory?.description}
                   </div>
-                ) : (
-                  <>Select from one of the options below to cast your vote!</>
-                )}
-              </div>
+                </div>
+                <div className="text-center">
+                  {vote || type === PlayerType.Spectator ? (
+                    <div className="grid md:grid-cols-2 items-center justify-between space-y-2 md:space-y-0">
+                      <span className="text-center">
+                        Waiting on <b>{playersToVoteNumber}</b> player
+                        {playersToVoteNumber === 1 ? "" : "s"} to vote...
+                      </span>
+                      <div className="flex space-x-4 mx-auto">
+                        <Button
+                          onClick={() => emit(EmitEvent.Show, ShowType.Hurry)}
+                        >
+                          Hurry other players
+                        </Button>
+                        <Button
+                          onClick={() => emit(EmitEvent.Show, ShowType.Force)}
+                        >
+                          Force show votes
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <>Select from one of the options below to cast your vote!</>
+                  )}
+                </div>
+              </>
             )}
             {!showVotes && countdownStatus === CountdownStatus.STARTED && (
               <Countdown seconds={countdown} playersToVote={playersToVote} />
             )}
-            {showVotes && <Results players={players} options={options} />}
+            {showVotes && (
+              <Results
+                players={players}
+                options={options}
+                currentStoryId={stories.find(s => s.active)?.id as string}
+              />
+            )}
           </>
         )}
         {tab === InfoCardTab.History && <History stories={stories} />}
