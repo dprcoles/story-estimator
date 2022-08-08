@@ -64,26 +64,27 @@ const getTotalTimeSpent = (
   start: number | undefined,
   end: number | undefined
 ) => {
-  if (
-    typeof start === "undefined" ||
-    typeof end === "undefined" ||
-    typeof current === "undefined"
-  )
-    return 0;
-  return current + Math.floor(end - start) * 1000;
+  if (typeof start === "undefined" || typeof end === "undefined") return 0;
+  return (
+    (typeof current === "undefined" ? 0 : current) +
+    Math.floor(end - start) * 1000
+  );
 };
 
 const updateActiveStory = (roomId: any, nextActiveId: string | null) => {
   const roomIndex = rooms.findIndex(r => r.id === roomId);
   const activeStoryIndex = rooms[roomIndex].stories.findIndex(s => s.active);
 
-  rooms[roomIndex].stories[activeStoryIndex].active = false;
-  rooms[roomIndex].stories[activeStoryIndex].endSeconds = getTimeInSeconds();
-  rooms[roomIndex].stories[activeStoryIndex].totalTimeSpent = getTotalTimeSpent(
-    rooms[roomIndex].stories[activeStoryIndex].totalTimeSpent,
-    rooms[roomIndex].stories[activeStoryIndex].startSeconds,
-    rooms[roomIndex].stories[activeStoryIndex].endSeconds
-  );
+  if (activeStoryIndex !== -1) {
+    rooms[roomIndex].stories[activeStoryIndex].active = false;
+    rooms[roomIndex].stories[activeStoryIndex].endSeconds = getTimeInSeconds();
+    rooms[roomIndex].stories[activeStoryIndex].totalTimeSpent =
+      getTotalTimeSpent(
+        rooms[roomIndex].stories[activeStoryIndex].totalTimeSpent,
+        rooms[roomIndex].stories[activeStoryIndex].startSeconds,
+        getTimeInSeconds()
+      );
+  }
 
   if (nextActiveId) {
     const nextStoryIndex = rooms[roomIndex].stories.findIndex(
@@ -218,7 +219,21 @@ io.on("connection", socket => {
       rooms[roomIndex].stories[storyIndex].vote = finalVote;
 
       if (rooms[roomIndex].stories.filter(s => !s.vote).length === 0) {
-        updateActiveStory(roomId, null);
+        const nextRoomId = short.generate();
+        rooms[roomIndex].stories = [
+          ...rooms[roomIndex].stories,
+          {
+            id: nextRoomId,
+            roomId: roomId as string,
+            description: `Story #${rooms[roomIndex].stories.length + 1}`,
+            active: true,
+            vote: undefined,
+            startSeconds: getTimeInSeconds(),
+            endSeconds: undefined,
+            totalTimeSpent: undefined,
+          },
+        ];
+        updateActiveStory(roomId, nextRoomId);
         return;
       }
 
