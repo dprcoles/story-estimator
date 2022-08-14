@@ -20,7 +20,7 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, onClick, onEdit }) => {
           ? "border-light-main dark:border-dark-main"
           : "border-light-primary dark:border-dark-primary cursor-pointer hover:bg-light-background hover:dark:bg-dark-background"
       }`}
-      onClick={() => onClick(story.id)}
+      onClick={() => (story.active ? {} : onClick(story.id))}
     >
       <StoryDescription
         key={story.id}
