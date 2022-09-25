@@ -27,21 +27,21 @@ const AddStoryModal: React.FC<AddStoryModalProps> = ({
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <div className="relative w-auto my-6 mx-auto max-w-3xl">
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-dark-panels outline-none focus:outline-none">
-                <div className="flex items-baseline justify-between p-5 border-b border-solid border-dark-buttons rounded-t">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-light-panels dark:bg-dark-panels outline-none focus:outline-none">
+                <div className="flex items-baseline justify-between p-5 border-b border-solid border-light-buttons dark:border-dark-buttons rounded-t">
                   <div className="text-lg font-medium">Add Story</div>
                   <button
                     onClick={() => setIsOpen(false)}
-                    className="ml-auto rounded-full hover:bg-dark-hover w-10 h-10 flex items-center justify-center"
+                    className="ml-auto rounded-full hover:bg-light-hover dark:hover:bg-dark-hover w-10 h-10 flex items-center justify-center"
                   >
-                    <span className="text-dark-text text-2xl">
+                    <span className="text-light-text dark:text-dark-text text-2xl">
                       <IoMdClose />
                     </span>
                   </button>
                 </div>
                 <div className="relative p-6 flex-auto">
                   <input
-                    className="p-4 border bg-dark-hover border-transparent hover:border-dark-border-color focus:border-white focus:outline-none w-full md:w-96 rounded-md"
+                    className="p-4 border bg-light-hover dark:bg-dark-hover border-transparent hover:border-light-border-color dark:hover:border-dark-border-color focus:border-black dark:focus:border-white focus:outline-none w-full md:w-96 rounded-md"
                     value={story.description}
                     onChange={e =>
                       handleSetStory(e.target.value, "description")
@@ -50,7 +50,7 @@ const AddStoryModal: React.FC<AddStoryModalProps> = ({
                     placeholder="Enter story name"
                   />
                 </div>
-                <div className="flex p-6 border-t border-solid border-dark-buttons rounded-b">
+                <div className="flex p-6 border-t border-solid border-light-buttons dark:border-dark-buttons rounded-b">
                   <div className="ml-auto">
                     <Button
                       onClick={() => handleSave(story)}

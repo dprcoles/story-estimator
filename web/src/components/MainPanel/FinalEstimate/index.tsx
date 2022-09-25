@@ -22,7 +22,9 @@ const FinalEstimate: React.FC<FinalEstimateProps> = ({
   return (
     <div>
       <motion.div variants={STAGGER}>
-        <div className="m-2 text-dark-text">Select Agreed Estimate:</div>
+        <div className="m-2 text-light-text dark:text-dark-text">
+          Select Agreed Estimate:
+        </div>
         <div className="m-2 gap-1 grid justify-center lg:grid-cols-6 grid-cols-3">
           {options.map((option: string) => (
             <motion.div

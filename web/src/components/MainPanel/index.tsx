@@ -51,14 +51,16 @@ const MainPanel: React.FC<MainPanelProps> = ({
   ];
 
   return (
-    <div className="bg-dark-panels rounded-lg py-4 px-8 main-panel__container">
+    <div className="bg-light-panels dark:bg-dark-panels rounded-lg py-4 px-8 main-panel__container">
       <div className="flex">
         <div className="space-x-4 mb-8">
           {tabs.map(x => (
             <button
               key={x.id}
-              className={`rounded-md p-3 text-sm text-white ${
-                x.id === tab ? "bg-dark-hover" : "bg-transparent"
+              className={`rounded-md p-3 text-sm ${
+                x.id === tab
+                  ? "bg-light-hover dark:bg-dark-hover"
+                  : "bg-transparent"
               }`}
               onClick={() => setTab(x.id)}
             >
@@ -86,12 +88,12 @@ const MainPanel: React.FC<MainPanelProps> = ({
             <div className="ml-auto">
               <button
                 onClick={() => setIsSettingsOpen(true)}
-                className="rounded-full hover:bg-dark-hover w-10 h-10 flex justify-center items-center"
+                className="rounded-full hover:bg-light-hover dark:hover:bg-dark-hover w-10 h-10 flex justify-center items-center"
                 disabled={
                   countdownStatus === CountdownStatus.STARTED || showVotes
                 }
               >
-                <FiSettings className="text-dark-text text-xl m-0" />
+                <FiSettings className="text-light-text dark:text-dark-text text-xl m-0" />
               </button>
             </div>
           </div>
@@ -108,7 +110,9 @@ const MainPanel: React.FC<MainPanelProps> = ({
           <div className="mx-auto py-8">
             {!showVotes && type === PlayerType.Voter && (
               <motion.div variants={STAGGER}>
-                <div className="m-2 text-dark-text">Select an Estimate:</div>
+                <div className="m-2 text-light-text dark:text-dark-text">
+                  Select an Estimate:
+                </div>
                 <div className="m-2 gap-2 grid justify-center xl:grid-cols-6 md:grid-cols-4 grid-cols-3">
                   {OPTIONS.map((option: string) => (
                     <motion.div

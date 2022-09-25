@@ -22,10 +22,10 @@ const Button: React.FC<ButtonProps> = ({
   const getClassesForStyle = () => {
     switch (style) {
       case ButtonStyle.Primary:
-        return "bg-dark-main border-dark-buttons hover:border-dark-background text-black";
+        return "bg-light-main dark:bg-dark-main border-light-buttons dark:border-dark-buttons border-light-background dark:hover:border-dark-background text-white dark:text-black";
       case ButtonStyle.Default:
       default:
-        return "bg-dark-buttons border-dark-border-color hover:border-white";
+        return "bg-light-buttons dark:bg-dark-buttons border-light-border-color dark:border-dark-border-color hover:border-black dark:hover:border-white";
     }
   };
 

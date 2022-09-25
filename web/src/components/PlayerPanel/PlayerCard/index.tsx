@@ -25,12 +25,14 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
       <div className="ml-3">
         <div
           className={`font-semibold ${
-            isCurrentPlayer ? "text-dark-main" : "text-white"
+            isCurrentPlayer
+              ? "text-light-main dark:text-dark-main"
+              : "text-black dark:text-white"
           }`}
         >
           {name}
         </div>
-        <div className="text-sm text-dark-text">
+        <div className="text-sm text-light-text dark:text-dark-text">
           {type === PlayerType.Voter && vote && <span>Voted</span>}
           {type === PlayerType.Voter && !vote && <span>Voting</span>}
           {type === PlayerType.Spectator && <span>Spectating</span>}

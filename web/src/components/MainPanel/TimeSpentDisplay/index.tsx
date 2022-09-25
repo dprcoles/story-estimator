@@ -22,9 +22,11 @@ const TimeSpentDisplay: React.FC<TimeSpentDisplayProps> = ({
   }, 1000);
 
   return (
-    <div className="align-middle items-center py-2 text-dark-text">
+    <div className="align-middle items-center py-2 text-light-text dark:text-dark-text">
       Time Spent:
-      <div className="font-bold text-2xl text-white">{timeSpent}</div>
+      <div className="font-bold text-2xl text-black dark:text-white">
+        {timeSpent}
+      </div>
     </div>
   );
 };

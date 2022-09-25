@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ICON_FADE } from "@/utils/variants";
 
-const AnimatedLogo: React.FC = () => {
+interface AnimatedLogoProps {
+  theme: string;
+}
+
+const AnimatedLogo: React.FC<AnimatedLogoProps> = ({ theme }) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
-  const rgbColour = "255, 255, 255";
+  const rgbColour = theme === "dark" ? "255, 255, 255" : "18, 18, 18";
 
   return (
     <div>

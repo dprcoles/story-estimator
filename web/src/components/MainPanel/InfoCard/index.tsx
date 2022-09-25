@@ -65,7 +65,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
         {!showVotes ? (
           <>
             <div className="w-full">
-              <div className="text-dark-text">
+              <div className="text-light-text dark:text-dark-text">
                 {countdownStatus === CountdownStatus.STOPPED
                   ? "Story Title:"
                   : "Revealing votes in:"}

@@ -13,7 +13,7 @@ const UserIcon: React.FC<UserIconProps> = ({ player, onEdit }) => {
     <div className="flex items-baseline">
       <button
         onClick={onEdit}
-        className="rounded-full w-12 h-12 flex justify-center items-center bg-dark-buttons hover:bg-dark-hover"
+        className="rounded-full w-12 h-12 flex justify-center items-center bg-light-buttons dark:bg-dark-buttons hover:bg-light-hover dark:hover:bg-dark-hover"
       >
         <span className="text-2xl">{player?.emoji}</span>
       </button>

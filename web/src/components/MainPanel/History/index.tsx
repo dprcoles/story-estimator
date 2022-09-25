@@ -30,7 +30,7 @@ const History: React.FC<HistoryProps> = ({ stories }) => {
 
   if (completeStories.length === 0)
     return (
-      <div className="text-center text-dark-text">
+      <div className="text-center text-light-text dark:text-dark-text">
         <div className="flex justify-center align-middle">
           <MdOutlineHistory size={150} className="opacity-5" />
         </div>
@@ -44,33 +44,43 @@ const History: React.FC<HistoryProps> = ({ stories }) => {
         {completeStories.length} / {stories.length} Stories Estimated
       </div>
       <table className="table-auto w-full">
-        <thead className="text-dark-text font-medium">
+        <thead className="text-light-text dark:text-dark-text font-medium">
           <tr>
-            <th className="text-left border-b border-dark-border-color py-2">
+            <th className="text-left border-b border-light-border-color dark:border-dark-border-color py-2">
               Description
             </th>
-            <th className="text-left border-b border-dark-border-color py-2">
+            <th className="text-left border-b border-light-border-color dark:border-dark-border-color py-2">
               Estimate
             </th>
-            <th className="text-left border-b border-dark-border-color py-2">
+            <th className="text-left border-b border-light-border-color dark:border-dark-border-color py-2">
               Time spent (mm:ss)
             </th>
           </tr>
         </thead>
-        <motion.tbody variants={STAGGER} className="text-dark-text">
+        <motion.tbody
+          variants={STAGGER}
+          className="text-light-text dark:text-dark-text"
+        >
           {completeStories.map(x => (
             <motion.tr variants={FADE_IN} key={`${x.id}-table-row`}>
-              <td className="py-2 text-white">{x.description}</td>
+              <td className="py-2 text-black dark:text-white">
+                {x.description}
+              </td>
               <td className="py-2">{x.vote ?? "-"}</td>
               <td className="py-2">{getTimeSpent(x.totalTimeSpent)}</td>
             </motion.tr>
           ))}
-          <motion.tr variants={FADE_IN} className="font-bold text-white">
-            <td className="py-2 border-t-2 border-dark-border-color">Total</td>
-            <td className="py-2 border-t-2 border-dark-border-color">
+          <motion.tr
+            variants={FADE_IN}
+            className="font-bold text-black dark:text-white"
+          >
+            <td className="py-2 border-t-2 border-light-border-color dark:border-dark-border-color">
+              Total
+            </td>
+            <td className="py-2 border-t-2 border-light-border-color dark:border-dark-border-color">
               {totalEstimate}
             </td>
-            <td className="py-2 border-t-2 border-dark-border-color">
+            <td className="py-2 border-t-2 border-light-border-color dark:border-dark-border-color">
               {getTotalTimeSpent()}
             </td>
           </motion.tr>

@@ -39,8 +39,10 @@ const Results: React.FC<ResultsProps> = ({
 
   return (
     <motion.div variants={FADE_IN}>
-      <div className="border-b-dark-hover border-b-2 mb-4">
-        <div className="mb-2 text-lg text-dark-text">Average:</div>
+      <div className="border-b-light-hover dark:border-b-dark-hover border-b-2 mb-4">
+        <div className="mb-2 text-lg text-light-text dark:text-dark-text">
+          Average:
+        </div>
         <div className="text-8xl font-bold mb-2">{getAverage()}</div>
         <motion.div variants={STAGGER}>
           <div className="mb-2 flex gap-x-2">
@@ -52,7 +54,7 @@ const Results: React.FC<ResultsProps> = ({
                   className="mb-2 text-sm"
                   key={`${x.value}-result`}
                 >
-                  <span className="rounded-full px-4 py-2 bg-dark-buttons">
+                  <span className="rounded-full px-4 py-2 bg-light-buttons dark:bg-dark-buttons">
                     <span className="font-bold">{x.total}</span> vote for{" "}
                     <span className="font-bold">{x.value}</span>
                     {x.isNumeric && (

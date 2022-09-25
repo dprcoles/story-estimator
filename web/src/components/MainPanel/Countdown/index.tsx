@@ -15,7 +15,9 @@ const Countdown: React.FC<CountdownProps> = ({ seconds, playersToVote }) => {
       }}
       transition={{ repeat: Infinity, duration: 1, type: "spring" }}
     >
-      <div className="text-white text-center text-7xl font-bold">{seconds}</div>
+      <div className="text-black dark:text-white text-center text-7xl font-bold">
+        {seconds}
+      </div>
     </motion.div>
   );
 };

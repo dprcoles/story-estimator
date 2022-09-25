@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --backgroundColor: theme("colors.dark.background");
-  --toggleColor: theme("colors.dark.main");
+  --backgroundColor: theme("colors.light.background");
+  --toggleColor: theme("colors.light.main");
 }
 
 [class="dark"] {

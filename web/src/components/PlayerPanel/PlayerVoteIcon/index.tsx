@@ -21,8 +21,8 @@ const PlayerVoteIcon: React.FC<PlayerIconProps> = ({
 
   return (
     <div
-      className={`rounded-full w-10 h-10 border-2 border-transparent flex justify-center items-center bg-dark-hover ${
-        vote ? "border-dark-main" : ""
+      className={`rounded-full w-10 h-10 border-2 border-transparent flex justify-center items-center bg-light-hover dark:bg-dark-hover ${
+        vote ? "border-light-main dark:border-dark-main" : ""
       }`}
     >
       <span className="text-xl font-bold">

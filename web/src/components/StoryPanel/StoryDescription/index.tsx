@@ -31,7 +31,7 @@ const StoryDescription: React.FC<StoryDescriptionProps> = ({
         {showInput ? (
           <>
             <input
-              className="text-white p-2 bg-dark-panels focus:outline-none rounded-xl border-2 border-dark-border-hover"
+              className="text-black dark:text-white p-2 bg-light-panels dark:bg-dark-panels focus:outline-none rounded-xl border-2 border-light-border-hover dark:border-dark-border-hover"
               value={localDescription}
               onChange={e => setLocalDescription(e.target.value)}
               onKeyDown={e =>
@@ -48,8 +48,10 @@ const StoryDescription: React.FC<StoryDescriptionProps> = ({
           </>
         ) : (
           <span
-            className={`font-bold rounded-md hover:bg-dark-hover ${
-              active ? "text-white" : "text-dark-text "
+            className={`font-bold rounded-md hover:bg-light-hover dark:hover:bg-dark-hover ${
+              active
+                ? "text-black dark:text-white"
+                : "text-light-text dark:text-dark-text"
             }`}
             onClick={() => setShowInput(true)}
           >

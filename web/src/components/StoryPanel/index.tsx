@@ -26,14 +26,18 @@ const StoryPanel: React.FC<StoryPanelProps> = ({ stories }) => {
   };
 
   return (
-    <div className="bg-dark-panels min-h-full h-96 rounded-lg p-4">
+    <div className="bg-light-panels dark:bg-dark-panels min-h-full h-96 rounded-lg p-4">
       <div className="flex items-baseline pb-2">
-        <div className="text-md font-medium text-dark-text">Stories</div>
+        <div className="text-md font-medium text-light-text dark:text-dark-text">
+          Stories
+        </div>
         <button
           onClick={() => handleOpenModal("")}
-          className="ml-auto rounded-full hover:bg-dark-hover w-10 h-10 items-center"
+          className="ml-auto rounded-full hover:bg-light-hover dark:hover:bg-dark-hover w-10 h-10 items-center"
         >
-          <span className="text-dark-text text-2xl">+</span>
+          <span className="text-light-text dark:text-dark-text text-2xl">
+            +
+          </span>
         </button>
       </div>
       <AddStoryModal

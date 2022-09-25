@@ -17,10 +17,12 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
   currentPlayer,
 }) => {
   return (
-    <div className="bg-dark-panels min-h-full h-96 rounded-lg p-4">
+    <div className="bg-light-panels dark:bg-dark-panels min-h-full h-96 rounded-lg p-4">
       <div className="md:w-72 h-full">
         <div className="pb-2">
-          <div className="text-md font-medium text-dark-text">Players</div>
+          <div className="text-md font-medium text-light-text dark:text-dark-text">
+            Players
+          </div>
         </div>
         <div className="pr-2 space-y-2 overflow-y-scroll overflow-x-hidden panel__card-container">
           {players

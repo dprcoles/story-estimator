@@ -23,7 +23,20 @@ module.exports = {
           scrollbar: "#6A6A6A",
           border: {
             color: "#A7A7A7",
-            hover: "#fff",
+            hover: "#FFF",
+          },
+        },
+        light: {
+          background: "#FFF",
+          main: "#0004FF",
+          panels: "#ECEDEC",
+          text: "#3A3B3B",
+          buttons: "#E7E6E6",
+          hover: "#D7D7D7",
+          scrollbar: "#959595",
+          border: {
+            color: "#585858",
+            hover: "#000",
           },
         },
       },
