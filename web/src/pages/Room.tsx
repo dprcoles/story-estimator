@@ -200,6 +200,14 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
   const spectators = players.filter(p => p.type === PlayerType.Spectator);
   const currentStory = stories.find(s => s.active);
 
+  const handlePushToNewUi = () => {
+    window.location.href = window.location.href.replace(
+      /^https?:\/\//,
+      "https://beta."
+    );
+    localStorage.setItem(StorageItem.Beta, "true");
+  };
+
   return (
     <motion.div variants={FADE_IN}>
       <NameModal name={name} setName={setPlayerName} />
@@ -215,6 +223,11 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
             <StoryBar stories={stories} />
           </div>
           <div className="md:max-w-6xl md:w-full">
+            <div className="flex py-2">
+              <div className="ml-auto">
+                <Button onClick={handlePushToNewUi}>✨ Try out new UI</Button>
+              </div>
+            </div>
             <RoomNavbar
               description={currentStory?.description as string}
               name={name}

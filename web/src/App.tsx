@@ -4,9 +4,23 @@ import Home from "./pages/Home";
 import Room from "./pages/Room";
 import { useThemeStore } from "./stores/themeStore";
 import "./styles/globals.css";
+import { StorageItem } from "./types/storage";
 
 const App = () => {
   const { theme, setTheme } = useThemeStore();
+
+  const betaEnabled = localStorage.getItem(StorageItem.Beta);
+
+  if (
+    betaEnabled &&
+    betaEnabled === "true" &&
+    process.env.NODE_ENV !== "development"
+  ) {
+    window.location.href = window.location.href.replace(
+      /^https?:\/\//,
+      "https://beta."
+    );
+  }
 
   if (typeof window !== "undefined") {
     console.log(
