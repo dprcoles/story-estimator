@@ -2,16 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 import { motion } from "framer-motion";
-import Button from "@/components/Button";
-import InfoCard from "@/components/InfoCard";
-import NameModal from "@/components/NameModal";
-import Option from "@/components/Option";
+import UserModal from "@/components/UserModal";
 import { Player, PlayerType } from "@/types/player";
 import { useSocketStore } from "@/stores/socketStore";
-import { OPTIONS } from "@/utils/constants";
 import { useInterval } from "../hooks/index";
-import { FADE_IN, STAGGER } from "@/utils/variants";
-import TypeToggle from "@/components/TypeToggle";
+import { FADE_IN } from "@/utils/variants";
 import { Room, Settings } from "@/types/room";
 import { EmitEvent, UpdateResponse } from "@/types/server";
 import SettingsModal from "@/components/SettingsModal";
@@ -21,13 +16,13 @@ import {
   CountdownType,
 } from "@/types/countdown";
 import { Story } from "@/types/story";
-import TimeSpentDisplay from "@/components/TimeSpentDisplay";
 import { ShowType } from "@/types/show";
 import { StorageItem } from "@/types/storage";
-import SpectatorsRow from "@/components/PlayerRows/SpectatorsRow";
-import VotersRow from "@/components/PlayerRows/VotersRow";
 import RoomNavbar from "@/components/RoomNavbar";
-import StoryBar from "@/components/StoryBar";
+import StoryPanel from "@/components/StoryPanel";
+import PlayerPanel from "@/components/PlayerPanel";
+import MainPanel from "@/components/MainPanel";
+import Wrapper from "@/components/Wrapper";
 
 interface RoomPageProps {
   theme: string;
@@ -35,8 +30,10 @@ interface RoomPageProps {
 }
 
 const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
+  const [isUserModalOpen, setIsUserModalOpen] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [type, setType] = useState<PlayerType>(PlayerType.Voter);
+  const [emoji, setEmoji] = useState<string>("");
   const [players, setPlayers] = useState<Array<Player>>([]);
   const [room, setRoom] = useState<Room>();
   const [stories, setStories] = useState<Array<Story>>([]);
@@ -67,6 +64,7 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
   };
 
   const setPlayerEmoji = (playerEmoji: string) => {
+    setEmoji(playerEmoji);
     emit(EmitEvent.Emoji, playerEmoji);
     localStorage.setItem(StorageItem.Emoji, playerEmoji);
   };
@@ -94,13 +92,13 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
     if (storedName) {
       setPlayerName(storedName);
     }
+
     if (storedType) {
       setPlayerType(storedType as PlayerType);
     }
+
     if (storedEmoji) {
       setPlayerEmoji(storedEmoji);
-    } else {
-      setPlayerEmoji(type === PlayerType.Spectator ? "👀" : "🤔");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
@@ -190,123 +188,86 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
     }
   };
 
+  const handleUpdateUser = (
+    name: string,
+    emoji: string,
+    playerType: PlayerType
+  ) => {
+    setPlayerName(name);
+    setPlayerEmoji(emoji);
+    setPlayerType(playerType);
+  };
+
   socket.on(EmitEvent.Show, (type: ShowType) => handleShow(type));
   socket.on(EmitEvent.Reset, () => handleResetVotes());
   socket.on(EmitEvent.Vote, () => handleOnVote());
 
   socket.on(EmitEvent.Ping, () => socket.emit(EmitEvent.Pong));
 
-  const voters = players.filter(p => p.type === PlayerType.Voter);
-  const spectators = players.filter(p => p.type === PlayerType.Spectator);
-  const currentStory = stories.find(s => s.active);
-
   return (
-    <motion.div variants={FADE_IN}>
-      <NameModal name={name} setName={setPlayerName} />
-      <SettingsModal
-        isOpen={isSettingsOpen}
-        setIsOpen={setIsSettingsOpen}
-        settings={room?.settings as Settings}
-        setSettings={setRoomSettings}
-      />
-      {name.length > 0 && (
-        <div className="md:max-w-7xl md:flex md:mx-auto md:space-x-8">
-          <div className="hidden md:max-w-1xl md:block pt-6">
-            <StoryBar stories={stories} />
-          </div>
-          <div className="md:max-w-6xl md:w-full">
+    <Wrapper>
+      <motion.div variants={FADE_IN} className="p-2 max-h-full h-screen">
+        <UserModal
+          isOpen={isUserModalOpen}
+          setIsOpen={setIsUserModalOpen}
+          name={name}
+          emoji={emoji}
+          type={type}
+          updateUser={handleUpdateUser}
+        />
+        <SettingsModal
+          isOpen={isSettingsOpen}
+          setIsOpen={setIsSettingsOpen}
+          settings={room?.settings as Settings}
+          setSettings={setRoomSettings}
+        />
+        {name.length > 0 && (
+          <div className="md:mx-auto">
             <RoomNavbar
-              description={currentStory?.description as string}
-              name={name}
-              setName={setPlayerName}
+              player={players.find(p => p.name === name)}
+              setIsUserModalOpen={setIsUserModalOpen}
               theme={theme}
               setTheme={setTheme}
             />
-            {spectators.length > 0 && (
-              <SpectatorsRow
-                countdownStatus={countdownStatus}
-                name={name}
-                setPlayerEmoji={setPlayerEmoji}
-                showVotes={showVotes}
-                spectators={spectators}
-              />
-            )}
-            <VotersRow
-              countdownStatus={countdownStatus}
-              name={name}
-              setPlayerEmoji={setPlayerEmoji}
-              showVotes={showVotes}
-              voters={voters}
-            />
-            <div className="mx-auto py-8">
-              <div className="grid grid-cols-3 mb-4">
-                <div className="mr-auto">
-                  <TypeToggle
-                    type={type}
-                    setType={setPlayerType}
-                    disabled={
-                      countdownStatus === CountdownStatus.STARTED || showVotes
-                    }
-                  />
-                </div>
-                <div className="mx-auto">
-                  <TimeSpentDisplay
-                    startTime={currentStory?.startSeconds as number}
-                    totalTimeSpent={
-                      typeof currentStory?.totalTimeSpent !== "undefined"
-                        ? currentStory.totalTimeSpent
-                        : 0
-                    }
-                  />
-                </div>
-                <div className="ml-auto">
-                  <Button
-                    onClick={() => setIsSettingsOpen(true)}
-                    disabled={
-                      countdownStatus === CountdownStatus.STARTED || showVotes
-                    }
-                  >
-                    Settings
-                  </Button>
-                </div>
+            <div className="md:flex md:space-x-2 min-h-full">
+              <div className="hidden md:max-w-1xl md:block">
+                <StoryPanel stories={stories} />
               </div>
-              <InfoCard
-                vote={vote}
-                showVotes={showVotes}
-                countdown={countdown}
-                countdownStatus={countdownStatus}
-                players={players}
-                stories={stories}
-                options={OPTIONS}
-                type={type}
-              />
-              {!showVotes && type === PlayerType.Voter && (
-                <motion.div variants={STAGGER}>
-                  <div className="m-2 grid justify-center lg:grid-cols-12 md:grid-cols-6 grid-cols-3">
-                    {OPTIONS.map((option: string) => (
-                      <motion.div
-                        variants={FADE_IN}
-                        className="text-center"
-                        key={`${option}-component`}
-                      >
-                        <Option
-                          value={option}
-                          onClick={() => submitVote(option)}
-                          selected={vote === option}
-                        />
-                      </motion.div>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
+              <div className="md:max-w-7xl md:w-full">
+                <MainPanel
+                  countdown={countdown}
+                  countdownStatus={countdownStatus}
+                  players={players}
+                  showVotes={showVotes}
+                  stories={stories}
+                  submitVote={submitVote}
+                  type={type}
+                  vote={vote}
+                  setIsSettingsOpen={setIsSettingsOpen}
+                />
+              </div>
+              <div className="hidden md:max-w-1xl md:block">
+                <PlayerPanel
+                  players={players}
+                  showVote={showVotes}
+                  countdownStatus={countdownStatus}
+                />
+              </div>
+              <div className="md:hidden py-2">
+                <StoryPanel stories={stories} />
+              </div>
+              <div className="md:hidden">
+                <PlayerPanel
+                  players={players}
+                  showVote={showVotes}
+                  countdownStatus={countdownStatus}
+                />
+              </div>
             </div>
           </div>
-          <div className="md:hidden py-6">
-            <StoryBar stories={stories} />
-          </div>
-        </div>
-      )}
-    </motion.div>
+        )}
+      </motion.div>
+    </Wrapper>
   );
 };
 

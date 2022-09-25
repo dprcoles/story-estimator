@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --backgroundColor: theme("colors.light.background");
-  --toggleColor: theme("colors.light.main");
+  --backgroundColor: theme("colors.dark.background");
+  --toggleColor: theme("colors.dark.main");
 }
 
 [class="dark"] {
@@ -26,15 +26,46 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2;
+  z-index: 100;
 }
 
 .emoji-picker__content {
   width: fit-content;
   margin: auto;
 }
+
 .toggle-button > input:checked ~ .dot {
   transform: translateX(100%);
   background-color: var(--toggleColor);
+}
+
+.main-panel__container {
+  min-height: 90vh;
+}
+
+.panel__card-container {
+  height: 90%;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+  padding: 2px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: none;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: theme("colors.dark.scrollbar");
+  border-radius: 12px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #888;
 }
 

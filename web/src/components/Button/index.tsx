@@ -10,12 +10,12 @@ interface ButtonProps {
 const Button: React.FC<ButtonProps> = ({ children, onClick, disabled }) => {
   return (
     <motion.div
-      whileHover={!disabled ? { scale: 1.1 } : {}}
-      whileTap={!disabled ? { scale: 0.9 } : {}}
+      whileHover={!disabled ? { scale: 1.03 } : {}}
+      whileTap={!disabled ? { scale: 0.97 } : {}}
       className="flex"
     >
       <button
-        className="px-4 py-3 rounded-md border-2 border-light-background bg-light-primary hover:bg-light-secondary disabled:hover:bg-light-primary dark:border-dark-background dark:bg-dark-primary dark:hover:bg-dark-secondary dark:disabled:hover:bg-dark-primary shadow-md disabled:opacity-50 ease-linear transition-all duration-150"
+        className="text-sm font-medium px-4 py-2 rounded-full border border-dark-border-color hover:border-white bg-dark-buttons disabled:opacity-50 ease-linear transition-all duration-150"
         onClick={onClick}
         disabled={disabled}
       >

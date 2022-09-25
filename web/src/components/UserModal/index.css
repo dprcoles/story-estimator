@@ -1,0 +1,7 @@
+.user-modal__emoji-button:hover .emoji {
+  opacity: 0.4;
+}
+
+.user-modal__emoji-button:hover .edit-icon {
+  opacity: 1;
+}

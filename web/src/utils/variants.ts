@@ -70,3 +70,21 @@ export const EXPAND_IN: Variants = {
   },
 };
 
+export const ICON_FADE = (colour: string): Variants => {
+  return {
+    initial: {
+      pathLength: 0,
+      fill: `rgba(${colour}, 0)`,
+      opacity: 0,
+    },
+    animate: {
+      pathLength: 1,
+      fill: `rgba(${colour}, 1)`,
+      transition: {
+        default: { duration: 2, ease: EASE },
+        fill: { delay: 0.5, duration: 2, ease: EASE },
+      },
+      opacity: 1,
+    },
+  };
+};

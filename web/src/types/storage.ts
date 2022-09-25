@@ -3,4 +3,6 @@ export enum StorageItem {
   Type = "type",
   Emoji = "emoji",
   Theme = "theme",
+  Beta = "beta_enabled",
 }
+

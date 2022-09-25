@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ROUTE_ROOM } from "@/utils/constants";
 import { useSocketStore } from "@/stores/socketStore";
 import { FADE_IN } from "@/utils/variants";
+import Wrapper from "@/components/Wrapper";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -24,32 +25,31 @@ const Home: React.FC = () => {
   };
 
   return (
-    <motion.div variants={FADE_IN}>
-      <div className="flex max-w-2xl mx-auto py-8 h-screen">
-        <div className="m-auto grid grid-flow-row grid-cols-2">
-          <div className="text-4xl">
-            A{" "}
-            <span className="text-light-main dark:text-dark-main">
-              story estimation
-            </span>{" "}
-            tool for agile teams.
-          </div>
-          <motion.div
-            whileHover={!isJoining ? { scale: 1.1 } : {}}
-            whileTap={!isJoining ? { scale: 0.9 } : {}}
-            className="flex justify-center"
-          >
-            <button
-              className="p-4 px-16 bg-light-main dark:bg-dark-main hover:bg-light-main dark:hover:bg-dark-main disabled:hover:bg-light-primary dark:disabled:hover:bg-dark-primary text-white dark:text-black rounded-md text-2xl font-bold shadow-lg ease-linear transition-all duration-150"
-              onClick={start}
-              disabled={isJoining}
+    <Wrapper>
+      <motion.div variants={FADE_IN}>
+        <div className="flex max-w-2xl mx-auto py-8 h-screen">
+          <div className="m-auto grid grid-flow-row grid-cols-2">
+            <div className="text-4xl">
+              A <span className="text-dark-main">story estimation</span> tool
+              for agile teams.
+            </div>
+            <motion.div
+              whileHover={!isJoining ? { scale: 1.1 } : {}}
+              whileTap={!isJoining ? { scale: 0.9 } : {}}
+              className="flex justify-center"
             >
-              {isJoining ? <span>Creating room...</span> : <span>Start</span>}
-            </button>
-          </motion.div>
+              <button
+                className="p-4 px-16 bg-dark-main text-black rounded-md text-2xl font-bold shadow-lg ease-linear transition-all duration-150"
+                onClick={start}
+                disabled={isJoining}
+              >
+                {isJoining ? <span>Creating room...</span> : <span>Start</span>}
+              </button>
+            </motion.div>
+          </div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </Wrapper>
   );
 };
 

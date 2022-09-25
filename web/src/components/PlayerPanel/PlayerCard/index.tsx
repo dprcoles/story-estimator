@@ -1,0 +1,43 @@
+import { CountdownStatus } from "@/types/countdown";
+import { Player, PlayerType } from "@/types/player";
+import React from "react";
+import PlayerIcon from "../PlayerIcon";
+import PlayerVoteIcon from "../PlayerVoteIcon";
+
+interface PlayerCardProps {
+  player: Player;
+  showVote: boolean;
+  countdownStatus: CountdownStatus;
+}
+
+const PlayerCard: React.FC<PlayerCardProps> = ({
+  player,
+  showVote,
+  countdownStatus,
+}) => {
+  const { name, type, vote } = player;
+
+  return (
+    <div className="p-2 flex">
+      <PlayerIcon player={player} />
+      <div className="ml-3">
+        <div className="font-semibold text-white">{name}</div>
+        <div className="text-sm text-dark-text">
+          {type === PlayerType.Voter && vote && <span>Voted</span>}
+          {type === PlayerType.Voter && !vote && <span>Voting</span>}
+          {type === PlayerType.Spectator && <span>Spectating</span>}
+        </div>
+      </div>
+      <div className="ml-auto">
+        <PlayerVoteIcon
+          player={player}
+          showVote={showVote}
+          countdownStatus={countdownStatus}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default PlayerCard;
+

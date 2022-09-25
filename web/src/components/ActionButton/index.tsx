@@ -9,7 +9,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({ text, onClick }) => {
   return (
     <span>
       <button
-        className="align-middle items-center p-2 bg-light-primary hover:bg-light-secondary dark:bg-dark-primary dark:hover:bg-dark-secondary rounded-md shadow-sm ease-linear transition-all duration-150"
+        className="align-middle items-center p-2 border border-dark-border-color hover:border-white bg-dark-buttons hover:bg-dark-hover rounded-full ease-linear transition-all duration-150"
         onClick={onClick}
       >
         {text}
