@@ -4,24 +4,9 @@ import Home from "./pages/Home";
 import Room from "./pages/Room";
 import { useThemeStore } from "./stores/themeStore";
 import "./styles/globals.css";
-import { StorageItem } from "./types/storage";
 
 const App = () => {
   const { theme, setTheme } = useThemeStore();
-
-  const betaEnabled = localStorage.getItem(StorageItem.Beta);
-
-  if (
-    betaEnabled &&
-    betaEnabled === "true" &&
-    process.env.NODE_ENV !== "development"
-  ) {
-    const strippedUrl = window.location.href.replace("www.", "");
-    window.location.href = strippedUrl.replace(
-      "storyestimator.dev",
-      "beta.storyestimator.dev"
-    );
-  }
 
   if (typeof window !== "undefined") {
     console.log(
