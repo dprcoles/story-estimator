@@ -202,8 +202,8 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
 
   const handlePushToNewUi = () => {
     window.location.href = window.location.href.replace(
-      /^https?:\/\//,
-      "https://beta."
+      "storyestimator.dev",
+      "beta.storyestimator.dev"
     );
     localStorage.setItem(StorageItem.Beta, "true");
   };

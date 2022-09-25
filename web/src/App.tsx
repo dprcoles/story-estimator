@@ -17,8 +17,8 @@ const App = () => {
     process.env.NODE_ENV !== "development"
   ) {
     window.location.href = window.location.href.replace(
-      /^https?:\/\//,
-      "https://beta."
+      "storyestimator.dev",
+      "beta.storyestimator.dev"
     );
   }
 
