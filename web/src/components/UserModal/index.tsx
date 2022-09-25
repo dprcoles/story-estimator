@@ -2,7 +2,7 @@ import { PlayerType } from "@/types/player";
 import React, { useEffect, useState } from "react";
 import EmojiPicker from "../EmojiPicker";
 import { IoMdClose } from "react-icons/io";
-import Button from "../Button";
+import Button, { ButtonStyle } from "../Button";
 import { MdOutlineEdit } from "react-icons/md";
 
 import "./index.css";
@@ -126,6 +126,7 @@ const UserModal: React.FC<UserModalProps> = ({
                     disabled={
                       nameValue.replace(/^\s+|\s+$|\s+(?=\s)/g, "").length === 0
                     }
+                    style={ButtonStyle.Primary}
                   >
                     Save
                   </Button>

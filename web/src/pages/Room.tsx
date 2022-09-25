@@ -251,6 +251,7 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
                   players={players}
                   showVote={showVotes}
                   countdownStatus={countdownStatus}
+                  currentPlayer={players.find(p => p.name === name)}
                 />
               </div>
               <div className="md:hidden py-2">
@@ -261,6 +262,7 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
                   players={players}
                   showVote={showVotes}
                   countdownStatus={countdownStatus}
+                  currentPlayer={players.find(p => p.name === name)}
                 />
               </div>
             </div>

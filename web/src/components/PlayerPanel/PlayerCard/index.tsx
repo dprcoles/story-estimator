@@ -8,12 +8,14 @@ interface PlayerCardProps {
   player: Player;
   showVote: boolean;
   countdownStatus: CountdownStatus;
+  isCurrentPlayer: boolean;
 }
 
 const PlayerCard: React.FC<PlayerCardProps> = ({
   player,
   showVote,
   countdownStatus,
+  isCurrentPlayer,
 }) => {
   const { name, type, vote } = player;
 
@@ -21,7 +23,13 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
     <div className="p-2 flex">
       <PlayerIcon player={player} />
       <div className="ml-3">
-        <div className="font-semibold text-white">{name}</div>
+        <div
+          className={`font-semibold ${
+            isCurrentPlayer ? "text-dark-main" : "text-white"
+          }`}
+        >
+          {name}
+        </div>
         <div className="text-sm text-dark-text">
           {type === PlayerType.Voter && vote && <span>Voted</span>}
           {type === PlayerType.Voter && !vote && <span>Voting</span>}

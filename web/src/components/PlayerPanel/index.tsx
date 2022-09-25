@@ -7,12 +7,14 @@ interface PlayerPanelProps {
   players: Array<Player>;
   showVote: boolean;
   countdownStatus: CountdownStatus;
+  currentPlayer?: Player;
 }
 
 const PlayerPanel: React.FC<PlayerPanelProps> = ({
   players,
   showVote,
   countdownStatus,
+  currentPlayer,
 }) => {
   return (
     <div className="bg-dark-panels min-h-full h-96 rounded-lg p-4">
@@ -30,6 +32,7 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
                   player={p}
                   showVote={showVote}
                   countdownStatus={countdownStatus}
+                  isCurrentPlayer={currentPlayer?.id === p.id}
                 />
               </div>
             ))}

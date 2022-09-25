@@ -4,7 +4,7 @@ import { FADE_IN, STAGGER } from "@/utils/variants";
 import { useSocketStore } from "@/stores/socketStore";
 import { EmitEvent } from "@/types/server";
 import Option from "../Option";
-import Button from "../../Button";
+import Button, { ButtonStyle } from "../../Button";
 
 interface FinalEstimateProps {
   options: Array<string>;
@@ -49,6 +49,7 @@ const FinalEstimate: React.FC<FinalEstimateProps> = ({
             })
           }
           disabled={selected === ""}
+          style={ButtonStyle.Primary}
         >
           Complete Estimate
         </Button>

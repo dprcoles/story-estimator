@@ -5,7 +5,7 @@ import {
 } from "@/utils/constants";
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
-import Button from "../Button";
+import Button, { ButtonStyle } from "../Button";
 import ToggleButton from "../ToggleButton";
 
 interface SettingsModalProps {
@@ -73,7 +73,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                   />
                 </div>
                 <div className="flex items-center justify-end p-6 border-t border-solid border-dark-buttons rounded-b">
-                  <Button onClick={handleSave}>Save</Button>
+                  <Button onClick={handleSave} style={ButtonStyle.Primary}>
+                    Save
+                  </Button>
                 </div>
               </div>
             </div>

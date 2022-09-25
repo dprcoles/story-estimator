@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Story } from "@/types/story";
 import { DEFAULT_STORY } from "@/utils/constants";
 import { IoMdClose } from "react-icons/io";
-import Button from "../../Button";
+import Button, { ButtonStyle } from "../../Button";
 
 interface AddStoryModalProps {
   isOpen: boolean;
@@ -58,8 +58,9 @@ const AddStoryModal: React.FC<AddStoryModalProps> = ({
                         story.description.replace(/^\s+|\s+$|\s+(?=\s)/g, "")
                           .length === 0
                       }
+                      style={ButtonStyle.Primary}
                     >
-                      Save
+                      Add
                     </Button>
                   </div>
                 </div>
