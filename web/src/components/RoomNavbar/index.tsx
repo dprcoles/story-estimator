@@ -2,8 +2,6 @@ import React from "react";
 import { Player } from "@/types/player";
 import UserIcon from "./UserIcon";
 import AnimatedLogo from "./AnimatedLogo";
-import Button from "../Button";
-import { StorageItem } from "@/types/storage";
 import ThemeToggle from "./ThemeToggle";
 
 interface RoomNavbarProps {
