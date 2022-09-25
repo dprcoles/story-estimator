@@ -16,7 +16,8 @@ const App = () => {
     betaEnabled === "true" &&
     process.env.NODE_ENV !== "development"
   ) {
-    window.location.href = window.location.href.replace(
+    const strippedUrl = window.location.href.replace("www.", "");
+    window.location.href = strippedUrl.replace(
       "storyestimator.dev",
       "beta.storyestimator.dev"
     );

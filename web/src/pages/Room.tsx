@@ -201,7 +201,8 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
   const currentStory = stories.find(s => s.active);
 
   const handlePushToNewUi = () => {
-    window.location.href = window.location.href.replace(
+    const strippedUrl = window.location.href.replace("www.", "");
+    window.location.href = strippedUrl.replace(
       "storyestimator.dev",
       "beta.storyestimator.dev"
     );
