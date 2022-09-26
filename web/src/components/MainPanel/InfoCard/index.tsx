@@ -61,7 +61,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
           <div />
         )}
       </div>
-      <div className="p-2 my-6">
+      <div className="p-2 md:my-6">
         {!showVotes ? (
           <>
             <div className="w-full">
@@ -70,7 +70,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
                   ? "Story Title:"
                   : "Revealing votes in:"}
               </div>
-              <div className="flex items-baseline">
+              <div className="grid grid-cols-1 md:grid-cols-2 space-y-4 items-baseline">
                 {countdownStatus === CountdownStatus.STOPPED ? (
                   <div className="text-4xl font-bold">
                     {currentStory?.description}
@@ -81,7 +81,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
                     playersToVote={playersToVote}
                   />
                 )}
-                <div className="ml-auto text-4xl font-bold">
+                <div className="md:ml-auto text-4xl font-bold">
                   {playersVotedNumber} / {voters} Voted
                 </div>
               </div>

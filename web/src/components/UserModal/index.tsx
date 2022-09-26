@@ -30,7 +30,6 @@ const UserModal: React.FC<UserModalProps> = ({
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log(emoji);
     setIsOpen(name.length === 0);
     setNameValue(name);
     setEmojiValue(emoji.length === 0 ? "😎" : emoji);

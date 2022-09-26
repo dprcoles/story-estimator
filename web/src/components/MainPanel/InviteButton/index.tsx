@@ -16,7 +16,7 @@ const InviteButton: React.FC<InviteButtonProps> = ({ linkToCopy }) => {
   };
 
   return (
-    <div className="flex">
+    <div className="hidden md:flex">
       <div className="mr-auto">
         <span>
           <Button onClick={handleClick}>
