@@ -21,7 +21,11 @@ const RoomNavbar: React.FC<RoomNavbarProps> = ({
     <div className="top-0 z-20 pb-2 md:px-0">
       <div className="flex">
         <div className="flex pt-3">
-          <a href="https://www.danielcoles.dev">
+          <a
+            href="https://www.danielcoles.dev"
+            target="_blank"
+            rel="noreferrer"
+          >
             <AnimatedLogo theme={theme} />
           </a>
           <span className="px-2">|</span>
