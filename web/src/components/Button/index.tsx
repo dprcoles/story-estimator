@@ -1,21 +1,42 @@
 import React from "react";
 import { motion } from "framer-motion";
 
+export enum ButtonStyle {
+  Default = "default",
+  Primary = "primary",
+}
+
 interface ButtonProps {
   onClick: (e?: any) => void;
   children?: React.ReactNode;
   disabled?: boolean;
+  style?: ButtonStyle;
 }
 
-const Button: React.FC<ButtonProps> = ({ children, onClick, disabled }) => {
+const Button: React.FC<ButtonProps> = ({
+  children,
+  onClick,
+  disabled,
+  style = ButtonStyle.Default,
+}) => {
+  const getClassesForStyle = () => {
+    switch (style) {
+      case ButtonStyle.Primary:
+        return "bg-light-main dark:bg-dark-main border-light-buttons dark:border-dark-buttons border-light-background dark:hover:border-dark-background text-white dark:text-black";
+      case ButtonStyle.Default:
+      default:
+        return "bg-light-buttons dark:bg-dark-buttons border-light-border-color dark:border-dark-border-color hover:border-black dark:hover:border-white";
+    }
+  };
+
   return (
     <motion.div
-      whileHover={!disabled ? { scale: 1.1 } : {}}
-      whileTap={!disabled ? { scale: 0.9 } : {}}
+      whileHover={!disabled ? { scale: 1.03 } : {}}
+      whileTap={!disabled ? { scale: 0.97 } : {}}
       className="flex"
     >
       <button
-        className="px-4 py-3 rounded-md border-2 border-light-background bg-light-primary hover:bg-light-secondary disabled:hover:bg-light-primary dark:border-dark-background dark:bg-dark-primary dark:hover:bg-dark-secondary dark:disabled:hover:bg-dark-primary shadow-md disabled:opacity-50 ease-linear transition-all duration-150"
+        className={`text-sm font-medium px-4 py-2 rounded-full border disabled:opacity-50 ease-linear transition-all duration-150 ${getClassesForStyle()}`}
         onClick={onClick}
         disabled={disabled}
       >
