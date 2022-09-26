@@ -25,16 +25,15 @@ const UserModal: React.FC<UserModalProps> = ({
   updateUser,
 }) => {
   const [nameValue, setNameValue] = useState<string>(name);
-  const [emojiValue, setEmojiValue] = useState<string>(
-    emoji ?? type === PlayerType.Spectator ? "👀" : "🤔"
-  );
+  const [emojiValue, setEmojiValue] = useState<string>(emoji);
   const [typeValue, setTypeValue] = useState<PlayerType>(type);
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState<boolean>(false);
 
   useEffect(() => {
+    console.log(emoji);
     setIsOpen(name.length === 0);
     setNameValue(name);
-    setEmojiValue(emoji);
+    setEmojiValue(emoji.length === 0 ? "😎" : emoji);
     setTypeValue(type);
   }, [name, emoji, type, setIsOpen]);
 
