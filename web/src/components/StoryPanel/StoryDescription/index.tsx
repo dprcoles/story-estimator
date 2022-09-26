@@ -34,9 +34,7 @@ const StoryDescription: React.FC<StoryDescriptionProps> = ({
               className="text-black dark:text-white p-2 bg-light-panels dark:bg-dark-panels focus:outline-none rounded-xl border-2 border-light-border-hover dark:border-dark-border-hover"
               value={localDescription}
               onChange={e => setLocalDescription(e.target.value)}
-              onKeyDown={e =>
-                e.key === "Enter" && setDescription(localDescription)
-              }
+              onKeyDown={e => e.key === "Enter" && handleSetDescription()}
             />
             <div className="pt-2 space-x-2">
               <ActionButton text={<FaCheck />} onClick={handleSetDescription} />
