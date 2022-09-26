@@ -7,7 +7,7 @@ interface WrapperProps {
 
 const Wrapper: React.FC<WrapperProps> = ({ children }) => {
   return (
-    <div className="p-2 h-screen text-black dark:text-white">
+    <div className="h-screen text-black dark:text-white">
       <motion.div initial="initial" animate="animate" exit={{ opacity: 0 }}>
         <main className="min-h-screen">{children}</main>
       </motion.div>

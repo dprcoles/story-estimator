@@ -23,6 +23,7 @@ import StoryPanel from "@/components/StoryPanel";
 import PlayerPanel from "@/components/PlayerPanel";
 import MainPanel from "@/components/MainPanel";
 import Wrapper from "@/components/Wrapper";
+import MobileTabBar, { MobileTabBarType } from "@/components/MobileTabBar";
 
 interface RoomPageProps {
   theme: string;
@@ -46,6 +47,9 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
   );
   const [countdownStatus, setCountdownStatus] = useState<CountdownStatus>(
     CountdownStatus.STOPPED
+  );
+  const [activeMobileTab, setActiveMobileTab] = useState<MobileTabBarType>(
+    MobileTabBarType.Estimate
   );
 
   const { socket, setSocket, emit } = useSocketStore(state => state);
@@ -206,7 +210,7 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
 
   return (
     <Wrapper>
-      <motion.div variants={FADE_IN} className="p-2 max-h-full h-screen">
+      <motion.div variants={FADE_IN} className="max-h-full h-screen">
         <UserModal
           isOpen={isUserModalOpen}
           setIsOpen={setIsUserModalOpen}
@@ -222,51 +226,74 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
           setSettings={setRoomSettings}
         />
         {name.length > 0 && (
-          <div className="md:mx-auto">
-            <RoomNavbar
-              player={players.find(p => p.name === name)}
-              setIsUserModalOpen={setIsUserModalOpen}
-              theme={theme}
-              setTheme={setTheme}
-            />
-            <div className="md:flex md:space-x-2 min-h-full">
-              <div className="hidden md:max-w-1xl md:block">
-                <StoryPanel stories={stories} />
-              </div>
-              <div className="md:max-w-7xl md:w-full">
-                <MainPanel
-                  countdown={countdown}
-                  countdownStatus={countdownStatus}
-                  players={players}
-                  showVotes={showVotes}
-                  stories={stories}
-                  submitVote={submitVote}
-                  type={type}
-                  vote={vote}
-                  setIsSettingsOpen={setIsSettingsOpen}
-                />
-              </div>
-              <div className="hidden md:max-w-1xl md:block">
-                <PlayerPanel
-                  players={players}
-                  showVote={showVotes}
-                  countdownStatus={countdownStatus}
-                  currentPlayer={players.find(p => p.name === name)}
-                />
-              </div>
-              <div className="md:hidden py-2">
-                <StoryPanel stories={stories} />
-              </div>
-              <div className="md:hidden">
-                <PlayerPanel
-                  players={players}
-                  showVote={showVotes}
-                  countdownStatus={countdownStatus}
-                  currentPlayer={players.find(p => p.name === name)}
-                />
+          <>
+            <div className="p-4 lg:mx-auto">
+              <RoomNavbar
+                player={players.find(p => p.name === name)}
+                setIsUserModalOpen={setIsUserModalOpen}
+                theme={theme}
+                setTheme={setTheme}
+              />
+              <div className="lg:flex md:space-x-2 min-h-full">
+                <div className="hidden lg:max-w-1xl lg:block">
+                  <StoryPanel stories={stories} />
+                </div>
+                <div className="hidden lg:w-full lg:block">
+                  <MainPanel
+                    countdown={countdown}
+                    countdownStatus={countdownStatus}
+                    players={players}
+                    showVotes={showVotes}
+                    stories={stories}
+                    submitVote={submitVote}
+                    type={type}
+                    vote={vote}
+                    setIsSettingsOpen={setIsSettingsOpen}
+                  />
+                </div>
+                <div className="hidden lg:max-w-1xl lg:block">
+                  <PlayerPanel
+                    players={players}
+                    showVote={showVotes}
+                    countdownStatus={countdownStatus}
+                    currentPlayer={players.find(p => p.name === name)}
+                  />
+                </div>
+                <div className="lg:hidden">
+                  {activeMobileTab === MobileTabBarType.Estimate && (
+                    <MainPanel
+                      countdown={countdown}
+                      countdownStatus={countdownStatus}
+                      players={players}
+                      showVotes={showVotes}
+                      stories={stories}
+                      submitVote={submitVote}
+                      type={type}
+                      vote={vote}
+                      setIsSettingsOpen={setIsSettingsOpen}
+                    />
+                  )}
+                  {activeMobileTab === MobileTabBarType.Stories && (
+                    <StoryPanel stories={stories} />
+                  )}
+                  {activeMobileTab === MobileTabBarType.Players && (
+                    <PlayerPanel
+                      players={players}
+                      showVote={showVotes}
+                      countdownStatus={countdownStatus}
+                      currentPlayer={players.find(p => p.name === name)}
+                    />
+                  )}
+                </div>
               </div>
             </div>
-          </div>
+            <div className="lg:hidden">
+              <MobileTabBar
+                activeTab={activeMobileTab}
+                setActiveTab={setActiveMobileTab}
+              />
+            </div>
+          </>
         )}
       </motion.div>
     </Wrapper>
