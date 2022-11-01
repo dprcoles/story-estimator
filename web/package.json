@@ -19,7 +19,7 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "socket.io-client": "^4.4.1",
-    "zustand": "^3.7.2"
+    "zustand": "^4.1.4"
   },
   "devDependencies": {
     "@types/emoji-mart": "^3.0.5",
