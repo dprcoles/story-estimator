@@ -12,6 +12,8 @@ import { FiSettings } from "react-icons/fi";
 import { InfoCardTab } from "@/types/info";
 import History from "./History";
 import InviteButton from "./InviteButton";
+import Definitions from "./Definitions";
+import { useParams } from "react-router-dom";
 
 interface MainPanelProps {
   vote: string;
@@ -36,8 +38,19 @@ const MainPanel: React.FC<MainPanelProps> = ({
   stories,
   setIsSettingsOpen,
 }) => {
+  const { id } = useParams<{ id: string }>();
   const [tab, setTab] = useState<InfoCardTab>(InfoCardTab.CurrentStory);
   const currentStory = stories.find(s => s.active);
+
+  const __roomTabs__ =
+    id === process.env.REACT_APP_ROOM_ID
+      ? [
+          {
+            id: InfoCardTab.Definitions,
+            label: "Definitions",
+          },
+        ]
+      : [];
 
   const tabs = [
     {
@@ -48,6 +61,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
       id: InfoCardTab.History,
       label: "History",
     },
+    ...__roomTabs__,
   ];
 
   return (
@@ -134,6 +148,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
         </div>
       )}
       {tab === InfoCardTab.History && <History stories={stories} />}
+      {tab === InfoCardTab.Definitions && <Definitions />}
     </div>
   );
 };
