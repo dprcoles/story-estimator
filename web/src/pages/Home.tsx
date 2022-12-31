@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 import { motion } from "framer-motion";
-import { ROUTE_ROOM } from "@/utils/constants";
+import { API_URL, ROUTE_ROOM } from "@/utils/constants";
 import { useSocketStore } from "@/stores/socketStore";
 import { FADE_IN } from "@/utils/variants";
 import Wrapper from "@/components/Wrapper";
@@ -14,9 +14,7 @@ const Home: React.FC = () => {
 
   const start = () => {
     setIsJoining(true);
-    const socket = io(
-      process.env.REACT_APP_SERVER_URL || "http://localhost:4000"
-    );
+    const socket = io(API_URL);
     setSocket(socket);
 
     socket.on("room", (roomId: string) => {

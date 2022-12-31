@@ -4,7 +4,16 @@ import short from "short-uuid";
 import { Server } from "socket.io";
 import cors from "@fastify/cors";
 import { PrismaClient } from "@prisma/client";
-import { Player, PlayerType, Room, ShowType } from "./types";
+import {
+  ICreatePlayerBody,
+  IPlayerByIdParams,
+  IUpdatePlayerBody,
+  IUpdatePlayerParams,
+  Player,
+  PlayerType,
+  Room,
+  ShowType,
+} from "./types";
 
 const fastify = Fastify();
 const prisma = new PrismaClient();
@@ -13,13 +22,13 @@ const getTimeInSeconds = () => Math.floor(Date.now() / 1000);
 
 fastify.register(cors, {
   origin: "*",
-  methods: ["GET", "POST"],
+  methods: ["GET", "POST", "PATCH"],
 });
 
 const io = new Server(fastify.server, {
   cors: {
     origin: "*",
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PATCH"],
   },
 });
 
@@ -30,6 +39,50 @@ setInterval(() => {
 fastify.get("/ping", async (_request: any, reply: any) => {
   reply.send("pong 🏓");
 });
+
+fastify.post<{ Body: ICreatePlayerBody }>("/player", async (req, reply) => {
+  const { name, defaultType, emoji } = req.body;
+
+  const result = await prisma.players.create({
+    data: {
+      defaultType: defaultType,
+      emoji: emoji,
+      name: name,
+    },
+  });
+
+  reply.send(result);
+});
+
+fastify.get<{ Params: IPlayerByIdParams }>(
+  "/player/:id",
+  async (req, reply) => {
+    const { id } = req.params;
+
+    const player = await prisma.players.findFirst({ where: { id: id } });
+
+    reply.send(player);
+  }
+);
+
+fastify.patch<{ Body: IUpdatePlayerBody; Params: IUpdatePlayerParams }>(
+  "/player/:id",
+  async (req, reply) => {
+    const { name, defaultType, emoji } = req.body;
+    const { id } = req.params;
+
+    const result = await prisma.players.update({
+      data: {
+        defaultType: defaultType,
+        emoji: emoji,
+        name: name,
+      },
+      where: { id: id },
+    });
+
+    reply.send(result);
+  }
+);
 
 fastify.listen(process.env.PORT || 4000, "0.0.0.0", (err, address) => {
   if (err) {

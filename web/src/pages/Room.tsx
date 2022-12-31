@@ -24,6 +24,8 @@ import PlayerPanel from "@/components/PlayerPanel";
 import MainPanel from "@/components/MainPanel";
 import Wrapper from "@/components/Wrapper";
 import MobileTabBar, { MobileTabBarType } from "@/components/MobileTabBar";
+import { API_URL } from "@/utils/constants";
+import { createPlayer, getPlayer, updatePlayer } from "@/api/player";
 
 interface RoomPageProps {
   theme: string;
@@ -32,6 +34,7 @@ interface RoomPageProps {
 
 const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
   const [isUserModalOpen, setIsUserModalOpen] = useState<boolean>(false);
+  const [playerId, setPlayerId] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [type, setType] = useState<PlayerType>(PlayerType.Voter);
   const [emoji, setEmoji] = useState<string>("");
@@ -77,35 +80,40 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
     emit(EmitEvent.Settings, roomSettings);
   };
 
+  const fetchPlayer = async (id: string) => {
+    const player = await getPlayer(id);
+
+    setPlayerName(player.name);
+    setPlayerType(player.defaultType);
+    setPlayerEmoji(player.emoji);
+  };
+
   useEffect(() => {
     if (!socket) {
-      const socket = io(
-        process.env.REACT_APP_SERVER_URL || "http://localhost:4000",
-        {
-          query: { roomId: id },
-        }
-      );
+      const socket = io(API_URL, {
+        query: { roomId: id },
+      });
       setSocket(socket);
       return;
     }
 
-    const storedName = localStorage.getItem(StorageItem.Name);
-    const storedType = localStorage.getItem(StorageItem.Type);
-    const storedEmoji = localStorage.getItem(StorageItem.Emoji);
+    const storedPlayerId = localStorage.getItem(StorageItem.PlayerId);
 
-    if (storedName) {
-      setPlayerName(storedName);
-    }
-
-    if (storedType) {
-      setPlayerType(storedType as PlayerType);
-    }
-
-    if (storedEmoji) {
-      setPlayerEmoji(storedEmoji);
+    if (storedPlayerId) {
+      setPlayerId(storedPlayerId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
+
+  useEffect(() => {
+    if (!playerId) {
+      setIsUserModalOpen(true);
+      return;
+    }
+
+    fetchPlayer(playerId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [playerId]);
 
   useEffect(() => {
     if (socket) {
@@ -192,11 +200,20 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
     }
   };
 
-  const handleUpdateUser = (
+  const handleUpdateUser = async (
     name: string,
     emoji: string,
     playerType: PlayerType
   ) => {
+    if (playerId) {
+      await updatePlayer(playerId, {
+        defaultType: playerType,
+        emoji,
+        name,
+      });
+    } else {
+      await createPlayer({ defaultType: playerType, emoji, name });
+    }
     setPlayerName(name);
     setPlayerEmoji(emoji);
     setPlayerType(playerType);
