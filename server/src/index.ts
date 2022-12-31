@@ -2,14 +2,16 @@ import "dotenv/config";
 import Fastify from "fastify";
 import short from "short-uuid";
 import { Server } from "socket.io";
-import fastifyCors from "fastify-cors";
+import cors from "@fastify/cors";
+import { PrismaClient } from "@prisma/client";
 import { Player, PlayerType, Room, ShowType } from "./types";
 
 const fastify = Fastify();
+const prisma = new PrismaClient();
 
 const getTimeInSeconds = () => Math.floor(Date.now() / 1000);
 
-fastify.register(fastifyCors, {
+fastify.register(cors, {
   origin: "*",
   methods: ["GET", "POST"],
 });
@@ -23,7 +25,6 @@ const io = new Server(fastify.server, {
 
 setInterval(() => {
   io.emit("ping");
-  log();
 }, 10000);
 
 fastify.get("/ping", async (_request: any, reply: any) => {
@@ -97,18 +98,6 @@ const updateActiveStory = (roomId: any, nextActiveId: string | null) => {
   }
 
   resetGame(roomId);
-};
-
-const log = () => {
-  const rooms = [...players].map(e => e.roomId);
-  if (rooms) {
-    rooms
-      .filter((val, i, arr) => arr.indexOf(val) === i)
-      .map(room => {
-        const playerCount = [...players].filter(p => p.roomId === room).length;
-        console.log(`🃏 Room: ${room} | Players: ${playerCount}`);
-      });
-  }
 };
 
 io.on("connection", socket => {
