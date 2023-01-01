@@ -23,7 +23,7 @@ model sessions {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   playerIds String[] @db.ObjectId
   storyIds  String[] @db.ObjectId
-  teamId    String   @db.ObjectId
+  teamId    String?  @db.ObjectId
 }
 
 model stories {

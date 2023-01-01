@@ -17,7 +17,7 @@ import { useParams } from "react-router-dom";
 
 interface MainPanelProps {
   vote: string;
-  submitVote: (vote: string) => void;
+  setVote: (vote: string) => void;
   showVotes: boolean;
   countdown: number;
   countdownStatus: CountdownStatus;
@@ -29,7 +29,7 @@ interface MainPanelProps {
 
 const MainPanel: React.FC<MainPanelProps> = ({
   vote,
-  submitVote,
+  setVote,
   showVotes,
   countdown,
   countdownStatus,
@@ -136,7 +136,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
                     >
                       <Option
                         value={option}
-                        onClick={() => submitVote(option)}
+                        onClick={() => setVote(option)}
                         selected={vote === option}
                       />
                     </motion.div>

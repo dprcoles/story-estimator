@@ -16,7 +16,7 @@ import {
 } from "./types";
 
 const fastify = Fastify();
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({ log: ["info"] });
 
 const getTimeInSeconds = () => Math.floor(Date.now() / 1000);
 
@@ -153,15 +153,38 @@ const updateActiveStory = (roomId: any, nextActiveId: string | null) => {
   resetGame(roomId);
 };
 
-io.on("connection", socket => {
-  console.log("🔌 A User Has Connected: ", socket.id);
-  const roomId = socket.handshake.query["roomId"] || short.generate();
+io.on("connection", async socket => {
+  let roomId = socket.handshake.query["roomId"] as string;
+  const playerId = socket.handshake.query["playerId"] as string;
+  let session = null;
+
+  if (roomId) {
+    try {
+      session = await prisma.sessions.findUnique({
+        where: { id: roomId },
+      });
+    } catch (err) {
+      console.error("[InvalidRoomId]: ", err);
+    }
+  }
+
+  if (!session) {
+    session = await prisma.sessions.create({ data: {} });
+    roomId = session.id;
+  }
+
+  if (playerId && !session.playerIds.includes(playerId)) {
+    await prisma.sessions.update({
+      data: { playerIds: { push: playerId } },
+      where: { id: session.id },
+    });
+  }
 
   socket.emit("room", roomId);
 
   if (!rooms.find(r => r.id === roomId)) {
     rooms.push({
-      id: roomId as string,
+      id: roomId,
       settings: {
         countdown: true,
         fastMode: false,
@@ -169,7 +192,7 @@ io.on("connection", socket => {
       stories: [
         {
           id: short.generate(),
-          roomId: roomId as string,
+          roomId: roomId,
           description: "Story #1",
           active: true,
           vote: undefined,
@@ -182,38 +205,33 @@ io.on("connection", socket => {
   }
 
   socket.join(roomId);
-  players.push({
-    id: socket.id,
-    name: "",
-    type: PlayerType.Voter,
-    emoji: "🤔",
-    roomId: roomId,
-    vote: undefined,
-  });
 
-  socket.on("name", name => {
-    const player = [...players].find(p => p.id === socket.id);
-    if (player) {
-      const playerIndex = players.findIndex(x => x.id === socket.id);
-      players[playerIndex] = { ...player, name };
+  if (!players.map(x => x.id).includes(playerId)) {
+    const playerInfo = await prisma.players.findFirst({
+      where: { id: playerId },
+    });
+    if (playerInfo) {
+      players.push({
+        id: playerId,
+        name: playerInfo.name,
+        type: playerInfo.defaultType as PlayerType,
+        emoji: playerInfo.emoji,
+        roomId: roomId,
+        vote: undefined,
+      });
     }
-    updateRoom(roomId);
-  });
+  }
+  updateRoom(roomId);
 
-  socket.on("type", type => {
-    const player = [...players].find(p => p.id === socket.id);
+  socket.on("updatePlayer", data => {
+    const player = [...players].find(p => p.id === data.id);
     if (player) {
-      const playerIndex = players.findIndex(x => x.id === socket.id);
-      players[playerIndex] = { ...player, type, vote: undefined };
-    }
-    updateRoom(roomId);
-  });
-
-  socket.on("emoji", emoji => {
-    const player = [...players].find(p => p.id === socket.id);
-    if (player) {
-      const playerIndex = players.findIndex(x => x.id === socket.id);
-      players[playerIndex] = { ...player, emoji };
+      const playerIndex = players.findIndex(x => x.id === data.id);
+      players[playerIndex] = {
+        ...player,
+        ...data,
+        vote: data.type !== player.type ? undefined : player.vote,
+      };
     }
     updateRoom(roomId);
   });
@@ -227,9 +245,9 @@ io.on("connection", socket => {
   });
 
   socket.on("vote", vote => {
-    const player = [...players].find(p => p.id === socket.id);
+    const player = [...players].find(p => p.id === playerId);
     if (player) {
-      const playerIndex = players.findIndex(x => x.id === socket.id);
+      const playerIndex = players.findIndex(x => x.id === playerId);
       players[playerIndex] = { ...player, vote };
       io.to(roomId || "").emit("vote");
     }
@@ -266,7 +284,7 @@ io.on("connection", socket => {
           ...rooms[roomIndex].stories,
           {
             id: nextRoomId,
-            roomId: roomId as string,
+            roomId: roomId,
             description: `Story #${rooms[roomIndex].stories.length + 1}`,
             active: true,
             vote: undefined,
@@ -297,7 +315,7 @@ io.on("connection", socket => {
       rooms[roomIndex].stories.push({
         ...story,
         id: short.generate(),
-        roomId: roomId as string,
+        roomId: roomId,
         active: false,
         vote: undefined,
         startSeconds: undefined,
@@ -326,11 +344,11 @@ io.on("connection", socket => {
   });
 
   socket.on("pong", () => {
-    players.find(p => p.id === socket.id);
+    players.find(p => p.id === playerId);
   });
 
   socket.on("disconnect", () => {
-    players = [...players].filter(player => player.id !== socket.id);
+    players = [...players].filter(player => player.id !== playerId);
     updateRoom(roomId);
   });
 });

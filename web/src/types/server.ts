@@ -7,9 +7,7 @@ export type UpdateResponse = {
 };
 
 export enum EmitEvent {
-  Name = "name",
-  Type = "type",
-  Emoji = "emoji",
+  UpdatePlayer = "updatePlayer",
   Settings = "settings",
   Vote = "vote",
   Show = "show",
