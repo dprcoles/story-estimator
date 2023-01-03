@@ -4,7 +4,6 @@ export type Room = {
   id: string;
   settings: Settings;
   stories: Story[];
-  active: boolean;
 };
 
 export type Settings = {

@@ -1,10 +1,6 @@
 import { Story } from "@/types/story";
 
-export const API_URL =
-  process.env.REACT_APP_SERVER_URL || "http://localhost:4000";
-
 export const ROUTE_ROOM: string = "/room";
-export const ROUTE_SUMMARY: string = "/summary";
 export const NON_NUMERIC_OPTIONS = ["∞", "?", "☕️"];
 export const OPTIONS: Array<string> = [
   "1",
@@ -36,7 +32,7 @@ export const DEFAULT_STORY: Story = {
   endSeconds: undefined,
   roomId: "",
   startSeconds: undefined,
-  estimate: undefined,
+  vote: undefined,
   totalTimeSpent: 0,
 };
 
