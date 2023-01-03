@@ -7,11 +7,13 @@ import { PrismaClient } from "@prisma/client";
 import {
   ICreatePlayerBody,
   IPlayerByIdParams,
+  ISessionByIdParams,
   IUpdatePlayerBody,
   IUpdatePlayerParams,
   Player,
   PlayerType,
   Room,
+  SessionDetails,
   ShowType,
 } from "./types";
 
@@ -81,6 +83,55 @@ fastify.patch<{ Body: IUpdatePlayerBody; Params: IUpdatePlayerParams }>(
     });
 
     reply.send(result);
+  }
+);
+
+fastify.get<{ Params: ISessionByIdParams }>(
+  "/session/:id",
+  async (req, reply) => {
+    const { id } = req.params;
+
+    try {
+      const session = await prisma.sessions.findFirst({ where: { id: id } });
+      const players = await prisma.players.findMany({
+        where: { id: { in: session?.playerIds } },
+      });
+      const stories = await prisma.stories.findMany({
+        where: { id: { in: session?.storyIds } },
+      });
+
+      const mappedPlayers = players.map(x => ({
+        emoji: x.emoji,
+        id: x.id,
+        name: x.name,
+        type: x.defaultType as PlayerType,
+      }));
+
+      const data: SessionDetails = {
+        id: id,
+        players: mappedPlayers,
+        stories: stories.map(x => ({
+          description: x.description,
+          endSeconds: x.endSeconds,
+          estimate: x.estimate,
+          id: x.id,
+          sessionId: x.sessionId,
+          spectators: mappedPlayers.filter(p => x.spectatorIds.includes(p.id)),
+          startSeconds: x.startSeconds,
+          totalTimeSpent: x.totalTimeSpent,
+          voters: mappedPlayers.filter(p => x.voterIds.includes(p.id)),
+          votes: x.votes.map(v => ({
+            playerId: v.playerId,
+            vote: v.vote ?? undefined,
+          })),
+        })),
+      };
+
+      reply.send(data);
+    } catch {
+      reply.statusCode = 400;
+      reply.send("[InvalidSessionId]");
+    }
   }
 );
 

@@ -12,6 +12,13 @@ export type Player = {
   vote: string | undefined;
 };
 
+export interface PlayerInfo {
+  id: string;
+  emoji: string;
+  name: string;
+  type: PlayerType;
+}
+
 export interface ICreatePlayerBody {
   name: string;
   defaultType: PlayerType;
@@ -25,3 +32,4 @@ export interface IPlayerByIdParams {
 export interface IUpdatePlayerBody extends ICreatePlayerBody {}
 
 export interface IUpdatePlayerParams extends IPlayerByIdParams {}
+
