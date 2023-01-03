@@ -2,33 +2,141 @@ import "dotenv/config";
 import Fastify from "fastify";
 import short from "short-uuid";
 import { Server } from "socket.io";
-import fastifyCors from "fastify-cors";
-import { Player, PlayerType, Room, ShowType } from "./types";
+import cors from "@fastify/cors";
+import { PrismaClient } from "@prisma/client";
+import {
+  ICreatePlayerBody,
+  IPlayerByIdParams,
+  ISessionByIdParams,
+  IUpdatePlayerBody,
+  IUpdatePlayerParams,
+  Player,
+  PlayerInfo,
+  players,
+  PlayerType,
+  Room,
+  SessionDetails,
+  ShowType,
+  stories,
+} from "./types";
 
 const fastify = Fastify();
+const prisma = new PrismaClient({ log: ["info"] });
 
 const getTimeInSeconds = () => Math.floor(Date.now() / 1000);
 
-fastify.register(fastifyCors, {
+fastify.register(cors, {
   origin: "*",
-  methods: ["GET", "POST"],
+  methods: ["GET", "POST", "PATCH"],
 });
 
 const io = new Server(fastify.server, {
   cors: {
     origin: "*",
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PATCH"],
   },
 });
 
 setInterval(() => {
   io.emit("ping");
-  log();
 }, 10000);
 
 fastify.get("/ping", async (_request: any, reply: any) => {
   reply.send("pong 🏓");
 });
+
+fastify.post<{ Body: ICreatePlayerBody }>("/player", async (req, reply) => {
+  const { name, defaultType, emoji } = req.body;
+
+  const result = await prisma.players.create({
+    data: {
+      defaultType: defaultType,
+      emoji: emoji,
+      name: name,
+    },
+  });
+
+  reply.send(result);
+});
+
+fastify.get<{ Params: IPlayerByIdParams }>(
+  "/player/:id",
+  async (req, reply) => {
+    const { id } = req.params;
+
+    const player = await prisma.players.findFirst({ where: { id: id } });
+
+    reply.send(player);
+  }
+);
+
+fastify.patch<{ Body: IUpdatePlayerBody; Params: IUpdatePlayerParams }>(
+  "/player/:id",
+  async (req, reply) => {
+    const { name, defaultType, emoji } = req.body;
+    const { id } = req.params;
+
+    const result = await prisma.players.update({
+      data: {
+        defaultType: defaultType,
+        emoji: emoji,
+        name: name,
+      },
+      where: { id: id },
+    });
+
+    reply.send(result);
+  }
+);
+
+fastify.get<{ Params: ISessionByIdParams }>(
+  "/session/:id",
+  async (req, reply) => {
+    const { id } = req.params;
+
+    try {
+      const session = await prisma.sessions.findFirst({ where: { id: id } });
+      const players = await prisma.players.findMany({
+        where: { id: { in: session?.playerIds } },
+      });
+      const stories = await prisma.stories.findMany({
+        where: { id: { in: session?.storyIds } },
+      });
+
+      const mappedPlayers: PlayerInfo[] = players.map((x: players) => ({
+        emoji: x.emoji,
+        id: x.id,
+        name: x.name,
+        type: x.defaultType as PlayerType,
+      }));
+
+      const data: SessionDetails = {
+        id: id,
+        players: mappedPlayers,
+        stories: stories.map((x: stories) => ({
+          description: x.description,
+          endSeconds: x.endSeconds,
+          estimate: x.estimate,
+          id: x.id,
+          sessionId: x.sessionId,
+          spectators: mappedPlayers.filter(p => x.spectatorIds.includes(p.id)),
+          startSeconds: x.startSeconds,
+          totalTimeSpent: x.totalTimeSpent,
+          voters: mappedPlayers.filter(p => x.voterIds.includes(p.id)),
+          votes: x.votes.map(v => ({
+            playerId: v.playerId,
+            vote: v.vote ?? undefined,
+          })),
+        })),
+      };
+
+      reply.send(data);
+    } catch {
+      reply.statusCode = 400;
+      reply.send("[InvalidSessionId]");
+    }
+  }
+);
 
 fastify.listen(process.env.PORT || 4000, "0.0.0.0", (err, address) => {
   if (err) {
@@ -99,79 +207,77 @@ const updateActiveStory = (roomId: any, nextActiveId: string | null) => {
   resetGame(roomId);
 };
 
-const log = () => {
-  const rooms = [...players].map(e => e.roomId);
-  if (rooms) {
-    rooms
-      .filter((val, i, arr) => arr.indexOf(val) === i)
-      .map(room => {
-        const playerCount = [...players].filter(p => p.roomId === room).length;
-        console.log(`🃏 Room: ${room} | Players: ${playerCount}`);
-      });
-  }
-};
+io.on("connection", async socket => {
+  let roomId = socket.handshake.query["roomId"] as string;
+  const playerId = socket.handshake.query["playerId"] as string;
+  let session = null;
 
-io.on("connection", socket => {
-  console.log("🔌 A User Has Connected: ", socket.id);
-  const roomId = socket.handshake.query["roomId"] || short.generate();
+  if (roomId) {
+    try {
+      session = await prisma.sessions.findUnique({
+        where: { id: roomId },
+      });
+    } catch (err) {
+      console.error("[InvalidRoomId]: ", err);
+    }
+  }
+
+  if (!session) {
+    session = await prisma.sessions.create({
+      data: { playerIds: [], storyIds: [] },
+    });
+    roomId = session.id;
+  }
+
+  if (playerId && !session.playerIds.includes(playerId)) {
+    await prisma.sessions.update({
+      data: { playerIds: { push: playerId } },
+      where: { id: session.id },
+    });
+  }
 
   socket.emit("room", roomId);
 
   if (!rooms.find(r => r.id === roomId)) {
     rooms.push({
-      id: roomId as string,
+      id: roomId,
       settings: {
         countdown: true,
         fastMode: false,
       },
-      stories: [
-        {
-          id: short.generate(),
-          roomId: roomId as string,
-          description: "Story #1",
-          active: true,
-          vote: undefined,
-          startSeconds: getTimeInSeconds(),
-          endSeconds: undefined,
-          totalTimeSpent: undefined,
-        },
-      ],
+      stories: [],
+      active: true,
     });
   }
 
   socket.join(roomId);
-  players.push({
-    id: socket.id,
-    name: "",
-    type: PlayerType.Voter,
-    emoji: "🤔",
-    roomId: roomId,
-    vote: undefined,
-  });
 
-  socket.on("name", name => {
-    const player = [...players].find(p => p.id === socket.id);
-    if (player) {
-      const playerIndex = players.findIndex(x => x.id === socket.id);
-      players[playerIndex] = { ...player, name };
+  if (!players.map(x => x.id).includes(playerId)) {
+    const playerInfo = await prisma.players.findFirst({
+      where: { id: playerId },
+    });
+    if (playerInfo) {
+      players.push({
+        id: playerId,
+        name: playerInfo.name,
+        type: playerInfo.defaultType as PlayerType,
+        emoji: playerInfo.emoji,
+        roomId: roomId,
+        vote: undefined,
+      });
     }
-    updateRoom(roomId);
-  });
+  }
+  updateRoom(roomId);
 
-  socket.on("type", type => {
-    const player = [...players].find(p => p.id === socket.id);
+  socket.on("updatePlayer", data => {
+    const player = [...players].find(p => p.id === data.id);
     if (player) {
-      const playerIndex = players.findIndex(x => x.id === socket.id);
-      players[playerIndex] = { ...player, type, vote: undefined };
-    }
-    updateRoom(roomId);
-  });
-
-  socket.on("emoji", emoji => {
-    const player = [...players].find(p => p.id === socket.id);
-    if (player) {
-      const playerIndex = players.findIndex(x => x.id === socket.id);
-      players[playerIndex] = { ...player, emoji };
+      const playerIndex = players.findIndex(x => x.id === data.id);
+      players[playerIndex] = {
+        ...player,
+        ...data,
+        vote: data.type !== player.type ? undefined : player.vote,
+      };
     }
     updateRoom(roomId);
   });
@@ -185,9 +291,9 @@ io.on("connection", socket => {
   });
 
   socket.on("vote", vote => {
-    const player = [...players].find(p => p.id === socket.id);
+    const player = [...players].find(p => p.id === playerId);
     if (player) {
-      const playerIndex = players.findIndex(x => x.id === socket.id);
+      const playerIndex = players.findIndex(x => x.id === playerId);
       players[playerIndex] = { ...player, vote };
       io.to(roomId || "").emit("vote");
     }
@@ -216,52 +322,91 @@ io.on("connection", socket => {
         s => s.id === storyId
       );
 
-      rooms[roomIndex].stories[storyIndex].vote = finalVote;
+      const voters = players.filter(p => p.type === PlayerType.Voter);
+      const spectators = players.filter(p => p.type === PlayerType.Spectator);
 
-      if (rooms[roomIndex].stories.filter(s => !s.vote).length === 0) {
-        const nextRoomId = short.generate();
-        rooms[roomIndex].stories = [
-          ...rooms[roomIndex].stories,
-          {
-            id: nextRoomId,
-            roomId: roomId as string,
-            description: `Story #${rooms[roomIndex].stories.length + 1}`,
-            active: true,
-            vote: undefined,
-            startSeconds: getTimeInSeconds(),
-            endSeconds: undefined,
-            totalTimeSpent: undefined,
-          },
-        ];
-        updateActiveStory(roomId, nextRoomId);
-        return;
-      }
+      rooms[roomIndex].stories[storyIndex].voterIds = voters?.map(v => v.id);
+      rooms[roomIndex].stories[storyIndex].spectatorIds = spectators?.map(
+        s => s.id
+      );
+      rooms[roomIndex].stories[storyIndex].votes = voters?.map(v => ({
+        playerId: v.id,
+        vote: v.vote,
+      }));
+      rooms[roomIndex].stories[storyIndex].estimate = finalVote;
+
+      updateActiveStory(roomId, null);
+
+      if (!rooms[roomIndex].stories.find(s => !s.estimate)) return;
 
       if (
         rooms[roomIndex].stories.length > storyIndex + 1 &&
-        !rooms[roomIndex].stories[storyIndex + 1].vote
+        !rooms[roomIndex].stories[storyIndex + 1].estimate
       ) {
         updateActiveStory(roomId, rooms[roomIndex].stories[storyIndex + 1].id);
-      } else {
-        const nextIndex = rooms[roomIndex].stories.findIndex(s => !s.vote);
-        updateActiveStory(roomId, rooms[roomIndex].stories[nextIndex].id);
+        return;
       }
+
+      const nextIndex = rooms[roomIndex].stories.findIndex(s => !s.estimate);
+      updateActiveStory(roomId, rooms[roomIndex].stories[nextIndex].id);
     }
+  });
+
+  socket.on("completeSession", async () => {
+    const roomIndex = rooms.findIndex(r => r.id === roomId);
+    const stories = rooms[roomIndex].stories;
+
+    await prisma.stories.createMany({
+      data: stories.map(story => ({
+        description: story.description,
+        startSeconds: story.startSeconds,
+        endSeconds: story.endSeconds,
+        estimate: story.estimate,
+        voterIds: story.voterIds,
+        spectatorIds: story.spectatorIds,
+        votes: story.votes,
+        totalTimeSpent: story.totalTimeSpent,
+        sessionId: roomId,
+      })),
+    });
+
+    const storyRecords = await prisma.stories.findMany({
+      where: { sessionId: roomId },
+    });
+
+    await prisma.sessions.update({
+      data: { storyIds: { push: storyRecords.map((s: stories) => s.id) } },
+      where: { id: roomId },
+    });
+
+    rooms[roomIndex].active = false;
+
+    updateRoom(roomId);
   });
 
   socket.on("addStory", story => {
     if (roomId) {
       const roomIndex = rooms.findIndex(r => r.id === roomId);
+      const storyId = short().generate();
+
       rooms[roomIndex].stories.push({
-        ...story,
-        id: short.generate(),
-        roomId: roomId as string,
+        id: storyId,
+        description: story.description,
+        roomId: roomId,
         active: false,
-        vote: undefined,
+        estimate: undefined,
         startSeconds: undefined,
         endSeconds: undefined,
         totalTimeSpent: undefined,
+        spectatorIds: [],
+        voterIds: [],
+        votes: [],
       });
+
+      if (!rooms[roomIndex].stories.find(s => s.active)) {
+        updateActiveStory(roomId, storyId);
+        return;
+      }
     }
     updateRoom(roomId);
   });
@@ -272,7 +417,7 @@ io.on("connection", socket => {
       const storyIndex = rooms[roomIndex].stories.findIndex(
         s => s.id === story.id
       );
-      rooms[roomIndex].stories[storyIndex] = story;
+      rooms[roomIndex].stories[storyIndex].description = story.description;
     }
     updateRoom(roomId);
   });
@@ -284,11 +429,11 @@ io.on("connection", socket => {
   });
 
   socket.on("pong", () => {
-    players.find(p => p.id === socket.id);
+    players.find(p => p.id === playerId);
   });
 
   socket.on("disconnect", () => {
-    players = [...players].filter(player => player.id !== socket.id);
+    players = [...players].filter(player => player.id !== playerId);
     updateRoom(roomId);
   });
 });

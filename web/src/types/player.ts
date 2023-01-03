@@ -3,11 +3,15 @@ export enum PlayerType {
   Spectator = "spectator",
 }
 
-export interface Player {
+export interface PlayerInfo {
   id: string;
+  emoji: string;
   name: string;
+  type: PlayerType;
+}
+
+export interface Player extends PlayerInfo {
   vote: string;
   roomId: string;
-  type: PlayerType;
-  emoji: string;
 }
+
