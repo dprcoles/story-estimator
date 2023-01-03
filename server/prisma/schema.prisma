@@ -9,7 +9,7 @@ datasource db {
 
 type Vote {
   playerId String @db.ObjectId
-  vote     String
+  vote     String?
 }
 
 model players {
@@ -27,13 +27,16 @@ model sessions {
 }
 
 model stories {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  description   String
-  finalEstimate String
-  spectatorIds  String[] @db.ObjectId
-  timeSpent     String
-  voterIds      String[] @db.ObjectId
-  votes         Vote[]
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  description    String
+  estimate       String?
+  spectatorIds   String[] @db.ObjectId
+  startSeconds   Int?
+  endSeconds     Int?
+  totalTimeSpent Int?
+  voterIds       String[] @db.ObjectId
+  votes          Vote[]
+  sessionId      String @db.ObjectId
 }
 
 model teams {

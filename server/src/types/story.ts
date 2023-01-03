@@ -5,7 +5,15 @@ export type Story = {
   active: boolean;
   startSeconds: number | undefined;
   endSeconds: number | undefined;
-  vote: string | undefined;
+  estimate: string | undefined;
   totalTimeSpent: number | undefined;
+  spectatorIds: string[];
+  voterIds: string[];
+  votes: Vote[];
+};
+
+type Vote = {
+  playerId: string;
+  vote?: string;
 };
 

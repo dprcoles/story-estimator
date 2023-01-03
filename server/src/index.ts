@@ -169,7 +169,9 @@ io.on("connection", async socket => {
   }
 
   if (!session) {
-    session = await prisma.sessions.create({ data: {} });
+    session = await prisma.sessions.create({
+      data: { playerIds: [], storyIds: [] },
+    });
     roomId = session.id;
   }
 
@@ -189,18 +191,8 @@ io.on("connection", async socket => {
         countdown: true,
         fastMode: false,
       },
-      stories: [
-        {
-          id: short.generate(),
-          roomId: roomId,
-          description: "Story #1",
-          active: true,
-          vote: undefined,
-          startSeconds: getTimeInSeconds(),
-          endSeconds: undefined,
-          totalTimeSpent: undefined,
-        },
-      ],
+      stories: [],
+      active: true,
     });
   }
 
@@ -276,52 +268,91 @@ io.on("connection", async socket => {
         s => s.id === storyId
       );
 
-      rooms[roomIndex].stories[storyIndex].vote = finalVote;
+      const voters = players.filter(p => p.type === PlayerType.Voter);
+      const spectators = players.filter(p => p.type === PlayerType.Spectator);
 
-      if (rooms[roomIndex].stories.filter(s => !s.vote).length === 0) {
-        const nextRoomId = short.generate();
-        rooms[roomIndex].stories = [
-          ...rooms[roomIndex].stories,
-          {
-            id: nextRoomId,
-            roomId: roomId,
-            description: `Story #${rooms[roomIndex].stories.length + 1}`,
-            active: true,
-            vote: undefined,
-            startSeconds: getTimeInSeconds(),
-            endSeconds: undefined,
-            totalTimeSpent: undefined,
-          },
-        ];
-        updateActiveStory(roomId, nextRoomId);
-        return;
-      }
+      rooms[roomIndex].stories[storyIndex].voterIds = voters?.map(v => v.id);
+      rooms[roomIndex].stories[storyIndex].spectatorIds = spectators?.map(
+        s => s.id
+      );
+      rooms[roomIndex].stories[storyIndex].votes = voters?.map(v => ({
+        playerId: v.id,
+        vote: v.vote,
+      }));
+      rooms[roomIndex].stories[storyIndex].estimate = finalVote;
+
+      updateActiveStory(roomId, null);
+
+      if (!rooms[roomIndex].stories.find(s => !s.estimate)) return;
 
       if (
         rooms[roomIndex].stories.length > storyIndex + 1 &&
-        !rooms[roomIndex].stories[storyIndex + 1].vote
+        !rooms[roomIndex].stories[storyIndex + 1].estimate
       ) {
         updateActiveStory(roomId, rooms[roomIndex].stories[storyIndex + 1].id);
-      } else {
-        const nextIndex = rooms[roomIndex].stories.findIndex(s => !s.vote);
-        updateActiveStory(roomId, rooms[roomIndex].stories[nextIndex].id);
+        return;
       }
+
+      const nextIndex = rooms[roomIndex].stories.findIndex(s => !s.estimate);
+      updateActiveStory(roomId, rooms[roomIndex].stories[nextIndex].id);
     }
+  });
+
+  socket.on("completeSession", async () => {
+    const roomIndex = rooms.findIndex(r => r.id === roomId);
+    const stories = rooms[roomIndex].stories;
+
+    await prisma.stories.createMany({
+      data: stories.map(story => ({
+        description: story.description,
+        startSeconds: story.startSeconds,
+        endSeconds: story.endSeconds,
+        estimate: story.estimate,
+        voterIds: story.voterIds,
+        spectatorIds: story.spectatorIds,
+        votes: story.votes,
+        totalTimeSpent: story.totalTimeSpent,
+        sessionId: roomId,
+      })),
+    });
+
+    const storyRecords = await prisma.stories.findMany({
+      where: { sessionId: roomId },
+    });
+
+    await prisma.sessions.update({
+      data: { storyIds: { push: storyRecords.map(s => s.id) } },
+      where: { id: roomId },
+    });
+
+    rooms[roomIndex].active = false;
+
+    updateRoom(roomId);
   });
 
   socket.on("addStory", story => {
     if (roomId) {
       const roomIndex = rooms.findIndex(r => r.id === roomId);
+      const storyId = short().generate();
+
       rooms[roomIndex].stories.push({
-        ...story,
-        id: short.generate(),
+        id: storyId,
+        description: story.description,
         roomId: roomId,
         active: false,
-        vote: undefined,
+        estimate: undefined,
         startSeconds: undefined,
         endSeconds: undefined,
         totalTimeSpent: undefined,
+        spectatorIds: [],
+        voterIds: [],
+        votes: [],
       });
+
+      if (!rooms[roomIndex].stories.find(s => s.active)) {
+        updateActiveStory(roomId, storyId);
+        return;
+      }
     }
     updateRoom(roomId);
   });
@@ -332,7 +363,7 @@ io.on("connection", async socket => {
       const storyIndex = rooms[roomIndex].stories.findIndex(
         s => s.id === story.id
       );
-      rooms[roomIndex].stories[storyIndex] = story;
+      rooms[roomIndex].stories[storyIndex].description = story.description;
     }
     updateRoom(roomId);
   });
