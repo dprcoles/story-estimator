@@ -11,10 +11,13 @@ import {
   IUpdatePlayerBody,
   IUpdatePlayerParams,
   Player,
+  PlayerInfo,
+  players,
   PlayerType,
   Room,
   SessionDetails,
   ShowType,
+  stories,
 } from "./types";
 
 const fastify = Fastify();
@@ -100,7 +103,7 @@ fastify.get<{ Params: ISessionByIdParams }>(
         where: { id: { in: session?.storyIds } },
       });
 
-      const mappedPlayers = players.map(x => ({
+      const mappedPlayers: PlayerInfo[] = players.map((x: players) => ({
         emoji: x.emoji,
         id: x.id,
         name: x.name,
@@ -110,7 +113,7 @@ fastify.get<{ Params: ISessionByIdParams }>(
       const data: SessionDetails = {
         id: id,
         players: mappedPlayers,
-        stories: stories.map(x => ({
+        stories: stories.map((x: stories) => ({
           description: x.description,
           endSeconds: x.endSeconds,
           estimate: x.estimate,
@@ -372,7 +375,7 @@ io.on("connection", async socket => {
     });
 
     await prisma.sessions.update({
-      data: { storyIds: { push: storyRecords.map(s => s.id) } },
+      data: { storyIds: { push: storyRecords.map((s: stories) => s.id) } },
       where: { id: roomId },
     });
 
