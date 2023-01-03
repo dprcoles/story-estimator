@@ -2,12 +2,11 @@ import { Story } from "./story";
 
 export type Room = {
   id: string;
-  settings: RoomSettings;
+  settings: Settings;
   stories: Story[];
-  active: boolean;
 };
 
-export type RoomSettings = {
+export type Settings = {
   countdown: boolean;
   fastMode: boolean;
 };

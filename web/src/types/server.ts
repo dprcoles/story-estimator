@@ -7,7 +7,9 @@ export type UpdateResponse = {
 };
 
 export enum EmitEvent {
-  UpdatePlayer = "updatePlayer",
+  Name = "name",
+  Type = "type",
+  Emoji = "emoji",
   Settings = "settings",
   Vote = "vote",
   Show = "show",
@@ -19,7 +21,5 @@ export enum EmitEvent {
   Update = "update",
   Ping = "ping",
   Pong = "pong",
-  CompleteSession = "completeSession",
-  SessionComplete = "sessionComplete",
 }
 

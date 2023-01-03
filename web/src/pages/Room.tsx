@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 import { motion } from "framer-motion";
-import PlayerModal from "@/components/PlayerModal";
-import RoomSettingsModal from "@/components/RoomSettingsModal";
-import { Player, PlayerInfo } from "@/types/player";
+import UserModal from "@/components/UserModal";
+import { Player, PlayerType } from "@/types/player";
 import { useSocketStore } from "@/stores/socketStore";
 import { useInterval } from "../hooks/index";
 import { FADE_IN } from "@/utils/variants";
-import { Room, RoomSettings } from "@/types/room";
+import { Room, Settings } from "@/types/room";
 import { EmitEvent, UpdateResponse } from "@/types/server";
+import SettingsModal from "@/components/SettingsModal";
 import {
   CountdownStatus,
   CountdownTimer,
@@ -18,16 +18,12 @@ import {
 import { Story } from "@/types/story";
 import { ShowType } from "@/types/show";
 import { StorageItem } from "@/types/storage";
-import RoomNavbar from "@/components/Navbar/RoomNavbar";
+import RoomNavbar from "@/components/RoomNavbar";
 import StoryPanel from "@/components/StoryPanel";
 import PlayerPanel from "@/components/PlayerPanel";
 import MainPanel from "@/components/MainPanel";
 import Wrapper from "@/components/Wrapper";
 import MobileTabBar, { MobileTabBarType } from "@/components/MobileTabBar";
-import { API_URL, ROUTE_ROOM, ROUTE_SUMMARY } from "@/utils/constants";
-import { getPlayer } from "@/api/player";
-import { usePlayerStore } from "@/stores/playerStore";
-import AddStoryModal from "@/components/StoryPanel/AddStoryModal";
 
 interface RoomPageProps {
   theme: string;
@@ -35,17 +31,14 @@ interface RoomPageProps {
 }
 
 const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
-  const { socket, setSocket, emit } = useSocketStore(state => state);
-  const { player, setPlayer } = usePlayerStore(state => state);
-  const { id } = useParams();
-  const navigate = useNavigate();
   const [isUserModalOpen, setIsUserModalOpen] = useState<boolean>(false);
-  const [isSettingsModalOpen, setIsSettingsModalOpen] =
-    useState<boolean>(false);
-  const [isStoryModalOpen, setIsStoryModalOpen] = useState<boolean>(false);
+  const [name, setName] = useState<string>("");
+  const [type, setType] = useState<PlayerType>(PlayerType.Voter);
+  const [emoji, setEmoji] = useState<string>("");
   const [players, setPlayers] = useState<Array<Player>>([]);
   const [room, setRoom] = useState<Room>();
   const [stories, setStories] = useState<Array<Story>>([]);
+  const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
   const [vote, setVote] = useState<string>("");
   const [showVotes, setShowVotes] = useState<boolean>(false);
   const [countdown, setCountdown] = useState<number>(CountdownTimer.Standard);
@@ -59,45 +52,67 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
     MobileTabBarType.Estimate
   );
 
-  const handleSetPlayer = (playerInfo: PlayerInfo) => {
-    setPlayer(playerInfo);
-    emit(EmitEvent.UpdatePlayer, playerInfo);
+  const { socket, setSocket, emit } = useSocketStore(state => state);
+  const { id } = useParams();
+
+  const setPlayerName = (playerName: string) => {
+    setName(playerName);
+    emit(EmitEvent.Name, playerName);
+    localStorage.setItem(StorageItem.Name, playerName);
   };
 
-  const fetchPlayer = async (id: string) => {
-    const player = await getPlayer(id);
-    const { emoji, defaultType: type, name } = player;
+  const setPlayerType = (playerType: PlayerType) => {
+    setType(playerType);
+    emit(EmitEvent.Type, playerType);
+    localStorage.setItem(StorageItem.Type, playerType);
+  };
 
-    handleSetPlayer({ id, emoji, name, type });
+  const setPlayerEmoji = (playerEmoji: string) => {
+    setEmoji(playerEmoji);
+    emit(EmitEvent.Emoji, playerEmoji);
+    localStorage.setItem(StorageItem.Emoji, playerEmoji);
+  };
+
+  const setRoomSettings = (roomSettings: Settings) => {
+    emit(EmitEvent.Settings, roomSettings);
   };
 
   useEffect(() => {
-    const storedPlayerId = localStorage.getItem(StorageItem.PlayerId);
-
-    if (storedPlayerId) {
-      fetchPlayer(storedPlayerId);
+    if (!socket) {
+      const socket = io(
+        process.env.REACT_APP_SERVER_URL || "http://localhost:4000",
+        {
+          query: { roomId: id },
+        }
+      );
+      setSocket(socket);
       return;
     }
 
-    setIsUserModalOpen(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const storedName = localStorage.getItem(StorageItem.Name);
+    const storedType = localStorage.getItem(StorageItem.Type);
+    const storedEmoji = localStorage.getItem(StorageItem.Emoji);
 
-  useEffect(() => {
-    if (!socket && player.id) {
-      const socket = io(API_URL, {
-        query: { roomId: id, playerId: player.id },
-      });
-      setSocket(socket);
+    if (storedName) {
+      setPlayerName(storedName);
+    }
+
+    if (storedType) {
+      setPlayerType(storedType as PlayerType);
+    }
+
+    if (storedEmoji) {
+      setPlayerEmoji(storedEmoji);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [player]);
+  }, [socket]);
 
   useEffect(() => {
-    if (room && !room.active) {
-      navigate(`${ROUTE_SUMMARY}/${id}`);
+    if (socket) {
+      if (!players.find((p: Player) => p.name === name)) setPlayerName("");
     }
-  }, [room, id, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [players]);
 
   useInterval(
     () => {
@@ -111,39 +126,37 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
     countdownStatus === CountdownStatus.STARTED ? 1000 : null
   );
 
-  const handleSetVote = (newVote: string) => {
-    emit(EmitEvent.Vote, newVote);
+  if (!socket) return <div className="text-center">Connecting...</div>;
+
+  const submitVote = (newVote: string) => {
+    socket.emit(EmitEvent.Vote, newVote);
     setVote(newVote);
   };
 
-  const handleSaveStory = (story: Story) => {
-    emit(story.id.length > 0 ? EmitEvent.EditStory : EmitEvent.AddStory, story);
-    setIsStoryModalOpen(false);
-  };
-
-  const handleSetRoomSettings = (roomSettings: RoomSettings) => {
-    emit(EmitEvent.Settings, roomSettings);
-  };
-
-  socket?.on(EmitEvent.Update, (data: UpdateResponse) => {
+  socket.on(EmitEvent.Update, (data: UpdateResponse) => {
     setPlayers(data.players);
     setRoom(data.room);
     setStories(data.room.stories);
   });
 
-  socket?.on(EmitEvent.Vote, () => {
-    if (room?.settings.fastMode) {
-      setCountdown(CountdownTimer.FastMode);
-      setCountdownType(CountdownType.FastMode);
-      setCountdownStatus(CountdownStatus.STARTED);
-    } else {
-      setCountdown(CountdownTimer.Standard);
-      setCountdownType(CountdownType.Standard);
-      setCountdownStatus(CountdownStatus.STOPPED);
-    }
-  });
+  const handleResetVotes = () => {
+    setShowVotes(false);
+    setCountdownStatus(CountdownStatus.STOPPED);
+    setCountdown(
+      countdownType === CountdownType.Standard
+        ? CountdownTimer.Standard
+        : CountdownTimer.FastMode
+    );
+    setVote("");
+  };
 
-  socket?.on(EmitEvent.Show, (type: ShowType) => {
+  const handleShow = (type: ShowType) => {
+    if (type === ShowType.Force) {
+      setShowVotes(true);
+      setCountdownStatus(CountdownStatus.STOPPED);
+      return;
+    }
+
     if (type === ShowType.Hurry) {
       setCountdown(CountdownTimer.HurryMode);
       setCountdownStatus(CountdownStatus.STARTED);
@@ -157,66 +170,74 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
       return;
     }
 
+    if (room?.settings.fastMode) {
+      setShowVotes(true);
+      setCountdownStatus(CountdownStatus.STOPPED);
+      return;
+    }
+
     setShowVotes(true);
     setCountdownStatus(CountdownStatus.STOPPED);
-  });
+  };
 
-  socket?.on(EmitEvent.Reset, () => {
-    setShowVotes(false);
-    setCountdownStatus(CountdownStatus.STOPPED);
-    setCountdown(
-      countdownType === CountdownType.Standard
-        ? CountdownTimer.Standard
-        : CountdownTimer.FastMode
-    );
-    setVote("");
-  });
+  const handleOnVote = () => {
+    if (room?.settings.fastMode) {
+      setCountdown(CountdownTimer.FastMode);
+      setCountdownType(CountdownType.FastMode);
+      setCountdownStatus(CountdownStatus.STARTED);
+    } else {
+      setCountdown(CountdownTimer.Standard);
+      setCountdownType(CountdownType.Standard);
+      setCountdownStatus(CountdownStatus.STOPPED);
+    }
+  };
 
-  socket?.on(EmitEvent.Ping, () => emit(EmitEvent.Pong));
+  const handleUpdateUser = (
+    name: string,
+    emoji: string,
+    playerType: PlayerType
+  ) => {
+    setPlayerName(name);
+    setPlayerEmoji(emoji);
+    setPlayerType(playerType);
+  };
 
-  socket?.on("room", (roomId: string) => {
-    if (roomId !== id) navigate(`${ROUTE_ROOM}/${roomId}`);
-  });
+  socket.on(EmitEvent.Show, (type: ShowType) => handleShow(type));
+  socket.on(EmitEvent.Reset, () => handleResetVotes());
+  socket.on(EmitEvent.Vote, () => handleOnVote());
+
+  socket.on(EmitEvent.Ping, () => socket.emit(EmitEvent.Pong));
 
   return (
     <Wrapper>
       <motion.div variants={FADE_IN} className="max-h-full h-screen">
-        <PlayerModal
+        <UserModal
           isOpen={isUserModalOpen}
           setIsOpen={setIsUserModalOpen}
-          player={player}
-          setPlayer={handleSetPlayer}
+          name={name}
+          emoji={emoji}
+          type={type}
+          updateUser={handleUpdateUser}
         />
-        <RoomSettingsModal
-          isOpen={isSettingsModalOpen}
-          setIsOpen={setIsSettingsModalOpen}
-          settings={room?.settings as RoomSettings}
-          setSettings={handleSetRoomSettings}
+        <SettingsModal
+          isOpen={isSettingsOpen}
+          setIsOpen={setIsSettingsOpen}
+          settings={room?.settings as Settings}
+          setSettings={setRoomSettings}
         />
-        <AddStoryModal
-          isOpen={isStoryModalOpen}
-          setIsOpen={setIsStoryModalOpen}
-          handleSave={handleSaveStory}
-        />
-        {player.name.length > 0 && room && (
+        {name.length > 0 && (
           <>
             <div className="p-4 lg:mx-auto">
               <RoomNavbar
-                player={player as Player}
+                player={players.find(p => p.name === name)}
                 setIsUserModalOpen={setIsUserModalOpen}
                 theme={theme}
                 setTheme={setTheme}
               />
               <div className="lg:flex md:space-x-2 min-h-full">
-                {stories.length > 0 && room.active && (
-                  <div className="hidden lg:max-w-1xl lg:block">
-                    <StoryPanel
-                      stories={stories}
-                      handleSaveStory={handleSaveStory}
-                      setIsStoryModalOpen={setIsStoryModalOpen}
-                    />
-                  </div>
-                )}
+                <div className="hidden lg:max-w-1xl lg:block">
+                  <StoryPanel stories={stories} />
+                </div>
                 <div className="hidden lg:w-full lg:block">
                   <MainPanel
                     countdown={countdown}
@@ -224,11 +245,10 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
                     players={players}
                     showVotes={showVotes}
                     stories={stories}
-                    setVote={handleSetVote}
-                    type={player.type}
+                    submitVote={submitVote}
+                    type={type}
                     vote={vote}
-                    setIsSettingsModalOpen={setIsSettingsModalOpen}
-                    setIsStoryModalOpen={setIsStoryModalOpen}
+                    setIsSettingsOpen={setIsSettingsOpen}
                   />
                 </div>
                 <div className="hidden lg:max-w-1xl lg:block">
@@ -236,7 +256,7 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
                     players={players}
                     showVote={showVotes}
                     countdownStatus={countdownStatus}
-                    currentPlayer={players.find(p => p.id === player.id)}
+                    currentPlayer={players.find(p => p.name === name)}
                   />
                 </div>
                 <div className="lg:hidden">
@@ -247,26 +267,21 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
                       players={players}
                       showVotes={showVotes}
                       stories={stories}
-                      setVote={handleSetVote}
-                      type={player.type}
+                      submitVote={submitVote}
+                      type={type}
                       vote={vote}
-                      setIsSettingsModalOpen={setIsSettingsModalOpen}
-                      setIsStoryModalOpen={setIsStoryModalOpen}
+                      setIsSettingsOpen={setIsSettingsOpen}
                     />
                   )}
                   {activeMobileTab === MobileTabBarType.Stories && (
-                    <StoryPanel
-                      stories={stories}
-                      setIsStoryModalOpen={setIsStoryModalOpen}
-                      handleSaveStory={handleSaveStory}
-                    />
+                    <StoryPanel stories={stories} />
                   )}
                   {activeMobileTab === MobileTabBarType.Players && (
                     <PlayerPanel
                       players={players}
                       showVote={showVotes}
                       countdownStatus={countdownStatus}
-                      currentPlayer={players.find(p => p.id === player.id)}
+                      currentPlayer={players.find(p => p.name === name)}
                     />
                   )}
                 </div>
