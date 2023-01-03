@@ -1,4 +1,4 @@
-import { PlayerType } from "@/types/player";
+import { PlayerInfo, PlayerType } from "@/types/player";
 import React, { useEffect, useState } from "react";
 import EmojiPicker from "../EmojiPicker";
 import { IoMdClose } from "react-icons/io";
@@ -6,43 +6,64 @@ import Button, { ButtonStyle } from "../Button";
 import { MdOutlineEdit } from "react-icons/md";
 
 import "./index.css";
+import { createPlayer, updatePlayer } from "@/api/player";
 
-interface UserModalProps {
+interface PlayerModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  name: string;
-  emoji: string;
-  type: PlayerType;
-  updateUser: (name: string, emoji: string, type: PlayerType) => void;
+  player: PlayerInfo;
+  setPlayer: (player: PlayerInfo) => void;
 }
 
-const UserModal: React.FC<UserModalProps> = ({
+const PlayerModal: React.FC<PlayerModalProps> = ({
   isOpen,
   setIsOpen,
-  name,
-  emoji,
-  type,
-  updateUser,
+  player,
+  setPlayer,
 }) => {
-  const [nameValue, setNameValue] = useState<string>(name);
-  const [emojiValue, setEmojiValue] = useState<string>(emoji);
-  const [typeValue, setTypeValue] = useState<PlayerType>(type);
+  const [nameValue, setNameValue] = useState<string>(player.name);
+  const [emojiValue, setEmojiValue] = useState<string>(player.emoji);
+  const [typeValue, setTypeValue] = useState<PlayerType>(player.type);
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState<boolean>(false);
 
+  const { name, emoji, type } = player;
+
   useEffect(() => {
-    setIsOpen(name.length === 0);
     setNameValue(name);
     setEmojiValue(emoji.length === 0 ? "😎" : emoji);
     setTypeValue(type);
-  }, [name, emoji, type, setIsOpen]);
+  }, [name, emoji, type]);
 
   const handleSetEmoji = (e: string) => {
     setEmojiValue(e);
     setIsEmojiPickerOpen(false);
   };
 
-  const handleSave = () => {
-    updateUser(nameValue, emojiValue, typeValue);
+  const handleUpdatePlayerInfo = async (
+    name: string,
+    emoji: string,
+    playerType: PlayerType
+  ) => {
+    if (player.id) {
+      await updatePlayer(player.id, {
+        defaultType: playerType,
+        emoji,
+        name,
+      });
+      setPlayer({ id: player.id, emoji, name, type: playerType });
+      return;
+    }
+
+    const newPlayer = await createPlayer({
+      defaultType: playerType,
+      emoji,
+      name,
+    });
+    setPlayer({ id: newPlayer.id, emoji, name, type: playerType });
+  };
+
+  const handleSave = async () => {
+    await handleUpdatePlayerInfo(nameValue, emojiValue, typeValue);
     setIsOpen(false);
   };
 
@@ -139,5 +160,5 @@ const UserModal: React.FC<UserModalProps> = ({
   );
 };
 
-export default UserModal;
+export default PlayerModal;
 
