@@ -19,5 +19,7 @@ export enum EmitEvent {
   Update = "update",
   Ping = "ping",
   Pong = "pong",
+  CompleteSession = "completeSession",
+  SessionComplete = "sessionComplete",
 }
 

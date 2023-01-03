@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 import { motion } from "framer-motion";
 import PlayerModal from "@/components/PlayerModal";
@@ -18,15 +18,16 @@ import {
 import { Story } from "@/types/story";
 import { ShowType } from "@/types/show";
 import { StorageItem } from "@/types/storage";
-import RoomNavbar from "@/components/RoomNavbar";
+import RoomNavbar from "@/components/Navbar/RoomNavbar";
 import StoryPanel from "@/components/StoryPanel";
 import PlayerPanel from "@/components/PlayerPanel";
 import MainPanel from "@/components/MainPanel";
 import Wrapper from "@/components/Wrapper";
 import MobileTabBar, { MobileTabBarType } from "@/components/MobileTabBar";
-import { API_URL } from "@/utils/constants";
+import { API_URL, ROUTE_ROOM, ROUTE_SUMMARY } from "@/utils/constants";
 import { getPlayer } from "@/api/player";
 import { usePlayerStore } from "@/stores/playerStore";
+import AddStoryModal from "@/components/StoryPanel/AddStoryModal";
 
 interface RoomPageProps {
   theme: string;
@@ -37,9 +38,11 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
   const { socket, setSocket, emit } = useSocketStore(state => state);
   const { player, setPlayer } = usePlayerStore(state => state);
   const { id } = useParams();
+  const navigate = useNavigate();
   const [isUserModalOpen, setIsUserModalOpen] = useState<boolean>(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] =
     useState<boolean>(false);
+  const [isStoryModalOpen, setIsStoryModalOpen] = useState<boolean>(false);
   const [players, setPlayers] = useState<Array<Player>>([]);
   const [room, setRoom] = useState<Room>();
   const [stories, setStories] = useState<Array<Story>>([]);
@@ -90,6 +93,12 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [player]);
 
+  useEffect(() => {
+    if (room && !room.active) {
+      navigate(`${ROUTE_SUMMARY}/${id}`);
+    }
+  }, [room, id, navigate]);
+
   useInterval(
     () => {
       if (countdown > 1) {
@@ -105,6 +114,11 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
   const handleSetVote = (newVote: string) => {
     emit(EmitEvent.Vote, newVote);
     setVote(newVote);
+  };
+
+  const handleSaveStory = (story: Story) => {
+    emit(story.id.length > 0 ? EmitEvent.EditStory : EmitEvent.AddStory, story);
+    setIsStoryModalOpen(false);
   };
 
   const handleSetRoomSettings = (roomSettings: RoomSettings) => {
@@ -160,6 +174,10 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
 
   socket?.on(EmitEvent.Ping, () => emit(EmitEvent.Pong));
 
+  socket?.on("room", (roomId: string) => {
+    if (roomId !== id) navigate(`${ROUTE_ROOM}/${roomId}`);
+  });
+
   return (
     <Wrapper>
       <motion.div variants={FADE_IN} className="max-h-full h-screen">
@@ -175,7 +193,12 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
           settings={room?.settings as RoomSettings}
           setSettings={handleSetRoomSettings}
         />
-        {player.name.length > 0 && (
+        <AddStoryModal
+          isOpen={isStoryModalOpen}
+          setIsOpen={setIsStoryModalOpen}
+          handleSave={handleSaveStory}
+        />
+        {player.name.length > 0 && room && (
           <>
             <div className="p-4 lg:mx-auto">
               <RoomNavbar
@@ -185,9 +208,15 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
                 setTheme={setTheme}
               />
               <div className="lg:flex md:space-x-2 min-h-full">
-                <div className="hidden lg:max-w-1xl lg:block">
-                  <StoryPanel stories={stories} />
-                </div>
+                {stories.length > 0 && room.active && (
+                  <div className="hidden lg:max-w-1xl lg:block">
+                    <StoryPanel
+                      stories={stories}
+                      handleSaveStory={handleSaveStory}
+                      setIsStoryModalOpen={setIsStoryModalOpen}
+                    />
+                  </div>
+                )}
                 <div className="hidden lg:w-full lg:block">
                   <MainPanel
                     countdown={countdown}
@@ -198,7 +227,8 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
                     setVote={handleSetVote}
                     type={player.type}
                     vote={vote}
-                    setIsSettingsOpen={setIsSettingsModalOpen}
+                    setIsSettingsModalOpen={setIsSettingsModalOpen}
+                    setIsStoryModalOpen={setIsStoryModalOpen}
                   />
                 </div>
                 <div className="hidden lg:max-w-1xl lg:block">
@@ -220,11 +250,16 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
                       setVote={handleSetVote}
                       type={player.type}
                       vote={vote}
-                      setIsSettingsOpen={setIsSettingsModalOpen}
+                      setIsSettingsModalOpen={setIsSettingsModalOpen}
+                      setIsStoryModalOpen={setIsStoryModalOpen}
                     />
                   )}
                   {activeMobileTab === MobileTabBarType.Stories && (
-                    <StoryPanel stories={stories} />
+                    <StoryPanel
+                      stories={stories}
+                      setIsStoryModalOpen={setIsStoryModalOpen}
+                      handleSaveStory={handleSaveStory}
+                    />
                   )}
                   {activeMobileTab === MobileTabBarType.Players && (
                     <PlayerPanel
