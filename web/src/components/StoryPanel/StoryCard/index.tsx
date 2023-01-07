@@ -39,7 +39,7 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, onClick, onEdit }) => {
           <div className="text-xs pb-1 text-light-text dark:text-dark-text">
             Estimate
           </div>
-          <span className="py-1">{story.vote ?? "-"}</span>
+          <span className="py-1">{story.estimate ?? "-"}</span>
         </div>
       </div>
     </div>

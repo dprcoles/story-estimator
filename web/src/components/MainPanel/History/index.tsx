@@ -15,9 +15,10 @@ const History: React.FC<HistoryProps> = ({ stories }) => {
 
   const totalEstimate = completeStories
     .filter(
-      x => ![...NON_NUMERIC_OPTIONS, "", undefined].includes(x.vote as string)
+      x =>
+        ![...NON_NUMERIC_OPTIONS, "", undefined].includes(x.estimate as string)
     )
-    .map(x => Number(x.vote))
+    .map(x => Number(x.estimate))
     .reduce((x, y) => x + y, 0);
 
   const getTotalTimeSpent = () => {
@@ -66,7 +67,7 @@ const History: React.FC<HistoryProps> = ({ stories }) => {
               <td className="py-2 text-black dark:text-white">
                 {x.description}
               </td>
-              <td className="py-2">{x.vote ?? "-"}</td>
+              <td className="py-2">{x.estimate ?? "-"}</td>
               <td className="py-2">{getTimeSpent(x.totalTimeSpent)}</td>
             </motion.tr>
           ))}

@@ -1,4 +1,4 @@
-import { Settings } from "@/types/room";
+import { RoomSettings } from "@/types/room";
 import {
   COUNTDOWN_DESCRIPTION,
   FAST_MODE_DESCRIPTION,
@@ -8,27 +8,27 @@ import { IoMdClose } from "react-icons/io";
 import Button, { ButtonStyle } from "../Button";
 import ToggleButton from "../ToggleButton";
 
-interface SettingsModalProps {
+interface RoomSettingsModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  settings: Settings;
-  setSettings: (settings: Settings) => void;
+  settings: RoomSettings;
+  setSettings: (settings: RoomSettings) => void;
 }
 
-const SettingsModal: React.FC<SettingsModalProps> = ({
+const RoomSettingsModal: React.FC<RoomSettingsModalProps> = ({
   isOpen,
   setIsOpen,
   settings,
   setSettings,
 }) => {
-  const [localSettings, setLocalSettings] = useState<Settings>();
+  const [localSettings, setLocalSettings] = useState<RoomSettings>();
 
   useEffect(() => {
     setLocalSettings(settings);
   }, [settings]);
 
   const handleSetValue = (val: any, property: string) => {
-    setLocalSettings({ ...localSettings, [property]: val } as Settings);
+    setLocalSettings({ ...localSettings, [property]: val } as RoomSettings);
   };
 
   const handleSave = () => {
@@ -87,5 +87,5 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   );
 };
 
-export default SettingsModal;
+export default RoomSettingsModal;
 
