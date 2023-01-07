@@ -6,10 +6,10 @@ COPY yarn.lock .
 
 RUN yarn --frozen--lockfile
 
-RUN npx prisma generate
-
 COPY . .
 
 RUN yarn build
+
+RUN npx prisma generate
 
 CMD ["node", "dist/index.js"]
