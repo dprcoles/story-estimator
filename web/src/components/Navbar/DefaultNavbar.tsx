@@ -2,12 +2,12 @@ import React from "react";
 import AnimatedLogo from "./AnimatedLogo";
 import ThemeToggle from "./ThemeToggle";
 
-interface RoomNavbarProps {
+interface DefaultNavbarProps {
   theme: string;
   setTheme: (theme: string) => void;
 }
 
-const RoomNavbar: React.FC<RoomNavbarProps> = ({ theme, setTheme }) => {
+const DefaultNavbar: React.FC<DefaultNavbarProps> = ({ theme, setTheme }) => {
   return (
     <div className="top-0 z-20 pb-2 md:px-0">
       <div className="flex">
@@ -32,5 +32,5 @@ const RoomNavbar: React.FC<RoomNavbarProps> = ({ theme, setTheme }) => {
   );
 };
 
-export default RoomNavbar;
+export default DefaultNavbar;
 

@@ -24,6 +24,7 @@ export type players = {
  */
 export type sessions = {
   id: string;
+  name: string;
   playerIds: string[];
   storyIds: string[];
   teamId: string | null;

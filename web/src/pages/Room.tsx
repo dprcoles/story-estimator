@@ -125,6 +125,10 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
     emit(EmitEvent.Settings, roomSettings);
   };
 
+  socket?.on(EmitEvent.ConnectionError, () => {
+    navigate("/");
+  });
+
   socket?.on(EmitEvent.Update, (data: UpdateResponse) => {
     setPlayers(data.players);
     setRoom(data.room);

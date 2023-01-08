@@ -5,8 +5,6 @@ import { Story } from "@/types/story";
 import { InfoCardTab } from "@/types/info";
 import History from "./History";
 import InviteButton from "./InviteButton";
-import Definitions from "./Definitions";
-import { useParams } from "react-router-dom";
 import GetStartedDisplay from "./GetStartedDisplay";
 import CurrentStoryDisplay from "./CurrentStoryDisplay";
 import NextStoryDisplay from "./NextStoryDisplay";
@@ -36,20 +34,9 @@ const MainPanel: React.FC<MainPanelProps> = ({
   setIsSettingsModalOpen,
   setIsStoryModalOpen,
 }) => {
-  const { id } = useParams<{ id: string }>();
   const [tab, setTab] = useState<InfoCardTab>(InfoCardTab.CurrentStory);
   const currentStory = stories.find(s => s.active);
   const hasStories = stories.length > 0;
-
-  const __roomTabs__ =
-    id === process.env.REACT_APP_ROOM_ID
-      ? [
-          {
-            id: InfoCardTab.Definitions,
-            label: "Definitions",
-          },
-        ]
-      : [];
 
   const tabs = [
     {
@@ -60,7 +47,6 @@ const MainPanel: React.FC<MainPanelProps> = ({
       id: InfoCardTab.History,
       label: "History",
     },
-    ...__roomTabs__,
   ];
 
   return (
@@ -110,7 +96,6 @@ const MainPanel: React.FC<MainPanelProps> = ({
             </>
           )}
           {tab === InfoCardTab.History && <History stories={stories} />}
-          {tab === InfoCardTab.Definitions && <Definitions />}
         </>
       )}
     </div>

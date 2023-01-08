@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FADE_IN } from "@/utils/variants";
-import { SummaryNavbar } from "@/components/Navbar";
+import { DefaultNavbar } from "@/components/Navbar";
 import Wrapper from "@/components/Wrapper";
 import { SessionDetails } from "@/types/session";
 import { getSession } from "@/api/session";
@@ -33,15 +33,17 @@ const SummaryPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
 
   if (isLoadingData || !sessionData) return <div>Loading...</div>;
 
+  const { stories } = sessionData;
+
   return (
     <Wrapper>
       <motion.div variants={FADE_IN} className="max-h-full h-screen">
         <div className="p-4 lg:mx-auto">
-          <SummaryNavbar theme={theme} setTheme={setTheme} />
+          <DefaultNavbar theme={theme} setTheme={setTheme} />
         </div>
         <div className="px-2">
           <div className="bg-light-panels dark:bg-dark-panels rounded-lg py-4 px-8 main-panel__container">
-            <SessionSummary stories={sessionData?.stories} />
+            <SessionSummary stories={stories} />
           </div>
         </div>
       </motion.div>

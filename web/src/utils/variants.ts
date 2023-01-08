@@ -40,6 +40,21 @@ export const FADE_UP: Variants = {
   },
 };
 
+export const FADE_FROM_LEFT: Variants = {
+  initial: {
+    x: -100,
+    opacity: 0,
+  },
+  animate: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+      ease: EASE,
+    },
+  },
+};
+
 export const FADE_DOWN: Variants = {
   initial: {
     y: -50,
@@ -88,3 +103,4 @@ export const ICON_FADE = (colour: string): Variants => {
     },
   };
 };
+

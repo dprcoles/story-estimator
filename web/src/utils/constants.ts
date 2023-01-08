@@ -39,4 +39,3 @@ export const DEFAULT_STORY: Story = {
   estimate: undefined,
   totalTimeSpent: 0,
 };
-

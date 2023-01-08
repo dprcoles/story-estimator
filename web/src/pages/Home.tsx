@@ -1,28 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import io from "socket.io-client";
 import { motion } from "framer-motion";
-import { API_URL, ROUTE_ROOM } from "@/utils/constants";
-import { useSocketStore } from "@/stores/socketStore";
 import { FADE_IN } from "@/utils/variants";
 import Wrapper from "@/components/Wrapper";
 import UserModal from "@/components/PlayerModal";
 import { StorageItem } from "@/types/storage";
 import { getPlayer } from "@/api/player";
 import { usePlayerStore } from "@/stores/playerStore";
+import { PlayerInfo } from "@/types/player";
+import { createSession } from "@/api/session";
+import { ROUTE_ROOM } from "@/utils/constants";
+import CreateSessionModal from "@/components/CreateSessionModal";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const [isJoining, setIsJoining] = useState<boolean>(false);
   const [isUserModalOpen, setIsUserModalOpen] = useState<boolean>(false);
-  const { setSocket } = useSocketStore(state => state);
+  const [isSessionModalOpen, setIsSessionModalOpen] = useState<boolean>(false);
   const { player, setPlayer } = usePlayerStore(state => state);
+
+  const handleCreateSession = async (name: string) => {
+    const session = await createSession({
+      name: name,
+      teamId: process.env.REACT_APP_DEFAULT_TEAM_ID,
+    });
+
+    if (session.id) {
+      navigate(`${ROUTE_ROOM}/${session.id}`);
+    }
+  };
+
+  const handleSetPlayer = async (player: PlayerInfo) => {
+    setPlayer(player);
+
+    setIsSessionModalOpen(true);
+  };
 
   const fetchPlayer = async (id: string) => {
     const player = await getPlayer(id);
     const { emoji, defaultType: type, name } = player;
 
-    setPlayer({ id, emoji, name, type });
+    await handleSetPlayer({ id, emoji, name, type });
   };
 
   const start = async () => {
@@ -38,24 +56,18 @@ const Home: React.FC = () => {
     setIsUserModalOpen(true);
   };
 
-  useEffect(() => {
-    if (player.id) {
-      const socket = io(API_URL, { query: { playerId: player.id } });
-      setSocket(socket);
-
-      socket.on("room", (roomId: string) => {
-        navigate(`${ROUTE_ROOM}/${roomId}`);
-      });
-    }
-  }, [player, setSocket, navigate]);
-
   return (
     <Wrapper>
       <UserModal
         isOpen={isUserModalOpen}
         setIsOpen={setIsUserModalOpen}
         player={player}
-        setPlayer={setPlayer}
+        setPlayer={handleSetPlayer}
+      />
+      <CreateSessionModal
+        isOpen={isSessionModalOpen}
+        setIsOpen={setIsSessionModalOpen}
+        handleCreateSession={handleCreateSession}
       />
       <motion.div variants={FADE_IN}>
         <div className="flex max-w-2xl mx-auto py-8 h-screen">

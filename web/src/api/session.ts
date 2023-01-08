@@ -15,3 +15,23 @@ export const getSession = async (id: string) => {
   return result;
 };
 
+export interface ICreateSessionBody {
+  name: string;
+  teamId?: string;
+}
+
+export const createSession = async (body: ICreateSessionBody) => {
+  const response = await fetch(`${API_URL}/session`, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+
+  const result = await handleApiResponse(response);
+
+  return result;
+};
+
