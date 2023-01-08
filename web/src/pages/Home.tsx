@@ -9,7 +9,7 @@ import { getPlayer } from "@/api/player";
 import { usePlayerStore } from "@/stores/playerStore";
 import { PlayerInfo } from "@/types/player";
 import { createSession } from "@/api/session";
-import { DEFAULT_TEAM_ID, ROUTE_ROOM } from "@/utils/constants";
+import { ROUTE_ROOM } from "@/utils/constants";
 import CreateSessionModal from "@/components/CreateSessionModal";
 
 const Home: React.FC = () => {
@@ -22,7 +22,7 @@ const Home: React.FC = () => {
   const handleCreateSession = async (name: string) => {
     const session = await createSession({
       name: name,
-      teamId: DEFAULT_TEAM_ID,
+      teamId: process.env.REACT_APP_DEFAULT_TEAM_ID,
     });
 
     if (session.id) {
