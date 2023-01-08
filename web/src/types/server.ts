@@ -7,6 +7,7 @@ export type UpdateResponse = {
 };
 
 export enum EmitEvent {
+  ConnectionError = "connectionError",
   UpdatePlayer = "updatePlayer",
   Settings = "settings",
   Vote = "vote",

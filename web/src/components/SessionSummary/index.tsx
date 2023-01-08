@@ -15,8 +15,15 @@ const SessionSummary: React.FC<SessionSummaryProps> = ({ stories }) => {
     navigate("/");
   };
 
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   return (
     <div className="p-8">
+      <div className="flex mb-4">
+        <Button onClick={handleGoBack}>{"<"} Go Back</Button>
+      </div>
       <div className="text-5xl font-bold pb-8">Session Summary</div>
       <div className="text-light-text dark:text-dark-text pb-4"></div>
       <div className="py-8">

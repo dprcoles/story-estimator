@@ -21,6 +21,7 @@ model players {
 
 model sessions {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
   playerIds String[] @db.ObjectId
   storyIds  String[] @db.ObjectId
   teamId    String?  @db.ObjectId

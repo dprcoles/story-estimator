@@ -1,2 +1,3 @@
 export { default as RoomNavbar } from "./RoomNavbar";
-export { default as SummaryNavbar } from "./SummaryNavbar";
+export { default as DefaultNavbar } from "./DefaultNavbar";
+

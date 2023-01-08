@@ -6,8 +6,10 @@ import cors from "@fastify/cors";
 import { PrismaClient } from "@prisma/client";
 import {
   ICreatePlayerBody,
+  ICreateSessionBody,
   IPlayerByIdParams,
   ISessionByIdParams,
+  ITeamByIdParams,
   IUpdatePlayerBody,
   IUpdatePlayerParams,
   Player,
@@ -16,12 +18,17 @@ import {
   PlayerType,
   Room,
   SessionDetails,
+  sessions,
   ShowType,
   stories,
+  TeamDetails,
 } from "./types";
 
 const fastify = Fastify();
 const prisma = new PrismaClient({ log: ["info"] });
+
+let roomPlayers: Player[] = [];
+let rooms: Room[] = [];
 
 const getTimeInSeconds = () => Math.floor(Date.now() / 1000);
 
@@ -95,7 +102,9 @@ fastify.get<{ Params: ISessionByIdParams }>(
     const { id } = req.params;
 
     try {
-      const session = await prisma.sessions.findFirst({ where: { id: id } });
+      const session = await prisma.sessions.findFirstOrThrow({
+        where: { id: id },
+      });
       const players = await prisma.players.findMany({
         where: { id: { in: session?.playerIds } },
       });
@@ -111,7 +120,8 @@ fastify.get<{ Params: ISessionByIdParams }>(
       }));
 
       const data: SessionDetails = {
-        id: id,
+        id: session.id,
+        name: session.name,
         players: mappedPlayers,
         stories: stories.map((x: stories) => ({
           description: x.description,
@@ -138,6 +148,43 @@ fastify.get<{ Params: ISessionByIdParams }>(
   }
 );
 
+fastify.post<{ Body: ICreateSessionBody }>("/session", async (req, reply) => {
+  const { teamId, name } = req.body;
+
+  const session = await prisma.sessions.create({
+    data: { name: name, playerIds: [], storyIds: [], teamId: teamId },
+  });
+
+  reply.send({ id: session.id });
+});
+
+fastify.get<{ Params: ITeamByIdParams }>("/team/:id", async (req, reply) => {
+  const { id } = req.params;
+
+  try {
+    const team = await prisma.teams.findFirstOrThrow({ where: { id: id } });
+    const sessions = await prisma.sessions.findMany({ where: { teamId: id } });
+    const activeRoomIds = rooms.filter(r => r.active).map(r => r.id);
+
+    const data: TeamDetails = {
+      id: team.id,
+      name: team.name,
+      sessions: sessions.map((s: sessions) => ({
+        id: s.id,
+        name: s.name,
+        active: activeRoomIds.includes(s.id),
+        playerCount: s.playerIds.length,
+        storyCount: s.storyIds.length,
+      })),
+    };
+
+    reply.send(data);
+  } catch {
+    reply.statusCode = 400;
+    reply.send({ message: "[InvalidTeamId]" });
+  }
+});
+
 fastify.listen(process.env.PORT || 4000, "0.0.0.0", (err, address) => {
   if (err) {
     fastify.log.error(err);
@@ -146,23 +193,20 @@ fastify.listen(process.env.PORT || 4000, "0.0.0.0", (err, address) => {
   console.log(`🚀 Server listening at ${address}`);
 });
 
-let players: Player[] = [];
-let rooms: Room[] = [];
-
 const updateRoom = (roomId: any) => {
   io.to(roomId).emit("update", {
-    players: players.filter(p => p.roomId === roomId),
+    players: roomPlayers.filter(p => p.roomId === roomId),
     room: rooms.find(r => r.id === roomId),
   });
 };
 
 const resetGame = (roomId: any) => {
-  const roomPlayers = [...players].filter(p => p.roomId === roomId);
-  roomPlayers.forEach(p => (p.vote = undefined));
+  const playersInRoom = [...roomPlayers].filter(p => p.roomId === roomId);
+  playersInRoom.forEach(p => (p.vote = undefined));
 
   io.to(roomId).emit("reset");
   io.to(roomId).emit("update", {
-    players: roomPlayers,
+    players: playersInRoom,
     room: rooms.find(r => r.id === roomId),
   });
 };
@@ -223,10 +267,8 @@ io.on("connection", async socket => {
   }
 
   if (!session) {
-    session = await prisma.sessions.create({
-      data: { playerIds: [], storyIds: [] },
-    });
-    roomId = session.id;
+    socket.emit("connectionError");
+    return;
   }
 
   if (playerId && !session.playerIds.includes(playerId)) {
@@ -236,11 +278,10 @@ io.on("connection", async socket => {
     });
   }
 
-  socket.emit("room", roomId);
-
   if (!rooms.find(r => r.id === roomId)) {
     rooms.push({
       id: roomId,
+      name: session.name,
       settings: {
         countdown: true,
         fastMode: false,
@@ -252,12 +293,12 @@ io.on("connection", async socket => {
 
   socket.join(roomId);
 
-  if (!players.map(x => x.id).includes(playerId)) {
+  if (!roomPlayers.map(x => x.id).includes(playerId)) {
     const playerInfo = await prisma.players.findFirst({
       where: { id: playerId },
     });
     if (playerInfo) {
-      players.push({
+      roomPlayers.push({
         id: playerId,
         name: playerInfo.name,
         type: playerInfo.defaultType as PlayerType,
@@ -270,10 +311,10 @@ io.on("connection", async socket => {
   updateRoom(roomId);
 
   socket.on("updatePlayer", data => {
-    const player = [...players].find(p => p.id === data.id);
+    const player = [...roomPlayers].find(p => p.id === data.id);
     if (player) {
-      const playerIndex = players.findIndex(x => x.id === data.id);
-      players[playerIndex] = {
+      const playerIndex = roomPlayers.findIndex(x => x.id === data.id);
+      roomPlayers[playerIndex] = {
         ...player,
         ...data,
         vote: data.type !== player.type ? undefined : player.vote,
@@ -291,14 +332,14 @@ io.on("connection", async socket => {
   });
 
   socket.on("vote", vote => {
-    const player = [...players].find(p => p.id === playerId);
+    const player = [...roomPlayers].find(p => p.id === playerId);
     if (player) {
-      const playerIndex = players.findIndex(x => x.id === playerId);
-      players[playerIndex] = { ...player, vote };
+      const playerIndex = roomPlayers.findIndex(x => x.id === playerId);
+      roomPlayers[playerIndex] = { ...player, vote };
       io.to(roomId || "").emit("vote");
     }
 
-    const votersInRoom = [...players].filter(
+    const votersInRoom = [...roomPlayers].filter(
       p => p.roomId === roomId && p.type === PlayerType.Voter
     );
     if (votersInRoom.every(p => p.vote)) {
@@ -322,8 +363,10 @@ io.on("connection", async socket => {
         s => s.id === storyId
       );
 
-      const voters = players.filter(p => p.type === PlayerType.Voter);
-      const spectators = players.filter(p => p.type === PlayerType.Spectator);
+      const voters = roomPlayers.filter(p => p.type === PlayerType.Voter);
+      const spectators = roomPlayers.filter(
+        p => p.type === PlayerType.Spectator
+      );
 
       rooms[roomIndex].stories[storyIndex].voterIds = voters?.map(v => v.id);
       rooms[roomIndex].stories[storyIndex].spectatorIds = spectators?.map(
@@ -429,11 +472,11 @@ io.on("connection", async socket => {
   });
 
   socket.on("pong", () => {
-    players.find(p => p.id === playerId);
+    roomPlayers.find(p => p.id === playerId);
   });
 
   socket.on("disconnect", () => {
-    players = [...players].filter(player => player.id !== playerId);
+    roomPlayers = [...roomPlayers].filter(player => player.id !== playerId);
     updateRoom(roomId);
   });
 });

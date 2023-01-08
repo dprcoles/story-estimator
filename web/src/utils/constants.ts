@@ -40,3 +40,4 @@ export const DEFAULT_STORY: Story = {
   totalTimeSpent: 0,
 };
 
+export const DEFAULT_TEAM_ID = "63af7c67b8818fb7440ebdf5";
