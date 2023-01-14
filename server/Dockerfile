@@ -1,14 +1,16 @@
 FROM node:17-alpine
 WORKDIR /app
 
-COPY package.json .
-COPY yarn.lock .
+RUN npm install -g pnpm
 
-RUN yarn --frozen--lockfile
+COPY pnpm-lock.yaml .
 
-COPY . .
+RUN pnpm fetch
 
-RUN yarn build
+ADD . .
+RUN pnpm install -r --offline
+
+RUN pnpm build
 
 RUN npx prisma generate
 
