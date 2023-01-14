@@ -22,7 +22,7 @@ const Home: React.FC = () => {
   const handleCreateSession = async (name: string) => {
     const session = await createSession({
       name: name,
-      teamId: process.env.REACT_APP_DEFAULT_TEAM_ID,
+      teamId: import.meta.env.VITE_DEFAULT_TEAM_ID,
     });
 
     if (session.id) {

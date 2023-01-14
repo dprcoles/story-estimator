@@ -1,7 +1,7 @@
 import { Story } from "@/types/story";
 
 export const API_URL =
-  process.env.REACT_APP_SERVER_URL || "http://localhost:4000";
+  import.meta.env.VITE_SERVER_URL || "http://localhost:4000";
 
 export const ROUTE_ROOM: string = "/room";
 export const ROUTE_SUMMARY: string = "/summary";
@@ -39,3 +39,4 @@ export const DEFAULT_STORY: Story = {
   estimate: undefined,
   totalTimeSpent: 0,
 };
+
