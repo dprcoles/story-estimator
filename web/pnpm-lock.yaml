@@ -20,7 +20,7 @@ specifiers:
   vite: ^4.0.4
   vite-plugin-svgr: ^2.4.0
   vite-tsconfig-paths: ^4.0.3
-  zustand: ^3.7.2
+  zustand: ^4.3.2
 
 dependencies:
   emoji-mart: 3.0.1_react@18.2.0
@@ -30,7 +30,7 @@ dependencies:
   react-icons: 4.7.1_react@18.2.0
   react-router-dom: 6.6.2_biqbaboplfbrettd7655fr4n2y
   socket.io-client: 4.5.4
-  zustand: 3.7.2_react@18.2.0
+  zustand: 4.3.2_react@18.2.0
 
 devDependencies:
   '@types/emoji-mart': 3.0.9
@@ -631,14 +631,22 @@ packages:
       '@babel/core': 7.20.12
     dev: true
 
-  /@svgr/babel-plugin-remove-jsx-attribute/5.4.0:
-    resolution: {integrity: sha512-yaS4o2PgUtwLFGTKbsiAy6D0o3ugcUhWK0Z45umJ66EPWunAz9fuFw2gJuje6wqQvQWOTJvIahUwndOXb7QCPg==}
+  /@svgr/babel-plugin-remove-jsx-attribute/6.5.0_@babel+core@7.20.12:
+    resolution: {integrity: sha512-8zYdkym7qNyfXpWvu4yq46k41pyNM9SOstoWhKlm+IfdCE1DdnRKeMUPsWIEO/DEkaWxJ8T9esNdG3QwQ93jBA==}
     engines: {node: '>=10'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    dependencies:
+      '@babel/core': 7.20.12
     dev: true
 
-  /@svgr/babel-plugin-remove-jsx-empty-expression/5.0.1:
-    resolution: {integrity: sha512-LA72+88A11ND/yFIMzyuLRSMJ+tRKeYKeQ+mR3DcAZ5I4h5CPWN9AHyUzJbWSYp/u2u0xhmgOe0+E41+GjEueA==}
+  /@svgr/babel-plugin-remove-jsx-empty-expression/6.5.0_@babel+core@7.20.12:
+    resolution: {integrity: sha512-NFdxMq3xA42Kb1UbzCVxplUc0iqSyM9X8kopImvFnB+uSDdzIHOdbs1op8ofAvVRtbg4oZiyRl3fTYeKcOe9Iw==}
     engines: {node: '>=10'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    dependencies:
+      '@babel/core': 7.20.12
     dev: true
 
   /@svgr/babel-plugin-replace-jsx-attribute-value/6.5.1_@babel+core@7.20.12:
@@ -694,8 +702,8 @@ packages:
     dependencies:
       '@babel/core': 7.20.12
       '@svgr/babel-plugin-add-jsx-attribute': 6.5.1_@babel+core@7.20.12
-      '@svgr/babel-plugin-remove-jsx-attribute': 5.4.0
-      '@svgr/babel-plugin-remove-jsx-empty-expression': 5.0.1
+      '@svgr/babel-plugin-remove-jsx-attribute': 6.5.0_@babel+core@7.20.12
+      '@svgr/babel-plugin-remove-jsx-empty-expression': 6.5.0_@babel+core@7.20.12
       '@svgr/babel-plugin-replace-jsx-attribute-value': 6.5.1_@babel+core@7.20.12
       '@svgr/babel-plugin-svg-dynamic-title': 6.5.1_@babel+core@7.20.12
       '@svgr/babel-plugin-svg-em-dimensions': 6.5.1_@babel+core@7.20.12
@@ -841,7 +849,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.21.4
-      caniuse-lite: 1.0.30001444
+      caniuse-lite: 1.0.30001445
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -866,7 +874,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001444
+      caniuse-lite: 1.0.30001445
       electron-to-chromium: 1.4.284
       node-releases: 2.0.8
       update-browserslist-db: 1.0.10_browserslist@4.21.4
@@ -887,8 +895,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /caniuse-lite/1.0.30001444:
-    resolution: {integrity: sha512-ecER9xgJQVMqcrxThKptsW0pPxSae8R2RB87LNa+ivW9ppNWRHEplXcDzkCOP4LYWGj8hunXLqaiC41iBATNyg==}
+  /caniuse-lite/1.0.30001445:
+    resolution: {integrity: sha512-8sdQIdMztYmzfTMO6KfLny878Ln9c2M0fc7EH60IjlP4Dc4PiCy7K2Vl3ITmWgOyPgVQKa5x+UP/KqFsxj4mBg==}
     dev: true
 
   /chalk/2.4.2:
@@ -1709,6 +1717,14 @@ packages:
       picocolors: 1.0.0
     dev: true
 
+  /use-sync-external-store/1.2.0_react@18.2.0:
+    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /util-deprecate/1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
     dev: true
@@ -1806,14 +1822,18 @@ packages:
     engines: {node: '>= 6'}
     dev: true
 
-  /zustand/3.7.2_react@18.2.0:
-    resolution: {integrity: sha512-PIJDIZKtokhof+9+60cpockVOq05sJzHCriyvaLBmEJixseQ1a5Kdov6fWZfWOu5SK9c+FhH1jU0tntLxRJYMA==}
+  /zustand/4.3.2_react@18.2.0:
+    resolution: {integrity: sha512-rd4haDmlwMTVWVqwvgy00ny8rtti/klRoZjFbL/MAcDnmD5qSw/RZc+Vddstdv90M5Lv6RPgWvm1Hivyn0QgJw==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
+      immer: '>=9.0'
       react: '>=16.8'
     peerDependenciesMeta:
+      immer:
+        optional: true
       react:
         optional: true
     dependencies:
       react: 18.2.0
+      use-sync-external-store: 1.2.0_react@18.2.0
     dev: false
