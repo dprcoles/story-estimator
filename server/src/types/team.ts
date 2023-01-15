@@ -14,5 +14,6 @@ export interface TeamDetails {
   id: string;
   name: string;
   sessions: TeamSession[];
+  jiraIntegrationId: string | null;
 }
 

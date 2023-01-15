@@ -8,8 +8,14 @@ datasource db {
 }
 
 type Vote {
-  playerId String @db.ObjectId
+  playerId String  @db.ObjectId
   vote     String?
+}
+
+type JqlQuery {
+  id    String @db.ObjectId 
+  name  String
+  query String
 }
 
 model players {
@@ -37,10 +43,20 @@ model stories {
   totalTimeSpent Int?
   voterIds       String[] @db.ObjectId
   votes          Vote[]
-  sessionId      String @db.ObjectId
+  sessionId      String   @db.ObjectId
 }
 
 model teams {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  name              String
+  jiraIntegrationId String? @db.ObjectId
+}
+
+model jira_integrations {
+  id             String     @id @default(auto()) @map("_id") @db.ObjectId
+  apiToken       String
+  configuredById String     @db.ObjectId
+  domain         String
+  email          String
+  jqlQueries     JqlQuery[]
 }

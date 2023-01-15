@@ -18,10 +18,6 @@ const App = () => {
           element={<Room theme={theme} setTheme={setTheme} />}
         />
         <Route
-          path="/:teamId/room/:id"
-          element={<Room theme={theme} setTheme={setTheme} />}
-        />
-        <Route
           path="summary/:id"
           element={<Summary theme={theme} setTheme={setTheme} />}
         />

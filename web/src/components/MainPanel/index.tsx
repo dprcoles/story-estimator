@@ -8,6 +8,7 @@ import InviteButton from "./InviteButton";
 import GetStartedDisplay from "./GetStartedDisplay";
 import CurrentStoryDisplay from "./CurrentStoryDisplay";
 import NextStoryDisplay from "./NextStoryDisplay";
+import { RoomIntegrations } from "@/types/room";
 
 interface MainPanelProps {
   vote: string;
@@ -20,6 +21,8 @@ interface MainPanelProps {
   stories: Array<Story>;
   setIsSettingsModalOpen: (isSettingsModalOpen: boolean) => void;
   setIsStoryModalOpen: (isStoryModalOpen: boolean) => void;
+  setIsJiraImportModalOpen: (isJiraImportModalOpen: boolean) => void;
+  integrations: RoomIntegrations | null;
 }
 
 const MainPanel: React.FC<MainPanelProps> = ({
@@ -33,6 +36,8 @@ const MainPanel: React.FC<MainPanelProps> = ({
   stories,
   setIsSettingsModalOpen,
   setIsStoryModalOpen,
+  setIsJiraImportModalOpen,
+  integrations,
 }) => {
   const [tab, setTab] = useState<InfoCardTab>(InfoCardTab.CurrentStory);
   const currentStory = stories.find(s => s.active);
@@ -52,7 +57,11 @@ const MainPanel: React.FC<MainPanelProps> = ({
   return (
     <div className="bg-light-panels dark:bg-dark-panels rounded-lg py-4 px-8 main-panel__container">
       {!hasStories ? (
-        <GetStartedDisplay setIsStoryModalOpen={setIsStoryModalOpen} />
+        <GetStartedDisplay
+          integrations={integrations}
+          setIsJiraImportModalOpen={setIsJiraImportModalOpen}
+          setIsStoryModalOpen={setIsStoryModalOpen}
+        />
       ) : (
         <>
           <div className="flex">
@@ -91,7 +100,11 @@ const MainPanel: React.FC<MainPanelProps> = ({
                   vote={vote}
                 />
               ) : (
-                <NextStoryDisplay setIsStoryModalOpen={setIsStoryModalOpen} />
+                <NextStoryDisplay
+                  setIsStoryModalOpen={setIsStoryModalOpen}
+                  setIsJiraImportModalOpen={setIsJiraImportModalOpen}
+                  integrations={integrations}
+                />
               )}
             </>
           )}
