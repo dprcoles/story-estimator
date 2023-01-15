@@ -34,6 +34,7 @@ import {
   SafeJiraIntegration,
   ShowType,
   stories,
+  JqlQuery,
 } from "./types";
 
 const fastify = Fastify();
@@ -174,7 +175,7 @@ fastify.get<{ Querystring: IJqlQueryByIdQuery }>("/jql", async (req, reply) => {
 
     const { apiToken, domain, email } = settings;
 
-    const query = settings.jqlQueries.find(q => q.id === queryId);
+    const query = settings.jqlQueries.find((q: JqlQuery) => q.id === queryId);
 
     if (!query) return;
 
