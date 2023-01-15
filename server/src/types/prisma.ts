@@ -8,6 +8,16 @@ export type Vote = {
 };
 
 /**
+ * Model JqlQuery
+ *
+ */
+export type JqlQuery = {
+  id: string;
+  name: string;
+  query: string;
+};
+
+/**
  * Model players
  *
  */
@@ -54,4 +64,18 @@ export type stories = {
 export type teams = {
   id: string;
   name: string;
+  jiraIntegrationId: string | null;
 };
+
+/**
+ * Model jira_integrations
+ *
+ */
+export type jira_integrations = {
+  id: string;
+  apiToken: string;
+  configuredById: string;
+  domain: string;
+  jqlQueries: JqlQuery[];
+};
+
