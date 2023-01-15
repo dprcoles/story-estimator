@@ -16,4 +16,3 @@ export interface IJqlQueryByIdQuery {
 type SafeJiraIntegrationType = Omit<jira_integrations, "apiToken">;
 
 export type SafeJiraIntegration = SafeJiraIntegrationType;
-

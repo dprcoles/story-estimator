@@ -11,6 +11,7 @@ import { createSession } from "@/api/session";
 import { ROUTE_ROOM } from "@/utils/constants";
 import SessionsPanel from "@/components/Teams/SessionsPanel";
 import Definitions from "@/components/Teams/Definitions";
+import Integrations from "@/components/Teams/Integrations";
 
 interface TeamPageProps {
   theme: string;
@@ -34,26 +35,30 @@ const Team: React.FC<TeamPageProps> = ({ theme, setTheme }) => {
       id: TeamPageTab.Definitions,
       label: "Definitions",
     },
+    {
+      id: TeamPageTab.Integrations,
+      label: "Integrations",
+    },
   ];
+
+  const fetchTeamData = async (teamId: string) => {
+    const data = await getTeam(teamId);
+    setTeamData(data);
+    setIsLoadingData(false);
+  };
 
   const handleCreateSession = async (name: string) => {
     const session = await createSession({ name: name, teamId: id });
 
     if (session.id) {
-      navigate(`/${id}/${ROUTE_ROOM}/${session.id}`);
+      navigate(`${ROUTE_ROOM}/${session.id}`);
     }
   };
 
   useEffect(() => {
     setIsLoadingData(true);
     if (id) {
-      const fetchTeamData = async () => {
-        const data = await getTeam(id);
-        setTeamData(data);
-        setIsLoadingData(false);
-      };
-
-      fetchTeamData();
+      fetchTeamData(id);
     }
   }, [id]);
 
@@ -103,6 +108,13 @@ const Team: React.FC<TeamPageProps> = ({ theme, setTheme }) => {
                 />
               )}
               {tab === TeamPageTab.Definitions && <Definitions />}
+              {tab === TeamPageTab.Integrations && (
+                <Integrations
+                  integrations={{
+                    jira: teamData.jiraIntegrationId,
+                  }}
+                />
+              )}
             </div>
           </div>
         </div>

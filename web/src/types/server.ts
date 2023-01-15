@@ -22,5 +22,6 @@ export enum EmitEvent {
   Pong = "pong",
   CompleteSession = "completeSession",
   SessionComplete = "sessionComplete",
+  ImportStories = "importStories",
 }
 

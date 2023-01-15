@@ -4,6 +4,7 @@ import short from "short-uuid";
 import { Server } from "socket.io";
 import cors from "@fastify/cors";
 import { PrismaClient } from "@prisma/client";
+import retry from "async-retry";
 import {
   GetIssuesByJqlQuery,
   GetJiraIntegrationByIdQuery,
@@ -29,6 +30,7 @@ import {
   Player,
   PlayerType,
   Room,
+  RoomIntegrations,
   SafeJiraIntegration,
   ShowType,
   stories,
@@ -262,13 +264,16 @@ io.on("connection", async socket => {
   let session = null;
 
   if (roomId) {
-    try {
-      session = await prisma.sessions.findUnique({
-        where: { id: roomId },
-      });
-    } catch (err) {
-      console.error("[InvalidRoomId]: ", err);
-    }
+    session = await retry(
+      async () => {
+        return await prisma.sessions.findFirstOrThrow({
+          where: { id: roomId },
+        });
+      },
+      {
+        retries: 5,
+      }
+    );
   }
 
   if (!session) {
@@ -284,6 +289,17 @@ io.on("connection", async socket => {
   }
 
   if (!rooms.find(r => r.id === roomId)) {
+    let integrations: RoomIntegrations | null = null;
+    if (session.teamId) {
+      const teamData = await prisma.teams.findFirst({
+        where: { id: session.teamId },
+      });
+
+      integrations = {
+        jira: teamData?.jiraIntegrationId,
+      };
+    }
+
     rooms.push({
       id: roomId,
       name: session.name,
@@ -293,6 +309,8 @@ io.on("connection", async socket => {
       },
       stories: [],
       active: true,
+      teamId: session.teamId,
+      integrations,
     });
   }
 
@@ -468,6 +486,40 @@ io.on("connection", async socket => {
       rooms[roomIndex].stories[storyIndex].description = story.description;
     }
     updateRoom(roomId);
+  });
+
+  socket.on("importStories", stories => {
+    if (roomId) {
+      const roomIndex = rooms.findIndex(r => r.id === roomId);
+      let firstAddedStoryId = "";
+
+      stories.forEach((story: string) => {
+        const storyId = short().generate();
+
+        if (!firstAddedStoryId) {
+          firstAddedStoryId = storyId;
+        }
+
+        rooms[roomIndex].stories.push({
+          id: storyId,
+          description: story,
+          roomId: roomId,
+          active: false,
+          estimate: undefined,
+          startSeconds: undefined,
+          endSeconds: undefined,
+          totalTimeSpent: undefined,
+          spectatorIds: [],
+          voterIds: [],
+          votes: [],
+        });
+      });
+
+      if (!rooms[roomIndex].stories.find(s => s.active)) {
+        updateActiveStory(roomId, firstAddedStoryId);
+        return;
+      }
+    }
   });
 
   socket.on("setActiveStory", storyId => {

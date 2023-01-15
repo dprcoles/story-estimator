@@ -28,6 +28,8 @@ import { API_URL, ROUTE_ROOM, ROUTE_SUMMARY } from "@/utils/constants";
 import { getPlayer } from "@/api/player";
 import { usePlayerStore } from "@/stores/playerStore";
 import AddStoryModal from "@/components/StoryPanel/AddStoryModal";
+import JiraImportModal from "@/components/JiraImportModal";
+import { JiraIssue } from "@/types/jira";
 
 interface RoomPageProps {
   theme: string;
@@ -43,6 +45,8 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
   const [isSettingsModalOpen, setIsSettingsModalOpen] =
     useState<boolean>(false);
   const [isStoryModalOpen, setIsStoryModalOpen] = useState<boolean>(false);
+  const [isJiraImportModalOpen, setIsJiraImportModalOpen] =
+    useState<boolean>(false);
   const [players, setPlayers] = useState<Array<Player>>([]);
   const [room, setRoom] = useState<Room>();
   const [stories, setStories] = useState<Array<Story>>([]);
@@ -125,6 +129,14 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
     emit(EmitEvent.Settings, roomSettings);
   };
 
+  const handleJiraImport = (issues: JiraIssue[]) => {
+    emit(
+      EmitEvent.ImportStories,
+      issues.map(x => x.key)
+    );
+    setIsJiraImportModalOpen(false);
+  };
+
   socket?.on(EmitEvent.ConnectionError, () => {
     navigate("/");
   });
@@ -202,6 +214,14 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
           setIsOpen={setIsStoryModalOpen}
           handleSave={handleSaveStory}
         />
+        {room?.integrations?.jira && (
+          <JiraImportModal
+            isOpen={isJiraImportModalOpen}
+            setIsOpen={setIsJiraImportModalOpen}
+            integrationId={room.integrations.jira}
+            handleImport={handleJiraImport}
+          />
+        )}
         {player.name.length > 0 && room && (
           <>
             <div className="p-4 lg:mx-auto">
@@ -233,6 +253,8 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
                     vote={vote}
                     setIsSettingsModalOpen={setIsSettingsModalOpen}
                     setIsStoryModalOpen={setIsStoryModalOpen}
+                    setIsJiraImportModalOpen={setIsJiraImportModalOpen}
+                    integrations={room.integrations}
                   />
                 </div>
                 <div className="hidden lg:max-w-1xl lg:block">
@@ -256,6 +278,8 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
                       vote={vote}
                       setIsSettingsModalOpen={setIsSettingsModalOpen}
                       setIsStoryModalOpen={setIsStoryModalOpen}
+                      setIsJiraImportModalOpen={setIsJiraImportModalOpen}
+                      integrations={room.integrations}
                     />
                   )}
                   {activeMobileTab === MobileTabBarType.Stories && (

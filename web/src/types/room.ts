@@ -6,10 +6,16 @@ export type Room = {
   settings: RoomSettings;
   stories: Story[];
   active: boolean;
+  teamId: string | null;
+  integrations: RoomIntegrations | null;
 };
 
 export type RoomSettings = {
   countdown: boolean;
   fastMode: boolean;
 };
+
+export interface RoomIntegrations {
+  jira?: string | null;
+}
 
