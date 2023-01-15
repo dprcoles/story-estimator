@@ -71,11 +71,15 @@ const JiraQueryListItem: React.FC<JiraQueryListProps> = ({
               </span>
             </button>
           </div>
-          <div className="py-2">
+          <div className="py-2 overflow-y-auto max-h-96">
             {isLoading ? (
               <div className="text-center">Loading...</div>
             ) : (
-              results.map(x => <JiraIssueCard key={x.key} issue={x} />)
+              results.map(x => (
+                <div className="my-2 pr-2">
+                  <JiraIssueCard key={x.key} issue={x} />
+                </div>
+              ))
             )}
           </div>
         </div>

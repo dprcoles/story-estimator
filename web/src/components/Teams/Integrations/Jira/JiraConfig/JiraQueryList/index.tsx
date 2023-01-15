@@ -14,11 +14,9 @@ const JiraQueryList: React.FC<JiraQueryListProps> = ({
   return (
     <div>
       {queries.map(q => (
-        <JiraQueryListItem
-          key={q.name}
-          integrationId={integrationId}
-          query={q}
-        />
+        <div key={q.name} className="my-2">
+          <JiraQueryListItem integrationId={integrationId} query={q} />
+        </div>
       ))}
     </div>
   );

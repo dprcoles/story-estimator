@@ -3,12 +3,19 @@ import { JiraIssue } from "@/types/jira";
 
 interface JiraIssueCardProps {
   issue: JiraIssue;
+  selected?: boolean;
 }
 
-const JiraIssueCard: React.FC<JiraIssueCardProps> = ({ issue }) => {
+const JiraIssueCard: React.FC<JiraIssueCardProps> = ({ issue, selected }) => {
   const { key, priority, status, summary, type } = issue;
   return (
-    <div className="p-2 w-full rounded-md border border-light-border-color dark:border-dark-border-color bg-light-panels dark:bg-dark-panels">
+    <div
+      className={`p-2 w-full rounded-md border bg-light-panels dark:bg-dark-panels ${
+        selected
+          ? "border-light-main dark:border-dark-main"
+          : "border-light-border-color dark:border-dark-border-color"
+      }`}
+    >
       <div className="grid grid-cols-1">
         <div className="flex space-x-0 md:space-x-2 items-center pb-4">
           <img

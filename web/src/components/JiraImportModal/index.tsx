@@ -121,7 +121,7 @@ const JiraImportModal: React.FC<JiraImportModalProps> = ({
                     </div>
                   </div>
                 )}
-                <div className="p-4">
+                <div className="p-4 overflow-y-auto max-h-96">
                   {isLoadingIssues && (
                     <div className="text-center">Loading...</div>
                   )}
@@ -138,7 +138,10 @@ const JiraImportModal: React.FC<JiraImportModalProps> = ({
                             }
                           />
                         </div>
-                        <JiraIssueCard issue={x} />
+                        <JiraIssueCard
+                          issue={x}
+                          selected={selectedIssueKeys.includes(x.key)}
+                        />
                       </div>
                     ))}
                 </div>
