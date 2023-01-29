@@ -3,6 +3,7 @@ import { useSocketStore } from "@/stores/socketStore";
 import { EmitEvent } from "@/types/server";
 import { Story } from "@/types/story";
 import StoryCard from "./StoryCard";
+import { usePlayerStore } from "@/stores/playerStore";
 interface StoryPanelProps {
   stories: Story[];
   setIsStoryModalOpen: (isStoryModalOpen: boolean) => void;
@@ -14,6 +15,7 @@ const StoryPanel: React.FC<StoryPanelProps> = ({
   handleSaveStory,
   setIsStoryModalOpen,
 }) => {
+  const { player } = usePlayerStore();
   const { emit } = useSocketStore();
 
   const handleSetActive = (id: string) => emit(EmitEvent.SetActiveStory, id);
@@ -24,22 +26,23 @@ const StoryPanel: React.FC<StoryPanelProps> = ({
         <div className="text-md font-medium text-light-text dark:text-dark-text">
           Stories
         </div>
-        <button
-          onClick={() => setIsStoryModalOpen(true)}
-          className="ml-auto rounded-full hover:bg-light-hover dark:hover:bg-dark-hover w-10 h-10 items-center"
-        >
-          <span className="text-light-text dark:text-dark-text text-2xl">
-            +
-          </span>
-        </button>
+        {player.admin && (
+          <button
+            onClick={() => setIsStoryModalOpen(true)}
+            className="ml-auto rounded-full hover:bg-light-hover dark:hover:bg-dark-hover w-10 h-10 items-center"
+          >
+            <span className="text-light-text dark:text-dark-text text-2xl">
+              +
+            </span>
+          </button>
+        )}
       </div>
-
       <div className="pr-2 space-y-2 overflow-y-scroll overflow-x-hidden panel__card-container">
         {stories.map(x => (
           <div key={x.id}>
             <StoryCard
               story={x}
-              onClick={handleSetActive}
+              onClick={player.admin ? handleSetActive : undefined}
               onEdit={handleSaveStory}
             />
           </div>

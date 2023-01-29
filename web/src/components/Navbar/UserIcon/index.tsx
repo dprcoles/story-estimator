@@ -1,8 +1,8 @@
 import React from "react";
-import { Player } from "@/types/player";
+import { PlayerInfo } from "@/types/player";
 
 interface UserIconProps {
-  player?: Player;
+  player?: PlayerInfo;
   onEdit: () => void;
   theme: string;
   setTheme: (theme: string) => void;

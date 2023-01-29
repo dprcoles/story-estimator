@@ -142,6 +142,10 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
   });
 
   socket?.on(EmitEvent.Update, (data: UpdateResponse) => {
+    const currentPlayer = data.players.find(x => x.id === player.id);
+
+    setPlayer({ ...player, admin: currentPlayer?.admin });
+
     setPlayers(data.players);
     setRoom(data.room);
     setStories(data.room.stories);
@@ -208,6 +212,7 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
           setIsOpen={setIsSettingsModalOpen}
           settings={room?.settings as RoomSettings}
           setSettings={handleSetRoomSettings}
+          players={players}
         />
         <AddStoryModal
           isOpen={isStoryModalOpen}
@@ -226,7 +231,6 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
           <>
             <div className="p-4 lg:mx-auto">
               <RoomNavbar
-                player={player as Player}
                 setIsUserModalOpen={setIsUserModalOpen}
                 theme={theme}
                 setTheme={setTheme}

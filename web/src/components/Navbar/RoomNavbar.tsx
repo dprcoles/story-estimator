@@ -3,20 +3,21 @@ import { Player } from "@/types/player";
 import UserIcon from "./UserIcon";
 import AnimatedLogo from "./AnimatedLogo";
 import ThemeToggle from "./ThemeToggle";
+import { usePlayerStore } from "@/stores/playerStore";
 
 interface RoomNavbarProps {
-  player?: Player;
   setIsUserModalOpen: (isUserModalOpen: boolean) => void;
   theme: string;
   setTheme: (theme: string) => void;
 }
 
 const RoomNavbar: React.FC<RoomNavbarProps> = ({
-  player,
   setIsUserModalOpen,
   theme,
   setTheme,
 }) => {
+  const { player } = usePlayerStore(state => state);
+
   return (
     <div className="top-0 z-20 pb-2 md:px-0">
       <div className="flex">

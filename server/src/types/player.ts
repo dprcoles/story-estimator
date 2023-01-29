@@ -8,6 +8,7 @@ export type Player = {
   name: string;
   type: PlayerType;
   emoji: string;
+  admin: boolean;
   roomId: string | string[];
   vote: string | undefined;
 };

@@ -1,11 +1,14 @@
+import { PlayerInfo } from "@/types/player";
 import { RoomSettings } from "@/types/room";
 import {
+  ADMIN_DESCRIPTION,
   COUNTDOWN_DESCRIPTION,
   FAST_MODE_DESCRIPTION,
 } from "@/utils/constants";
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import Button, { ButtonStyle } from "../Button";
+import Select from "../Select";
 import ToggleButton from "../ToggleButton";
 
 interface RoomSettingsModalProps {
@@ -13,6 +16,7 @@ interface RoomSettingsModalProps {
   setIsOpen: (isOpen: boolean) => void;
   settings: RoomSettings;
   setSettings: (settings: RoomSettings) => void;
+  players: PlayerInfo[];
 }
 
 const RoomSettingsModal: React.FC<RoomSettingsModalProps> = ({
@@ -20,6 +24,7 @@ const RoomSettingsModal: React.FC<RoomSettingsModalProps> = ({
   setIsOpen,
   settings,
   setSettings,
+  players,
 }) => {
   const [localSettings, setLocalSettings] = useState<RoomSettings>();
 
@@ -70,6 +75,16 @@ const RoomSettingsModal: React.FC<RoomSettingsModalProps> = ({
                     checked={localSettings?.fastMode}
                     setChecked={checked => handleSetValue(checked, "fastMode")}
                     description={FAST_MODE_DESCRIPTION}
+                  />
+                  <Select
+                    label="Room Admin"
+                    onChange={val => handleSetValue(val, "admin")}
+                    option={players.map(p => ({
+                      label: `${p.emoji} ${p.name}`,
+                      value: p.id,
+                    }))}
+                    value={players.find(p => p.admin)?.id || ""}
+                    description={ADMIN_DESCRIPTION}
                   />
                 </div>
                 <div className="flex items-center justify-end p-6 border-t border-solid border-light-buttons dark:border-dark-buttons rounded-b">

@@ -29,6 +29,9 @@ export const COUNTDOWN_DESCRIPTION =
 export const FAST_MODE_DESCRIPTION =
   "Will force users to vote within a 10 second window after the first vote has been submitted.";
 
+export const ADMIN_DESCRIPTION =
+  "Select who you would like to be the admin of this session.";
+
 export const DEFAULT_STORY: Story = {
   id: "",
   description: "",

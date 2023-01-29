@@ -1,11 +1,12 @@
 import React from "react";
+import classnames from "classnames";
 import { Story } from "@/types/story";
 import { getTimeSpent } from "@/utils/functions";
 import StoryDescription from "../StoryDescription";
 
 interface StoryCardProps {
   story: Story;
-  onClick: (id: string) => void;
+  onClick?: (id: string) => void;
   onEdit: (story: Story) => void;
 }
 
@@ -13,14 +14,18 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, onClick, onEdit }) => {
   const handleUpdateDescription = (description: string) =>
     onEdit({ ...story, description });
 
+  const isClickable = !story.active && onClick;
+
   return (
     <div
-      className={`md:w-60 p-4 bg-light-buttons dark:bg-dark-buttons rounded-md border-2 ease-linear transition-all duration-150 ${
-        story.active
-          ? "border-light-main dark:border-dark-main"
-          : "border-transparent cursor-pointer bg-transparent hover:bg-light-hover dark:hover:bg-dark-hover"
-      }`}
-      onClick={() => (story.active ? {} : onClick(story.id))}
+      className={classnames(
+        "md:w-60 p-4 bg-light-buttons dark:bg-dark-buttons rounded-md border-2 ease-linear transition-all duration-150",
+        story.active && "border-light-main dark:border-dark-main",
+        !story.active && "border-transparent bg-transparent",
+        isClickable &&
+          "cursor-pointer hover:bg-light-hover dark:hover:bg-dark-hover"
+      )}
+      onClick={() => (isClickable ? onClick(story.id) : undefined)}
     >
       <StoryDescription
         key={story.id}

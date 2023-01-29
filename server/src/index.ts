@@ -324,6 +324,7 @@ io.on("connection", async socket => {
     if (playerInfo) {
       roomPlayers.push({
         id: playerId,
+        admin: roomPlayers.length === 0,
         name: playerInfo.name,
         type: playerInfo.defaultType as PlayerType,
         emoji: playerInfo.emoji,
@@ -351,6 +352,21 @@ io.on("connection", async socket => {
     if (roomId) {
       const roomIndex = rooms.findIndex(r => r.id == roomId);
       rooms[roomIndex].settings = settings;
+
+      const currentRoomAdminIndex = roomPlayers.findIndex(
+        rp => rp.roomId === roomId && rp.admin
+      );
+      const playerToUpdateIndex = roomPlayers.findIndex(
+        rp => rp.id === settings.admin
+      );
+
+      if (currentRoomAdminIndex > -1) {
+        roomPlayers[currentRoomAdminIndex].admin = false;
+      }
+
+      if (playerToUpdateIndex > -1) {
+        roomPlayers[playerToUpdateIndex].admin = true;
+      }
     }
     updateRoom(roomId);
   });
