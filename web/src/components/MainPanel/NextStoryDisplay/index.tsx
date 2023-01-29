@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import Button, { ButtonStyle } from "@/components/Button";
 import { useSocketStore } from "@/stores/socketStore";
+import { usePlayerStore } from "@/stores/playerStore";
 import { EmitEvent } from "@/types/server";
 import { FADE_IN, STAGGER } from "@/utils/variants";
 import { RoomIntegrations } from "@/types/room";
@@ -18,6 +19,7 @@ const NextStoryDisplay: React.FC<NextStoryDisplayProps> = ({
   setIsJiraImportModalOpen,
   integrations,
 }) => {
+  const { player } = usePlayerStore(state => state);
   const { emit } = useSocketStore();
 
   const handleCompleteSession = () => {
@@ -34,15 +36,19 @@ const NextStoryDisplay: React.FC<NextStoryDisplayProps> = ({
           You can either continue this session by adding another story, or end
           the session.
         </div>
-        <motion.div
-          variants={FADE_IN}
-          className="flex justify-center space-x-8"
-        >
-          <Button onClick={() => setIsStoryModalOpen(true)}>Add Story</Button>
-          <Button onClick={handleCompleteSession} style={ButtonStyle.Primary}>
-            End Session
-          </Button>
-        </motion.div>
+        {player.admin ? (
+          <motion.div
+            variants={FADE_IN}
+            className="flex justify-center space-x-8"
+          >
+            <Button onClick={() => setIsStoryModalOpen(true)}>Add Story</Button>
+            <Button onClick={handleCompleteSession} style={ButtonStyle.Primary}>
+              End Session
+            </Button>
+          </motion.div>
+        ) : (
+          <div>Waiting for room admin...</div>
+        )}
       </motion.div>
       <ImportFromJiraButton
         isEnabled={Boolean(integrations?.jira)}

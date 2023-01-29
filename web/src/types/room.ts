@@ -13,6 +13,7 @@ export type Room = {
 export type RoomSettings = {
   countdown: boolean;
   fastMode: boolean;
+  admin: string;
 };
 
 export interface RoomIntegrations {

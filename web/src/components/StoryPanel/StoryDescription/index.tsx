@@ -1,3 +1,4 @@
+import { usePlayerStore } from "@/stores/playerStore";
 import React, { useEffect, useState } from "react";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import ActionButton from "../../ActionButton";
@@ -13,6 +14,7 @@ const StoryDescription: React.FC<StoryDescriptionProps> = ({
   description,
   setDescription,
 }) => {
+  const { player } = usePlayerStore(state => state);
   const [localDescription, setLocalDescription] = useState<string>("");
   const [showInput, setShowInput] = useState<boolean>(false);
 
@@ -51,7 +53,7 @@ const StoryDescription: React.FC<StoryDescriptionProps> = ({
                 ? "text-black dark:text-white"
                 : "text-light-text dark:text-dark-text"
             }`}
-            onClick={() => setShowInput(true)}
+            onClick={player.admin ? () => setShowInput(true) : undefined}
           >
             {description}
           </span>

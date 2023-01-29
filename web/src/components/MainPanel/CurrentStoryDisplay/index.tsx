@@ -9,6 +9,7 @@ import { FiSettings } from "react-icons/fi";
 import InfoCard from "../InfoCard";
 import Option from "../Option";
 import TimeSpentDisplay from "../TimeSpentDisplay";
+import { usePlayerStore } from "@/stores/playerStore";
 
 interface CurrentStoryDisplayProps {
   currentStory: Story;
@@ -35,6 +36,8 @@ const CurrentStoryDisplay: React.FC<CurrentStoryDisplayProps> = ({
   stories,
   setIsSettingsModalOpen,
 }) => {
+  const { player } = usePlayerStore(state => state);
+
   return (
     <div>
       <div className="grid grid-cols-2 mb-4">
@@ -49,13 +52,17 @@ const CurrentStoryDisplay: React.FC<CurrentStoryDisplayProps> = ({
           />
         </div>
         <div className="ml-auto">
-          <button
-            onClick={() => setIsSettingsModalOpen(true)}
-            className="rounded-full hover:bg-light-hover dark:hover:bg-dark-hover w-10 h-10 flex justify-center items-center"
-            disabled={countdownStatus === CountdownStatus.STARTED || showVotes}
-          >
-            <FiSettings className="text-light-text dark:text-dark-text text-xl m-0" />
-          </button>
+          {player.admin && (
+            <button
+              onClick={() => setIsSettingsModalOpen(true)}
+              className="rounded-full hover:bg-light-hover dark:hover:bg-dark-hover w-10 h-10 flex justify-center items-center"
+              disabled={
+                countdownStatus === CountdownStatus.STARTED || showVotes
+              }
+            >
+              <FiSettings className="text-light-text dark:text-dark-text text-xl m-0" />
+            </button>
+          )}
         </div>
       </div>
       <InfoCard
@@ -97,3 +104,4 @@ const CurrentStoryDisplay: React.FC<CurrentStoryDisplayProps> = ({
 };
 
 export default CurrentStoryDisplay;
+

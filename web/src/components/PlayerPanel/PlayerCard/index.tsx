@@ -17,7 +17,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
   countdownStatus,
   isCurrentPlayer,
 }) => {
-  const { name, type, vote } = player;
+  const { name, type, vote, admin } = player;
 
   return (
     <div className="p-2 flex">
@@ -30,7 +30,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
               : "text-black dark:text-white"
           }`}
         >
-          {name}
+          {`${name}${admin ? " 👑" : ""}`}
         </div>
         <div className="text-sm text-light-text dark:text-dark-text">
           {type === PlayerType.Voter && vote && <span>Voted</span>}

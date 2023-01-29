@@ -8,6 +8,7 @@ export interface PlayerInfo {
   emoji: string;
   name: string;
   type: PlayerType;
+  admin?: boolean;
 }
 
 export interface Player extends PlayerInfo {
