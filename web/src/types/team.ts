@@ -1,5 +1,5 @@
 export interface TeamSession {
-  id: string;
+  id: number;
   name: string;
   active: boolean;
   playerCount: number;
@@ -7,10 +7,10 @@ export interface TeamSession {
 }
 
 export interface TeamDetails {
-  id: string;
+  id: number;
   name: string;
   sessions: TeamSession[];
-  jiraIntegrationId: string | null;
+  jiraIntegrationId: number | null;
 }
 
 export enum TeamPageTab {

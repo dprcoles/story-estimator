@@ -8,7 +8,7 @@ import Button, { ButtonStyle } from "../../Button";
 
 interface FinalEstimateProps {
   options: Array<string>;
-  currentStoryId: string;
+  currentStoryId: number;
 }
 
 const FinalEstimate: React.FC<FinalEstimateProps> = ({

@@ -8,7 +8,7 @@ import FinalEstimate from "../FinalEstimate";
 interface ResultsProps {
   players: Array<Player>;
   options: Array<string>;
-  currentStoryId: string;
+  currentStoryId: number;
 }
 
 const Results: React.FC<ResultsProps> = ({

@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
 interface GetPlayerQueryParams {
-  id: string;
+  id: number;
 }
 
 export default async (prisma: PrismaClient, params: GetPlayerQueryParams) => {
@@ -11,3 +11,4 @@ export default async (prisma: PrismaClient, params: GetPlayerQueryParams) => {
 
   return player;
 };
+

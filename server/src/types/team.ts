@@ -1,9 +1,9 @@
 export interface ITeamByIdParams {
-  id: string;
+  id: number;
 }
 
 export interface TeamSession {
-  id: string;
+  id: number;
   name: string;
   playerCount: number;
   storyCount: number;
@@ -11,9 +11,9 @@ export interface TeamSession {
 }
 
 export interface TeamDetails {
-  id: string;
+  id: number;
   name: string;
   sessions: TeamSession[];
-  jiraIntegrationId: string | null;
+  jiraIntegrationId: number | null;
 }
 

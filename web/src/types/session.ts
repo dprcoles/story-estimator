@@ -2,7 +2,7 @@ import { PlayerInfo } from "./player";
 import { StoryDetails } from "./story";
 
 export interface SessionDetails {
-  id: string;
+  id: number;
   players: PlayerInfo[];
   stories: StoryDetails[];
 }

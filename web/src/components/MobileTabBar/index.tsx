@@ -47,6 +47,7 @@ const MobileTabBar: React.FC<MobileTabBarProps> = ({
                 : "text-light-text dark:text-dark-text"
             }`}
             onClick={() => setActiveTab(t.enum)}
+            key={t.enum}
           >
             <div className="text-2xl pb-1 flex justify-center items-center">
               {t.icon}

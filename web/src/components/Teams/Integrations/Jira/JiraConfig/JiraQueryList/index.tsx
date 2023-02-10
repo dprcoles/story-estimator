@@ -3,7 +3,7 @@ import React from "react";
 import JiraQueryListItem from "./JiraQueryListItem";
 
 interface JiraQueryListProps {
-  integrationId: string;
+  integrationId: number;
   queries: JqlQuery[];
 }
 

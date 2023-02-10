@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
 interface GetJiraIntegrationByIdQueryParams {
-  id: string;
+  id: number;
 }
 
 export default async (
@@ -10,8 +10,9 @@ export default async (
 ) => {
   const { id } = params;
 
-  const data = await prisma.jira_integrations.findFirstOrThrow({
+  const data = await prisma.jiraIntegrations.findFirstOrThrow({
     where: { id: id },
+    include: { jql_queries: true },
   });
 
   return data;

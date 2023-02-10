@@ -91,7 +91,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
           <Results
             players={players}
             options={options}
-            currentStoryId={stories.find(s => s.active)?.id as string}
+            currentStoryId={stories.find(s => s.active)?.id as number}
           />
         )}
       </div>

@@ -6,7 +6,7 @@ import StoryDescription from "../StoryDescription";
 
 interface StoryCardProps {
   story: Story;
-  onClick?: (id: string) => void;
+  onClick?: (id: number) => void;
   onEdit: (story: Story) => void;
 }
 

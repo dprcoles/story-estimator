@@ -68,7 +68,7 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
     emit(EmitEvent.UpdatePlayer, playerInfo);
   };
 
-  const fetchPlayer = async (id: string) => {
+  const fetchPlayer = async (id: number) => {
     const player = await getPlayer(id);
     const { emoji, defaultType: type, name } = player;
 
@@ -76,7 +76,10 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
   };
 
   useEffect(() => {
-    const storedPlayerId = localStorage.getItem(StorageItem.PlayerId);
+    const storedPlayerId = parseInt(
+      localStorage.getItem(StorageItem.PlayerId) || "0",
+      10
+    );
 
     if (storedPlayerId) {
       fetchPlayer(storedPlayerId);
@@ -90,7 +93,7 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
   useEffect(() => {
     if (!socket && player.id) {
       const socket = io(API_URL, {
-        query: { roomId: id, playerId: player.id },
+        query: { roomId: parseInt(id || "0", 10), playerId: player.id },
       });
       setSocket(socket);
     }
@@ -121,7 +124,7 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
   };
 
   const handleSaveStory = (story: Story) => {
-    emit(story.id.length > 0 ? EmitEvent.EditStory : EmitEvent.AddStory, story);
+    emit(story.id !== 0 ? EmitEvent.EditStory : EmitEvent.AddStory, story);
     setIsStoryModalOpen(false);
   };
 
@@ -194,8 +197,8 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
 
   socket?.on(EmitEvent.Ping, () => emit(EmitEvent.Pong));
 
-  socket?.on("room", (roomId: string) => {
-    if (roomId !== id) navigate(`${ROUTE_ROOM}/${roomId}`);
+  socket?.on("room", (roomId: number) => {
+    if (roomId !== parseInt(id || "0", 10)) navigate(`${ROUTE_ROOM}/${roomId}`);
   });
 
   return (

@@ -2,7 +2,7 @@ import { API_URL } from "@/utils/constants";
 import { handleApiResponse } from "@/utils/helpers";
 
 export interface IGetJiraIntegrationByIdParams {
-  id: string;
+  id: number;
 }
 
 export const getJiraIntegrationById = async (
@@ -23,8 +23,8 @@ export const getJiraIntegrationById = async (
 };
 
 export interface IGetJiraIssuesByQueryIdParams {
-  integrationId: string;
-  id: string;
+  integrationId: number;
+  id: number;
 }
 
 export const getJiraIssuesByQueryId = async (

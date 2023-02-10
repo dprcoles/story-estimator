@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { PlayerType } from "../types";
 
 interface UpdatePlayerCommandParams {
-  id: string;
+  id: number;
   name: string;
   defaultType: PlayerType;
   emoji: string;
@@ -25,3 +25,4 @@ export default async (
 
   return result;
 };
+

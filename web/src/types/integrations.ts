@@ -1,17 +1,17 @@
 export interface IntegrationIds {
-  jira: string | null;
+  jira: number | null;
 }
 
 export type JqlQuery = {
-  id: string;
+  id: number;
   name: string;
   query: string;
 };
 
 export interface JiraIntegration {
-  id: string;
+  id: number;
   domain: string;
-  configuredById: string;
+  configuredById: number;
   jqlQueries: JqlQuery[];
 }
 

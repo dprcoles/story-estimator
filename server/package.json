@@ -20,7 +20,6 @@
     "fastify": "^4.10.2",
     "jira.js": "^2.16.0",
     "nodemon": "^2.0.19",
-    "short-uuid": "^4.2.0",
     "socket.io": "^4.5.1"
   },
   "devDependencies": {
@@ -31,3 +30,4 @@
     "typescript": "^4.6.3"
   }
 }
+

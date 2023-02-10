@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 interface CreateSessionCommandParams {
   name: string;
-  teamId: string;
+  teamId: number;
 }
 
 export default async (
@@ -12,7 +12,7 @@ export default async (
   const { name, teamId } = params;
 
   const session = await prisma.sessions.create({
-    data: { name: name, playerIds: [], storyIds: [], teamId: teamId },
+    data: { name: name, playerIds: [], teamId: teamId },
   });
 
   return session;

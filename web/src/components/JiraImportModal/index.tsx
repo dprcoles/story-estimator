@@ -12,7 +12,7 @@ import JiraIssueCard from "../Teams/Integrations/Jira/JiraIssueCard";
 interface JiraImportModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  integrationId: string;
+  integrationId: number;
   handleImport: (issues: JiraIssue[]) => void;
 }
 
@@ -25,7 +25,7 @@ const JiraImportModal: React.FC<JiraImportModalProps> = ({
   const [isLoadingQueries, setIsLoadingQueries] = useState<boolean>(false);
   const [isLoadingIssues, setIsLoadingIssues] = useState<boolean>(false);
   const [queries, setQueries] = useState<JqlQuery[]>([]);
-  const [selectedQueryId, setSelectedQueryId] = useState<string>("");
+  const [selectedQueryId, setSelectedQueryId] = useState<number>(0);
   const [issues, setIssues] = useState<JiraIssue[]>([]);
   const [selectedIssueKeys, setSelectedIssueKeys] = useState<string[]>([]);
 
@@ -102,8 +102,10 @@ const JiraImportModal: React.FC<JiraImportModalProps> = ({
                     <div className="flex justify-between">
                       <select
                         className="p-2 mr-4 md:w-96 rounded-md border border-light-border-color dark:border-dark-border-color bg-light-panels dark:bg-dark-panels"
-                        value={selectedQueryId}
-                        onChange={e => setSelectedQueryId(e.target.value)}
+                        value={selectedQueryId.toString()}
+                        onChange={e =>
+                          setSelectedQueryId(parseInt(e.target.value, 10))
+                        }
                       >
                         <option value="">Select a query...</option>
                         {queries.map(q => (
@@ -113,7 +115,7 @@ const JiraImportModal: React.FC<JiraImportModalProps> = ({
                         ))}
                       </select>
                       <Button
-                        disabled={selectedQueryId === ""}
+                        disabled={selectedQueryId === 0}
                         onClick={handleFetchIssues}
                       >
                         Run

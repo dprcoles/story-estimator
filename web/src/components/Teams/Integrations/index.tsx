@@ -17,7 +17,7 @@ const Integrations: React.FC<IntegrationsProps> = ({ integrations }) => {
   const [isLoading, setIsLoading] = useState<boolean>();
   const [view, setView] = useState<IntegrationView>(IntegrationView.List);
 
-  const fetchIntegrationData = async (id: string) => {
+  const fetchIntegrationData = async (id: number) => {
     const res = await getJiraIntegrationById({ id });
     setData(res);
     setIsLoading(false);

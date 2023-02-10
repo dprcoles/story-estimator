@@ -4,7 +4,7 @@ export enum PlayerType {
 }
 
 export interface PlayerInfo {
-  id: string;
+  id: number;
   emoji: string;
   name: string;
   type: PlayerType;
@@ -13,6 +13,6 @@ export interface PlayerInfo {
 
 export interface Player extends PlayerInfo {
   vote: string;
-  roomId: string;
+  roomId: number;
 }
 

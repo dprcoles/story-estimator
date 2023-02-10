@@ -4,17 +4,17 @@ export enum PlayerType {
 }
 
 export type Player = {
-  id: string;
+  id: number;
   name: string;
   type: PlayerType;
   emoji: string;
   admin: boolean;
-  roomId: string | string[];
+  roomId: number | number[];
   vote: string | undefined;
 };
 
 export interface PlayerInfo {
-  id: string;
+  id: number;
   emoji: string;
   name: string;
   type: PlayerType;
@@ -27,7 +27,7 @@ export interface ICreatePlayerBody {
 }
 
 export interface IPlayerByIdParams {
-  id: string;
+  id: number;
 }
 
 export interface IUpdatePlayerBody extends ICreatePlayerBody {}
