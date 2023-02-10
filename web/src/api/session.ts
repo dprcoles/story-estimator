@@ -1,7 +1,7 @@
 import { API_URL } from "@/utils/constants";
 import { handleApiResponse } from "@/utils/helpers";
 
-export const getSession = async (id: string) => {
+export const getSession = async (id: number) => {
   const response = await fetch(`${API_URL}/session/${id}`, {
     headers: {
       Accept: "application/json",

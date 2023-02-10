@@ -78,12 +78,12 @@ const RoomSettingsModal: React.FC<RoomSettingsModalProps> = ({
                   />
                   <Select
                     label="Room Admin"
-                    onChange={val => handleSetValue(val, "admin")}
+                    onChange={val => handleSetValue(parseInt(val, 10), "admin")}
                     option={players.map(p => ({
                       label: `${p.emoji} ${p.name}`,
-                      value: p.id,
+                      value: p.id.toString(),
                     }))}
-                    value={players.find(p => p.admin)?.id || ""}
+                    value={(players.find(p => p.admin)?.id || 0).toString()}
                     description={ADMIN_DESCRIPTION}
                   />
                 </div>

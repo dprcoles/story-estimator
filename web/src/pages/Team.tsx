@@ -41,7 +41,7 @@ const Team: React.FC<TeamPageProps> = ({ theme, setTheme }) => {
     },
   ];
 
-  const fetchTeamData = async (teamId: string) => {
+  const fetchTeamData = async (teamId: number) => {
     const data = await getTeam(teamId);
     setTeamData(data);
     setIsLoadingData(false);
@@ -58,7 +58,7 @@ const Team: React.FC<TeamPageProps> = ({ theme, setTheme }) => {
   useEffect(() => {
     setIsLoadingData(true);
     if (id) {
-      fetchTeamData(id);
+      fetchTeamData(parseInt(id, 10));
     }
   }, [id]);
 

@@ -3,60 +3,97 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-type Vote {
-  playerId String  @db.ObjectId
-  vote     String?
-}
-
-type JqlQuery {
-  id    String @db.ObjectId 
-  name  String
-  query String
-}
-
-model players {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  defaultType String
+model Players {
+  id          Int       @id @default(autoincrement())
+  defaultType String    @map("default_type")
   emoji       String
   name        String
+  votes       Votes[]
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime? @updatedAt @map("updated_at")
+
+  @@map("players")
 }
 
-model sessions {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+model Sessions {
+  id        Int       @id @default(autoincrement())
   name      String
-  playerIds String[] @db.ObjectId
-  storyIds  String[] @db.ObjectId
-  teamId    String?  @db.ObjectId
+  playerIds Int[]     @map("player_ids")
+  teamId    Int       @map("team_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  stories   Stories[]
+
+  @@map("sessions")
 }
 
-model stories {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+model Stories {
+  id             Int       @id @default(autoincrement())
   description    String
   estimate       String?
-  spectatorIds   String[] @db.ObjectId
-  startSeconds   Int?
-  endSeconds     Int?
-  totalTimeSpent Int?
-  voterIds       String[] @db.ObjectId
-  votes          Vote[]
-  sessionId      String   @db.ObjectId
+  spectatorIds   Int[]     @map("spectator_ids")
+  startSeconds   Int?      @map("start_seconds")
+  endSeconds     Int?      @map("end_seconds")
+  totalTimeSpent Int?      @map("total_time_spent")
+  session        Sessions  @relation(fields: [sessionId], references: [id])
+  sessionId      Int       @map("session_id")
+  votes          Votes[]
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime? @updatedAt @map("updated_at")
+
+  @@map("stories")
 }
 
-model teams {
-  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+model Votes {
+  id        Int       @id @default(autoincrement())
+  story     Stories   @relation(fields: [storyId], references: [id])
+  storyId   Int       @map("story_id")
+  player    Players   @relation(fields: [playerId], references: [id])
+  playerId  Int       @map("player_id")
+  vote      String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@map("votes")
+}
+
+model Teams {
+  id                Int               @id @default(autoincrement())
   name              String
-  jiraIntegrationId String? @db.ObjectId
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime?         @updatedAt @map("updated_at")
+  integrations_jira JiraIntegrations?
+
+  @@map("teams")
 }
 
-model jira_integrations {
-  id             String     @id @default(auto()) @map("_id") @db.ObjectId
-  apiToken       String
-  configuredById String     @db.ObjectId
+model JiraIntegrations {
+  id             Int          @id @default(autoincrement())
+  team           Teams        @relation(fields: [teamId], references: [id])
+  teamId         Int          @unique @map("team_id")
+  apiToken       String       @map("api_token")
+  configuredById Int          @map("configured_by_id")
   domain         String
   email          String
-  jqlQueries     JqlQuery[]
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime?    @updatedAt @map("updated_at")
+  jql_queries    JqlQueries[]
+
+  @@map("integrations_jira")
+}
+
+model JqlQueries {
+  id            Int              @id @default(autoincrement())
+  integration   JiraIntegrations @relation(fields: [integrationId], references: [id])
+  integrationId Int              @map("integration_id")
+  name          String
+  query         String
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime?        @updatedAt @map("updated_at")
+
+  @@map("jql_queries")
 }

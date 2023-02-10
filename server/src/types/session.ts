@@ -2,16 +2,16 @@ import { PlayerInfo } from "./player";
 import { StoryDetails } from "./story";
 
 export interface ISessionByIdParams {
-  id: string;
+  id: number;
 }
 
 export interface ICreateSessionBody {
-  teamId: string;
+  teamId: number;
   name: string;
 }
 
 export interface SessionDetails {
-  id: string;
+  id: number;
   name: string;
   players: PlayerInfo[];
   stories: StoryDetails[];

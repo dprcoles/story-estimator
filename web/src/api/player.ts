@@ -27,7 +27,7 @@ export const createPlayer = async (body: ICreatePlayerBody) => {
 
 export interface IUpdatePlayerBody extends ICreatePlayerBody {}
 
-export const updatePlayer = async (id: string, body: IUpdatePlayerBody) => {
+export const updatePlayer = async (id: number, body: IUpdatePlayerBody) => {
   const response = await fetch(`${API_URL}/player/${id}`, {
     method: "PATCH",
     headers: {
@@ -40,7 +40,7 @@ export const updatePlayer = async (id: string, body: IUpdatePlayerBody) => {
   return await handleApiResponse(response);
 };
 
-export const getPlayer = async (id: string) => {
+export const getPlayer = async (id: number) => {
   const response = await fetch(`${API_URL}/player/${id}`, {
     headers: {
       Accept: "application/json",

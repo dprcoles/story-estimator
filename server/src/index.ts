@@ -1,6 +1,5 @@
 import "dotenv/config";
 import Fastify from "fastify";
-import short from "short-uuid";
 import { Server } from "socket.io";
 import cors from "@fastify/cors";
 import { PrismaClient } from "@prisma/client";
@@ -31,10 +30,7 @@ import {
   PlayerType,
   Room,
   RoomIntegrations,
-  SafeJiraIntegration,
   ShowType,
-  stories,
-  JqlQuery,
 } from "./types";
 
 const fastify = Fastify();
@@ -42,6 +38,10 @@ const prisma = new PrismaClient({ log: ["info"] });
 
 let roomPlayers: Player[] = [];
 let rooms: Room[] = [];
+
+const generateStoryId = (roomId: number) => {
+  return Math.floor(Math.random() * 1000000) + roomId;
+};
 
 const getTimeInSeconds = () => Math.floor(Date.now() / 1000);
 
@@ -79,6 +79,7 @@ fastify.post<{ Body: ICreatePlayerBody }>("/player", async (req, reply) => {
 
 fastify.get<{ Params: IPlayerByIdParams }>(
   "/player/:id",
+  { schema: { params: { properties: { id: { type: "number" } } } } },
   async (req, reply) => {
     const { id } = req.params;
 
@@ -90,6 +91,7 @@ fastify.get<{ Params: IPlayerByIdParams }>(
 
 fastify.patch<{ Body: IUpdatePlayerBody; Params: IUpdatePlayerParams }>(
   "/player/:id",
+  { schema: { params: { properties: { id: { type: "number" } } } } },
   async (req, reply) => {
     const { name, defaultType, emoji } = req.body;
     const { id } = req.params;
@@ -107,6 +109,7 @@ fastify.patch<{ Body: IUpdatePlayerBody; Params: IUpdatePlayerParams }>(
 
 fastify.get<{ Params: ISessionByIdParams }>(
   "/session/:id",
+  { schema: { params: { properties: { id: { type: "number" } } } } },
   async (req, reply) => {
     const { id } = req.params;
 
@@ -121,40 +124,49 @@ fastify.get<{ Params: ISessionByIdParams }>(
   }
 );
 
-fastify.post<{ Body: ICreateSessionBody }>("/session", async (req, reply) => {
-  const { teamId, name } = req.body;
+fastify.post<{ Body: ICreateSessionBody }>(
+  "/session",
+  { schema: { body: { properties: { teamId: { type: "number" } } } } },
+  async (req, reply) => {
+    const { teamId, name } = req.body;
 
-  const session = await createSessionCommand(prisma, { name, teamId });
+    const session = await createSessionCommand(prisma, { name, teamId });
 
-  reply.send({ id: session.id });
-});
-
-fastify.get<{ Params: ITeamByIdParams }>("/team/:id", async (req, reply) => {
-  const { id } = req.params;
-
-  try {
-    const data = await getTeamQuery(prisma, { id, rooms });
-
-    reply.send(data);
-  } catch {
-    reply.statusCode = 400;
-    reply.send({ message: "[InvalidTeamId]" });
+    reply.send({ id: session.id });
   }
-});
+);
+
+fastify.get<{ Params: ITeamByIdParams }>(
+  "/team/:id",
+  { schema: { params: { properties: { id: { type: "number" } } } } },
+  async (req, reply) => {
+    const { id } = req.params;
+
+    try {
+      const data = await getTeamQuery(prisma, { id, rooms });
+
+      reply.send(data);
+    } catch {
+      reply.statusCode = 400;
+      reply.send({ message: "[InvalidTeamId]" });
+    }
+  }
+);
 
 fastify.get<{ Params: IJiraIntegrationByIdParams }>(
   "/jira-integration/:id",
+  { schema: { params: { properties: { id: { type: "number" } } } } },
   async (req, reply) => {
     const { id } = req.params;
 
     try {
       const data = await GetJiraIntegrationByIdQuery(prisma, { id });
 
-      const safeData: SafeJiraIntegration = {
+      const safeData = {
         id: data.id,
         configuredById: data.configuredById,
         domain: data.domain,
-        jqlQueries: data.jqlQueries,
+        jqlQueries: data.jql_queries,
       };
 
       reply.send(safeData);
@@ -165,33 +177,46 @@ fastify.get<{ Params: IJiraIntegrationByIdParams }>(
   }
 );
 
-fastify.get<{ Querystring: IJqlQueryByIdQuery }>("/jql", async (req, reply) => {
-  const { integrationId, queryId } = req.query;
+fastify.get<{ Querystring: IJqlQueryByIdQuery }>(
+  "/jql",
+  {
+    schema: {
+      querystring: {
+        properties: {
+          integrationId: { type: "number" },
+          queryId: { type: "number" },
+        },
+      },
+    },
+  },
+  async (req, reply) => {
+    const { integrationId, queryId } = req.query;
 
-  try {
-    const settings = await GetJiraIntegrationByIdQuery(prisma, {
-      id: integrationId,
-    });
+    try {
+      const settings = await GetJiraIntegrationByIdQuery(prisma, {
+        id: integrationId,
+      });
 
-    const { apiToken, domain, email } = settings;
+      const { apiToken, domain, email } = settings;
 
-    const query = settings.jqlQueries.find((q: JqlQuery) => q.id === queryId);
+      const query = settings.jql_queries.find((q: any) => q.id === queryId);
 
-    if (!query) return;
+      if (!query) return;
 
-    const data = await GetIssuesByJqlQuery({
-      apiToken,
-      email,
-      domain,
-      query: query.query,
-    });
+      const data = await GetIssuesByJqlQuery({
+        apiToken,
+        email,
+        domain,
+        query: query.query,
+      });
 
-    reply.send(data);
-  } catch {
-    reply.statusCode = 400;
-    reply.send({ message: "[InvalidQueryId]" });
+      reply.send(data);
+    } catch {
+      reply.statusCode = 400;
+      reply.send({ message: "[InvalidQueryId]" });
+    }
   }
-});
+);
 
 fastify.listen(process.env.PORT || 4000, "0.0.0.0", (err, address) => {
   if (err) {
@@ -201,19 +226,19 @@ fastify.listen(process.env.PORT || 4000, "0.0.0.0", (err, address) => {
   console.log(`🚀 Server listening at ${address}`);
 });
 
-const updateRoom = (roomId: any) => {
-  io.to(roomId).emit("update", {
+const updateRoom = (roomId: number) => {
+  io.to(roomId.toString()).emit("update", {
     players: roomPlayers.filter(p => p.roomId === roomId),
     room: rooms.find(r => r.id === roomId),
   });
 };
 
-const resetGame = (roomId: any) => {
+const resetGame = (roomId: number) => {
   const playersInRoom = [...roomPlayers].filter(p => p.roomId === roomId);
   playersInRoom.forEach(p => (p.vote = undefined));
 
-  io.to(roomId).emit("reset");
-  io.to(roomId).emit("update", {
+  io.to(roomId.toString()).emit("reset");
+  io.to(roomId.toString()).emit("update", {
     players: playersInRoom,
     room: rooms.find(r => r.id === roomId),
   });
@@ -231,7 +256,7 @@ const getTotalTimeSpent = (
   );
 };
 
-const updateActiveStory = (roomId: any, nextActiveId: string | null) => {
+const updateActiveStory = (roomId: number, nextActiveId: number | null) => {
   const roomIndex = rooms.findIndex(r => r.id === roomId);
   const activeStoryIndex = rooms[roomIndex].stories.findIndex(s => s.active);
 
@@ -260,8 +285,8 @@ const updateActiveStory = (roomId: any, nextActiveId: string | null) => {
 };
 
 io.on("connection", async socket => {
-  let roomId = socket.handshake.query["roomId"] as string;
-  const playerId = socket.handshake.query["playerId"] as string;
+  let roomId = parseInt(socket.handshake.query["roomId"] as string, 10);
+  const playerId = parseInt(socket.handshake.query["playerId"] as string, 10);
   let session = null;
 
   if (roomId) {
@@ -294,10 +319,11 @@ io.on("connection", async socket => {
     if (session.teamId) {
       const teamData = await prisma.teams.findFirst({
         where: { id: session.teamId },
+        include: { integrations_jira: true },
       });
 
       integrations = {
-        jira: teamData?.jiraIntegrationId,
+        jira: teamData?.integrations_jira?.id,
       };
     }
 
@@ -315,7 +341,7 @@ io.on("connection", async socket => {
     });
   }
 
-  socket.join(roomId);
+  socket.join(roomId.toString());
 
   if (!roomPlayers.map(x => x.id).includes(playerId)) {
     const playerInfo = await prisma.players.findFirst({
@@ -376,20 +402,20 @@ io.on("connection", async socket => {
     if (player) {
       const playerIndex = roomPlayers.findIndex(x => x.id === playerId);
       roomPlayers[playerIndex] = { ...player, vote };
-      io.to(roomId || "").emit("vote");
+      io.to(roomId.toString() || "").emit("vote");
     }
 
     const votersInRoom = [...roomPlayers].filter(
       p => p.roomId === roomId && p.type === PlayerType.Voter
     );
     if (votersInRoom.every(p => p.vote)) {
-      io.to(roomId || "").emit("show");
+      io.to(roomId.toString() || "").emit("show");
     }
     updateRoom(roomId);
   });
 
   socket.on("show", (type: ShowType) => {
-    io.to(roomId || "").emit("show", type);
+    io.to(roomId.toString() || "").emit("show", type);
   });
 
   socket.on("reset", () => {
@@ -439,27 +465,24 @@ io.on("connection", async socket => {
     const roomIndex = rooms.findIndex(r => r.id === roomId);
     const stories = rooms[roomIndex].stories;
 
-    await prisma.stories.createMany({
-      data: stories.map(story => ({
-        description: story.description,
-        startSeconds: story.startSeconds,
-        endSeconds: story.endSeconds,
-        estimate: story.estimate,
-        voterIds: story.voterIds,
-        spectatorIds: story.spectatorIds,
-        votes: story.votes,
-        totalTimeSpent: story.totalTimeSpent,
-        sessionId: roomId,
-      })),
-    });
-
-    const storyRecords = await prisma.stories.findMany({
-      where: { sessionId: roomId },
-    });
-
-    await prisma.sessions.update({
-      data: { storyIds: { push: storyRecords.map((s: stories) => s.id) } },
-      where: { id: roomId },
+    stories.forEach(async s => {
+      await prisma.stories.create({
+        data: {
+          description: s.description,
+          startSeconds: s.startSeconds,
+          endSeconds: s.endSeconds,
+          estimate: s.estimate,
+          spectatorIds: s.spectatorIds,
+          totalTimeSpent: s.totalTimeSpent,
+          sessionId: roomId,
+          votes: {
+            create: s.votes.map(v => ({
+              playerId: v.playerId,
+              vote: v.vote || "",
+            })),
+          },
+        },
+      });
     });
 
     rooms[roomIndex].active = false;
@@ -470,7 +493,7 @@ io.on("connection", async socket => {
   socket.on("addStory", story => {
     if (roomId) {
       const roomIndex = rooms.findIndex(r => r.id === roomId);
-      const storyId = short().generate();
+      const storyId = generateStoryId(roomId);
 
       rooms[roomIndex].stories.push({
         id: storyId,
@@ -508,10 +531,10 @@ io.on("connection", async socket => {
   socket.on("importStories", stories => {
     if (roomId) {
       const roomIndex = rooms.findIndex(r => r.id === roomId);
-      let firstAddedStoryId = "";
+      let firstAddedStoryId = 0;
 
       stories.forEach((story: string) => {
-        const storyId = short().generate();
+        const storyId = generateStoryId(roomId);
 
         if (!firstAddedStoryId) {
           firstAddedStoryId = storyId;

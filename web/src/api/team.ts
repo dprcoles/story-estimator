@@ -1,7 +1,7 @@
 import { API_URL } from "@/utils/constants";
 import { handleApiResponse } from "@/utils/helpers";
 
-export const getTeam = async (id: string) => {
+export const getTeam = async (id: number) => {
   const response = await fetch(`${API_URL}/team/${id}`, {
     headers: {
       Accept: "application/json",

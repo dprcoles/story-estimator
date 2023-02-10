@@ -1,8 +1,8 @@
 import { PlayerInfo } from "./player";
 
 export type Story = {
-  id: string;
-  roomId: string;
+  id: number;
+  roomId: number;
   description: string;
   active: boolean;
   startSeconds: number | undefined;
@@ -12,12 +12,12 @@ export type Story = {
 };
 
 export type Vote = {
-  playerId: string;
+  playerId: number;
   vote: string | undefined;
 };
 
 export interface StoryDetails {
-  id: string;
+  id: number;
   description: string;
   startSeconds: number | null;
   endSeconds: number | null;
@@ -26,6 +26,6 @@ export interface StoryDetails {
   spectators: PlayerInfo[];
   votes: Vote[];
   totalTimeSpent: number | null;
-  sessionId: string;
+  sessionId: number;
 }
 

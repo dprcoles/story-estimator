@@ -36,7 +36,7 @@ const Home: React.FC = () => {
     setIsSessionModalOpen(true);
   };
 
-  const fetchPlayer = async (id: string) => {
+  const fetchPlayer = async (id: number) => {
     const player = await getPlayer(id);
     const { emoji, defaultType: type, name } = player;
 
@@ -46,7 +46,10 @@ const Home: React.FC = () => {
   const start = async () => {
     setIsJoining(true);
 
-    const storedPlayerId = localStorage.getItem(StorageItem.PlayerId);
+    const storedPlayerId = parseInt(
+      localStorage.getItem(StorageItem.PlayerId) || "0",
+      10
+    );
 
     if (storedPlayerId) {
       await fetchPlayer(storedPlayerId);

@@ -1,18 +1,13 @@
-import { jira_integrations } from "./prisma";
-
 export interface IJiraIntegrationByIdParams {
-  id: string;
+  id: number;
 }
 
 export interface IJqlQueryByIdParams {
-  id: string;
+  id: number;
 }
 
 export interface IJqlQueryByIdQuery {
-  integrationId: string;
-  queryId: string;
+  integrationId: number;
+  queryId: number;
 }
 
-type SafeJiraIntegrationType = Omit<jira_integrations, "apiToken">;
-
-export type SafeJiraIntegration = SafeJiraIntegrationType;

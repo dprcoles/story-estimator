@@ -18,7 +18,7 @@ const StoryPanel: React.FC<StoryPanelProps> = ({
   const { player } = usePlayerStore();
   const { emit } = useSocketStore();
 
-  const handleSetActive = (id: string) => emit(EmitEvent.SetActiveStory, id);
+  const handleSetActive = (id: number) => emit(EmitEvent.SetActiveStory, id);
 
   return (
     <div className="bg-light-panels dark:bg-dark-panels min-h-full h-96 rounded-lg p-4">

@@ -22,7 +22,7 @@ const SummaryPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
     setIsLoadingData(true);
     if (id) {
       const fetchSessionData = async () => {
-        const data = await getSession(id);
+        const data = await getSession(parseInt(id, 10));
         setSessionData(data);
         setIsLoadingData(false);
       };

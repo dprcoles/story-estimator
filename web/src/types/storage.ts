@@ -1,5 +1,5 @@
 export enum StorageItem {
-  PlayerId = "playerId",
+  PlayerId = "player_id",
   Name = "name",
   Type = "type",
   Emoji = "emoji",

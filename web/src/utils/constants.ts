@@ -33,11 +33,11 @@ export const ADMIN_DESCRIPTION =
   "Select who you would like to be the admin of this session.";
 
 export const DEFAULT_STORY: Story = {
-  id: "",
+  id: 0,
   description: "",
   active: false,
   endSeconds: undefined,
-  roomId: "",
+  roomId: 0,
   startSeconds: undefined,
   estimate: undefined,
   totalTimeSpent: 0,

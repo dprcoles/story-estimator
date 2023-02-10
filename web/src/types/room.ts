@@ -1,22 +1,22 @@
 import { Story } from "./story";
 
 export type Room = {
-  id: string;
+  id: number;
   name: string;
   settings: RoomSettings;
   stories: Story[];
   active: boolean;
-  teamId: string | null;
+  teamId: number | null;
   integrations: RoomIntegrations | null;
 };
 
 export type RoomSettings = {
   countdown: boolean;
   fastMode: boolean;
-  admin: string;
+  admin: number;
 };
 
 export interface RoomIntegrations {
-  jira?: string | null;
+  jira?: number | null;
 }
 

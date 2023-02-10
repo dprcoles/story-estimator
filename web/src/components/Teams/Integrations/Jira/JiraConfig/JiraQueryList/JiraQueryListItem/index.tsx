@@ -7,7 +7,7 @@ import { JiraIssue } from "@/types/jira";
 import JiraIssueCard from "../../../JiraIssueCard";
 
 interface JiraQueryListProps {
-  integrationId: string;
+  integrationId: number;
   query: JqlQuery;
 }
 
