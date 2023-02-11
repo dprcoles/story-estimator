@@ -7,7 +7,7 @@ interface GetPlayerQueryParams {
 export default async (prisma: PrismaClient, params: GetPlayerQueryParams) => {
   const { id } = params;
 
-  const player = await prisma.players.findFirst({ where: { id: id } });
+  const player = await prisma.players.findFirstOrThrow({ where: { id: id } });
 
   return player;
 };

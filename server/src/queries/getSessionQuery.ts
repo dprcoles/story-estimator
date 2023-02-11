@@ -10,8 +10,16 @@ export default async (prisma: PrismaClient, params: GetSessionQueryParams) => {
 
   const session = await prisma.sessions.findFirstOrThrow({
     where: { id: id },
-    include: { stories: { include: { votes: true } } },
+    include: {
+      stories: {
+        include: {
+          votes: { include: { player: true } },
+          spectators: { include: { player: true } },
+        },
+      },
+    },
   });
+
   const players = await prisma.players.findMany({
     where: { id: { in: session?.playerIds } },
   });
@@ -33,12 +41,14 @@ export default async (prisma: PrismaClient, params: GetSessionQueryParams) => {
       estimate: x.estimate,
       id: x.id,
       sessionId: x.sessionId,
-      spectators: mappedPlayers.filter(p => x.spectatorIds.includes(p.id)),
+      spectators: x.spectators
+        .map(s => s.player)
+        .map(p => ({ ...p, type: p.defaultType as PlayerType })),
       startSeconds: x.startSeconds,
       totalTimeSpent: x.totalTimeSpent,
-      voters: mappedPlayers.filter(p =>
-        x.votes.map(v => v.playerId).includes(p.id)
-      ),
+      voters: x.votes
+        .map(v => v.player)
+        .map(p => ({ ...p, type: p.defaultType as PlayerType })),
       votes: x.votes,
     })),
   };

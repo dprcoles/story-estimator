@@ -1,5 +1,5 @@
-export interface ITeamByIdParams {
-  id: number;
+export interface ITeamByAliasParams {
+  alias: string;
 }
 
 export interface TeamSession {
@@ -12,6 +12,7 @@ export interface TeamSession {
 
 export interface TeamDetails {
   id: number;
+  alias: string;
   name: string;
   sessions: TeamSession[];
   jiraIntegrationId: number | null;

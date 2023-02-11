@@ -19,7 +19,7 @@ interface TeamPageProps {
 }
 
 const Team: React.FC<TeamPageProps> = ({ theme, setTheme }) => {
-  const { id } = useParams();
+  const { alias } = useParams();
   const navigate = useNavigate();
   const [isLoadingData, setIsLoadingData] = useState<boolean>(false);
   const [teamData, setTeamData] = useState<TeamDetails>();
@@ -41,26 +41,27 @@ const Team: React.FC<TeamPageProps> = ({ theme, setTheme }) => {
     },
   ];
 
-  const fetchTeamData = async (teamId: number) => {
-    const data = await getTeam(teamId);
+  const fetchTeamData = async (teamAlias: string) => {
+    const data = await getTeam(teamAlias);
     setTeamData(data);
     setIsLoadingData(false);
   };
 
   const handleCreateSession = async (name: string) => {
-    const session = await createSession({ name: name, teamId: id });
-
-    if (session.id) {
-      navigate(`${ROUTE_ROOM}/${session.id}`);
+    if (teamData) {
+      const session = await createSession({ name: name, teamId: teamData.id });
+      if (session.id) {
+        navigate(`${ROUTE_ROOM}/${session.id}`);
+      }
     }
   };
 
   useEffect(() => {
     setIsLoadingData(true);
-    if (id) {
-      fetchTeamData(parseInt(id, 10));
+    if (alias) {
+      fetchTeamData(alias);
     }
-  }, [id]);
+  }, [alias]);
 
   if (isLoadingData || !teamData) return <div>Loading...</div>;
 

@@ -2,19 +2,19 @@ import { PrismaClient } from "@prisma/client";
 import { TeamDetails, Room } from "../types";
 
 interface GetTeamQueryParams {
-  id: number;
+  alias: string;
   rooms: Room[];
 }
 
 export default async (prisma: PrismaClient, params: GetTeamQueryParams) => {
-  const { id, rooms } = params;
+  const { alias, rooms } = params;
 
   const team = await prisma.teams.findFirstOrThrow({
-    where: { id: id },
+    where: { alias: alias },
     include: { integrations_jira: true },
   });
   const sessions = await prisma.sessions.findMany({
-    where: { teamId: id },
+    where: { teamId: team.id },
     include: { stories: true },
   });
   const activeRoomIds = rooms.filter(r => r.active).map(r => r.id);
@@ -22,6 +22,7 @@ export default async (prisma: PrismaClient, params: GetTeamQueryParams) => {
   const data: TeamDetails = {
     id: team.id,
     name: team.name,
+    alias: team.alias,
     sessions: sessions.map(s => ({
       id: s.id,
       name: s.name,
