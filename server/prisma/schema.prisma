@@ -12,9 +12,11 @@ model Players {
   defaultType String    @map("default_type")
   emoji       String
   name        String
-  votes       Votes[]
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime? @updatedAt @map("updated_at")
+
+  votes      Votes[]
+  spectators Spectators[]
 
   @@map("players")
 }
@@ -26,7 +28,9 @@ model Sessions {
   teamId    Int       @map("team_id")
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
-  stories   Stories[]
+
+  team    Teams     @relation(fields: [teamId], references: [id])
+  stories Stories[]
 
   @@map("sessions")
 }
@@ -35,65 +39,99 @@ model Stories {
   id             Int       @id @default(autoincrement())
   description    String
   estimate       String?
-  spectatorIds   Int[]     @map("spectator_ids")
   startSeconds   Int?      @map("start_seconds")
   endSeconds     Int?      @map("end_seconds")
   totalTimeSpent Int?      @map("total_time_spent")
-  session        Sessions  @relation(fields: [sessionId], references: [id])
   sessionId      Int       @map("session_id")
-  votes          Votes[]
   createdAt      DateTime  @default(now()) @map("created_at")
   updatedAt      DateTime? @updatedAt @map("updated_at")
+
+  session    Sessions     @relation(fields: [sessionId], references: [id])
+  votes      Votes[]
+  spectators Spectators[]
 
   @@map("stories")
 }
 
 model Votes {
   id        Int       @id @default(autoincrement())
-  story     Stories   @relation(fields: [storyId], references: [id])
   storyId   Int       @map("story_id")
-  player    Players   @relation(fields: [playerId], references: [id])
   playerId  Int       @map("player_id")
   vote      String
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
 
+  player Players @relation(fields: [playerId], references: [id])
+  story  Stories @relation(fields: [storyId], references: [id])
+
   @@map("votes")
 }
 
+model Spectators {
+  id        Int       @id @default(autoincrement())
+  storyId   Int       @map("story_id")
+  playerId  Int       @map("player_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  player Players @relation(fields: [playerId], references: [id])
+  story  Stories @relation(fields: [storyId], references: [id])
+
+  @@map("spectators")
+}
+
 model Teams {
-  id                Int               @id @default(autoincrement())
-  name              String
-  createdAt         DateTime          @default(now()) @map("created_at")
-  updatedAt         DateTime?         @updatedAt @map("updated_at")
+  id             Int       @id @default(autoincrement())
+  name           String
+  alias          String    @unique
+  organisationId Int       @map("organisation_id")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime? @updatedAt @map("updated_at")
+
+  organisation      Organisations     @relation(fields: [organisationId], references: [id])
   integrations_jira JiraIntegrations?
+  sessions          Sessions[]
 
   @@map("teams")
 }
 
+model Organisations {
+  id        Int       @id @default(autoincrement())
+  alias     String    @unique
+  name      String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  teams Teams[]
+
+  @@map("organisations")
+}
+
 model JiraIntegrations {
-  id             Int          @id @default(autoincrement())
-  team           Teams        @relation(fields: [teamId], references: [id])
-  teamId         Int          @unique @map("team_id")
-  apiToken       String       @map("api_token")
-  configuredById Int          @map("configured_by_id")
+  id             Int       @id @default(autoincrement())
+  teamId         Int       @unique @map("team_id")
+  apiToken       String    @map("api_token")
+  configuredById Int       @map("configured_by_id")
   domain         String
   email          String
-  createdAt      DateTime     @default(now()) @map("created_at")
-  updatedAt      DateTime?    @updatedAt @map("updated_at")
-  jql_queries    JqlQueries[]
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime? @updatedAt @map("updated_at")
+
+  team        Teams        @relation(fields: [teamId], references: [id])
+  jql_queries JqlQueries[]
 
   @@map("integrations_jira")
 }
 
 model JqlQueries {
-  id            Int              @id @default(autoincrement())
-  integration   JiraIntegrations @relation(fields: [integrationId], references: [id])
-  integrationId Int              @map("integration_id")
+  id            Int       @id @default(autoincrement())
+  integrationId Int       @map("integration_id")
   name          String
   query         String
-  createdAt     DateTime         @default(now()) @map("created_at")
-  updatedAt     DateTime?        @updatedAt @map("updated_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime? @updatedAt @map("updated_at")
+
+  integration JiraIntegrations @relation(fields: [integrationId], references: [id])
 
   @@map("jql_queries")
 }

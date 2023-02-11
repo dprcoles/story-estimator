@@ -23,7 +23,7 @@ import {
   IJqlQueryByIdQuery,
   IPlayerByIdParams,
   ISessionByIdParams,
-  ITeamByIdParams,
+  ITeamByAliasParams,
   IUpdatePlayerBody,
   IUpdatePlayerParams,
   Player,
@@ -83,9 +83,14 @@ fastify.get<{ Params: IPlayerByIdParams }>(
   async (req, reply) => {
     const { id } = req.params;
 
-    const player = await getPlayerQuery(prisma, { id });
+    try {
+      const player = await getPlayerQuery(prisma, { id });
 
-    reply.send(player);
+      reply.send(player);
+    } catch {
+      reply.statusCode = 400;
+      reply.send({ message: "[InvalidPlayerId]" });
+    }
   }
 );
 
@@ -136,14 +141,14 @@ fastify.post<{ Body: ICreateSessionBody }>(
   }
 );
 
-fastify.get<{ Params: ITeamByIdParams }>(
-  "/team/:id",
-  { schema: { params: { properties: { id: { type: "number" } } } } },
+fastify.get<{ Params: ITeamByAliasParams }>(
+  "/team/:alias",
+  { schema: { params: { properties: { alias: { type: "string" } } } } },
   async (req, reply) => {
-    const { id } = req.params;
+    const { alias } = req.params;
 
     try {
-      const data = await getTeamQuery(prisma, { id, rooms });
+      const data = await getTeamQuery(prisma, { alias, rooms });
 
       reply.send(data);
     } catch {
@@ -472,13 +477,17 @@ io.on("connection", async socket => {
           startSeconds: s.startSeconds,
           endSeconds: s.endSeconds,
           estimate: s.estimate,
-          spectatorIds: s.spectatorIds,
           totalTimeSpent: s.totalTimeSpent,
           sessionId: roomId,
           votes: {
             create: s.votes.map(v => ({
               playerId: v.playerId,
               vote: v.vote || "",
+            })),
+          },
+          spectators: {
+            create: s.spectatorIds.map(s => ({
+              playerId: s,
             })),
           },
         },

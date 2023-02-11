@@ -22,7 +22,7 @@ const App = () => {
           element={<Summary theme={theme} setTheme={setTheme} />}
         />
         <Route
-          path="team/:id"
+          path="team/:alias"
           element={<Team theme={theme} setTheme={setTheme} />}
         />
         <Route path="*" element={<Navigate to="/" replace />} />

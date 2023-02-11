@@ -17,7 +17,7 @@ export const getSession = async (id: number) => {
 
 export interface ICreateSessionBody {
   name: string;
-  teamId?: string;
+  teamId?: number;
 }
 
 export const createSession = async (body: ICreateSessionBody) => {
