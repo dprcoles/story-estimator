@@ -352,10 +352,15 @@ io.on("connection", async socket => {
     const playerInfo = await prisma.players.findFirst({
       where: { id: playerId },
     });
+
+    const currentRoomPlayers = roomPlayers.filter(rp => rp.roomId == roomId);
+
     if (playerInfo) {
       roomPlayers.push({
         id: playerId,
-        admin: roomPlayers.length === 0,
+        admin:
+          currentRoomPlayers?.length === 0 ||
+          !currentRoomPlayers?.find(x => x.admin),
         name: playerInfo.name,
         type: playerInfo.defaultType as PlayerType,
         emoji: playerInfo.emoji,
@@ -388,8 +393,13 @@ io.on("connection", async socket => {
         rp => rp.roomId === roomId && rp.admin
       );
       const playerToUpdateIndex = roomPlayers.findIndex(
-        rp => rp.id === settings.admin
+        rp => rp.roomId === roomId && rp.id === settings.admin
       );
+
+      if (playerToUpdateIndex === -1) {
+        updateRoom(roomId);
+        return;
+      }
 
       if (currentRoomAdminIndex > -1) {
         roomPlayers[currentRoomAdminIndex].admin = false;
@@ -496,7 +506,20 @@ io.on("connection", async socket => {
 
     rooms[roomIndex].active = false;
 
-    updateRoom(roomId);
+    await retry(
+      async () => {
+        let hasBeenRecorded = await prisma.sessions.findFirstOrThrow({
+          where: { id: roomId, stories: { some: {} } },
+        });
+
+        if (hasBeenRecorded) {
+          updateRoom(roomId);
+        }
+      },
+      {
+        retries: 5,
+      }
+    );
   });
 
   socket.on("addStory", story => {
