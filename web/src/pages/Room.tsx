@@ -28,8 +28,6 @@ import { API_URL, ROUTE_ROOM, ROUTE_SUMMARY } from "@/utils/constants";
 import { getPlayer } from "@/api/player";
 import { usePlayerStore } from "@/stores/playerStore";
 import AddStoryModal from "@/components/StoryPanel/AddStoryModal";
-import JiraImportModal from "@/components/JiraImportModal";
-import { JiraIssue } from "@/types/jira";
 
 interface RoomPageProps {
   theme: string;
@@ -132,12 +130,12 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
     emit(EmitEvent.Settings, roomSettings);
   };
 
-  const handleJiraImport = (issues: JiraIssue[]) => {
+  const handleAddStories = (stories: Story[]) => {
     emit(
       EmitEvent.ImportStories,
-      issues.map(x => x.key)
+      stories.map(x => x.description)
     );
-    setIsJiraImportModalOpen(false);
+    setIsStoryModalOpen(false);
   };
 
   socket?.on(EmitEvent.ConnectionError, () => {
@@ -220,16 +218,9 @@ const RoomPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
         <AddStoryModal
           isOpen={isStoryModalOpen}
           setIsOpen={setIsStoryModalOpen}
-          handleSave={handleSaveStory}
+          handleSave={handleAddStories}
+          jiraIntegrationId={room?.integrations?.jira}
         />
-        {room?.integrations?.jira && (
-          <JiraImportModal
-            isOpen={isJiraImportModalOpen}
-            setIsOpen={setIsJiraImportModalOpen}
-            integrationId={room.integrations.jira}
-            handleImport={handleJiraImport}
-          />
-        )}
         {player.name.length > 0 && room && (
           <>
             <div className="p-4 lg:mx-auto">

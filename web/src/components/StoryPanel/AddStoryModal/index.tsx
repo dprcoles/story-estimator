@@ -1,35 +1,47 @@
 import React, { useState } from "react";
-import { Story } from "@/types/story";
-import { DEFAULT_STORY } from "@/utils/constants";
+import { AddStoryTab, Story } from "@/types/story";
 import { IoMdClose } from "react-icons/io";
 import Button, { ButtonStyle } from "../../Button";
+import ManualImportTab from "./ManualImportTab";
+import JiraImportTab from "./JiraImportTab";
+import { ReactComponent as JiraLogoSmall } from "@/assets/jira-logo-small.svg";
 
 interface AddStoryModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  handleSave: (story: Story) => void;
+  handleSave: (stories: Story[]) => void;
+  jiraIntegrationId?: number | null;
 }
 
 const AddStoryModal: React.FC<AddStoryModalProps> = ({
   isOpen,
   setIsOpen,
   handleSave,
+  jiraIntegrationId,
 }) => {
-  const [story, setStory] = useState<Story>(DEFAULT_STORY);
+  const [stories, setStories] = useState<Story[]>([]);
+  const [tab, setTab] = useState<string>(AddStoryTab.Manual);
 
-  const handleSetStory = (value: any, property: string) => {
-    setStory({ ...story, [property]: value });
-  };
+  const tabs = [
+    {
+      id: AddStoryTab.Manual,
+      label: "Manual",
+    },
+    {
+      id: AddStoryTab.Jira,
+      label: "Jira",
+    },
+  ];
 
   return (
     <>
       {isOpen ? (
         <>
-          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-auto my-6 mx-auto max-w-3xl">
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-light-panels dark:bg-dark-panels outline-none focus:outline-none">
+          <div className="max-w-5xl max-h-screen mx-auto justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+            <div className="my-6 min-w-full">
+              <div className="min-h-full border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-light-panels dark:bg-dark-panels outline-none focus:outline-none">
                 <div className="flex items-baseline justify-between p-5 border-b border-solid border-light-buttons dark:border-dark-buttons rounded-t">
-                  <div className="text-lg font-medium">Add Story</div>
+                  <div className="text-lg font-medium">Add Stories</div>
                   <button
                     onClick={() => setIsOpen(false)}
                     className="ml-auto rounded-full hover:bg-light-hover dark:hover:bg-dark-hover w-10 h-10 flex items-center justify-center"
@@ -39,28 +51,53 @@ const AddStoryModal: React.FC<AddStoryModalProps> = ({
                     </span>
                   </button>
                 </div>
-                <div className="relative p-6 flex-auto">
-                  <input
-                    className="p-4 border bg-light-hover dark:bg-dark-hover border-transparent hover:border-light-border-color dark:hover:border-dark-border-color focus:border-black dark:focus:border-white focus:outline-none w-full md:w-96 rounded-md"
-                    value={story.description}
-                    onChange={e =>
-                      handleSetStory(e.target.value, "description")
-                    }
-                    onKeyDown={e => e.key === "Enter" && handleSave(story)}
-                    placeholder="Enter story name"
-                  />
+                {Boolean(jiraIntegrationId) && (
+                  <div className="grid m-2 grid-cols-2">
+                    {tabs.map(x => (
+                      <button
+                        key={x.id}
+                        className={`w-full rounded-md p-3 text-sm ${
+                          x.id === tab
+                            ? "bg-light-hover dark:bg-dark-hover"
+                            : "bg-transparent"
+                        }`}
+                        onClick={() => setTab(x.id)}
+                      >
+                        {x.id === AddStoryTab.Jira ? (
+                          <div className="flex items-center justify-center">
+                            <JiraLogoSmall />
+                            <div className="ml-2 font-medium">{x.label}</div>
+                          </div>
+                        ) : (
+                          <span>{x.label}</span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                <div className="p-4 h-72 overflow-y-scroll">
+                  <div className={tab !== AddStoryTab.Manual ? "hidden" : ""}>
+                    <ManualImportTab
+                      stories={stories}
+                      setStories={setStories}
+                    />
+                  </div>
+                  <div className={tab !== AddStoryTab.Jira ? "hidden" : ""}>
+                    <JiraImportTab
+                      integrationId={jiraIntegrationId!}
+                      setStories={setStories}
+                      isOpen={tab === AddStoryTab.Jira}
+                    />
+                  </div>
                 </div>
                 <div className="flex p-6 border-t border-solid border-light-buttons dark:border-dark-buttons rounded-b">
                   <div className="ml-auto">
                     <Button
-                      onClick={() => handleSave(story)}
-                      disabled={
-                        story.description.replace(/^\s+|\s+$|\s+(?=\s)/g, "")
-                          .length === 0
-                      }
+                      onClick={() => handleSave(stories)}
+                      disabled={stories.length === 0}
                       style={ButtonStyle.Primary}
                     >
-                      Add
+                      Add {stories.length} Stories
                     </Button>
                   </div>
                 </div>

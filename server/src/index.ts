@@ -517,11 +517,6 @@ io.on("connection", async socket => {
         voterIds: [],
         votes: [],
       });
-
-      if (!rooms[roomIndex].stories.find(s => s.active)) {
-        updateActiveStory(roomId, storyId);
-        return;
-      }
     }
     updateRoom(roomId);
   });
@@ -540,14 +535,9 @@ io.on("connection", async socket => {
   socket.on("importStories", stories => {
     if (roomId) {
       const roomIndex = rooms.findIndex(r => r.id === roomId);
-      let firstAddedStoryId = 0;
 
       stories.forEach((story: string) => {
         const storyId = generateStoryId(roomId);
-
-        if (!firstAddedStoryId) {
-          firstAddedStoryId = storyId;
-        }
 
         rooms[roomIndex].stories.push({
           id: storyId,
@@ -564,10 +554,7 @@ io.on("connection", async socket => {
         });
       });
 
-      if (!rooms[roomIndex].stories.find(s => s.active)) {
-        updateActiveStory(roomId, firstAddedStoryId);
-        return;
-      }
+      updateRoom(roomId);
     }
   });
 
