@@ -54,15 +54,21 @@ const MainPanel: React.FC<MainPanelProps> = ({
     },
   ];
 
+  const noActiveStories =
+    !stories.find(s => s.active) && !stories.find(s => s.estimate);
+
   return (
     <div className="bg-light-panels dark:bg-dark-panels rounded-lg py-4 px-8 main-panel__container">
-      {!hasStories ? (
+      {(!hasStories || noActiveStories) && (
         <GetStartedDisplay
           integrations={integrations}
           setIsJiraImportModalOpen={setIsJiraImportModalOpen}
           setIsStoryModalOpen={setIsStoryModalOpen}
+          hasStories={hasStories}
+          firstStoryId={stories[0]?.id}
         />
-      ) : (
+      )}
+      {hasStories && !noActiveStories && (
         <>
           <div className="flex">
             <div className="space-x-4 mb-8">
@@ -100,11 +106,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
                   vote={vote}
                 />
               ) : (
-                <NextStoryDisplay
-                  setIsStoryModalOpen={setIsStoryModalOpen}
-                  setIsJiraImportModalOpen={setIsJiraImportModalOpen}
-                  integrations={integrations}
-                />
+                <NextStoryDisplay setIsStoryModalOpen={setIsStoryModalOpen} />
               )}
             </>
           )}

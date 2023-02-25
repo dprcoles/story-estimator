@@ -34,6 +34,7 @@ export default async (prisma: PrismaClient, params: GetSessionQueryParams) => {
   const data: SessionDetails = {
     id: session.id,
     name: session.name,
+    teamId: session.teamId,
     players: mappedPlayers,
     stories: session.stories.map(x => ({
       description: x.description,

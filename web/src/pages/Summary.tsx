@@ -33,7 +33,7 @@ const SummaryPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
 
   if (isLoadingData || !sessionData) return <div>Loading...</div>;
 
-  const { stories } = sessionData;
+  const { stories, players, teamId } = sessionData;
 
   return (
     <Wrapper>
@@ -43,7 +43,11 @@ const SummaryPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
         </div>
         <div className="px-2">
           <div className="bg-light-panels dark:bg-dark-panels rounded-lg py-4 px-8 main-panel__container">
-            <SessionSummary stories={stories} />
+            <SessionSummary
+              teamId={teamId}
+              players={players}
+              stories={stories}
+            />
           </div>
         </div>
       </motion.div>

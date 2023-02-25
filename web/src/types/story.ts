@@ -29,3 +29,7 @@ export interface StoryDetails {
   sessionId: number;
 }
 
+export enum AddStoryTab {
+  Manual = "manual",
+  Jira = "jira",
+}

@@ -13,6 +13,7 @@ export interface ICreateSessionBody {
 export interface SessionDetails {
   id: number;
   name: string;
+  teamId: number;
   players: PlayerInfo[];
   stories: StoryDetails[];
 }
