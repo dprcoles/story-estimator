@@ -1,5 +1,5 @@
 import { BaseHandlerParams } from ".";
-import { Player } from "../types";
+import { Player } from "../types/player";
 import { handleUpdateRoom } from "./globalHandlers";
 
 const registerPlayerHandlers = ({
@@ -11,9 +11,9 @@ const registerPlayerHandlers = ({
   roomPlayers,
 }: BaseHandlerParams) => {
   const handleUpdate = (data: Player) => {
-    const player = [...roomPlayers].find(p => p.id === data.id);
+    const player = [...roomPlayers].find((p) => p.id === data.id);
     if (player) {
-      const playerIndex = roomPlayers.findIndex(x => x.id === data.id);
+      const playerIndex = roomPlayers.findIndex((x) => x.id === data.id);
       roomPlayers[playerIndex] = {
         ...player,
         ...data,
@@ -27,4 +27,3 @@ const registerPlayerHandlers = ({
 };
 
 export default registerPlayerHandlers;
-

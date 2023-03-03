@@ -30,7 +30,6 @@ export interface IPlayerByIdParams {
   id: number;
 }
 
-export interface IUpdatePlayerBody extends ICreatePlayerBody {}
+export type IUpdatePlayerBody = ICreatePlayerBody;
 
-export interface IUpdatePlayerParams extends IPlayerByIdParams {}
-
+export type IUpdatePlayerParams = IPlayerByIdParams;

@@ -10,11 +10,11 @@ const registerSocketHandlers = ({
   roomPlayers,
 }: BaseHandlerParams) => {
   const handlePong = () => {
-    roomPlayers.find(p => p.id === playerId);
+    roomPlayers.find((p) => p.id === playerId);
   };
 
   const handleDisconnect = () => {
-    roomPlayers = [...roomPlayers].filter(player => player.id !== playerId);
+    roomPlayers = [...roomPlayers].filter((player) => player.id !== playerId);
     handleUpdateRoom({ io, socket, roomId, playerId, rooms, roomPlayers });
   };
 
@@ -23,4 +23,3 @@ const registerSocketHandlers = ({
 };
 
 export default registerSocketHandlers;
-

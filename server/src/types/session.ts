@@ -17,4 +17,3 @@ export interface SessionDetails {
   players: PlayerInfo[];
   stories: StoryDetails[];
 }
-

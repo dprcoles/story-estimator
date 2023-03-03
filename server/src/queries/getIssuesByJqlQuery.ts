@@ -1,4 +1,4 @@
-import { FriendlyJiraIssue } from "src/types";
+import { FriendlyJiraIssue } from "src/types/jira";
 import { Version3Client } from "jira.js";
 
 interface GetIssuesByJqlQueryParams {
@@ -25,7 +25,7 @@ export default async (params: GetIssuesByJqlQueryParams) => {
     jql: query,
   });
 
-  const data: FriendlyJiraIssue[] | undefined = response.issues?.map(i => ({
+  const data: FriendlyJiraIssue[] | undefined = response.issues?.map((i) => ({
     key: i.key,
     type: {
       iconUrl: i.fields.issuetype?.iconUrl,
@@ -45,4 +45,3 @@ export default async (params: GetIssuesByJqlQueryParams) => {
 
   return data;
 };
-

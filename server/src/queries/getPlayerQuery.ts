@@ -11,4 +11,3 @@ export default async (prisma: PrismaClient, params: GetPlayerQueryParams) => {
 
   return player;
 };
-

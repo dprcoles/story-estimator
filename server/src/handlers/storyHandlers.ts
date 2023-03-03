@@ -1,5 +1,6 @@
 import { BaseHandlerParams } from ".";
-import { PlayerType, Story } from "../types";
+import { Story } from "../types/story";
+import { PlayerType } from "../types/player";
 import { handleResetRoom, handleUpdateRoom } from "./globalHandlers";
 
 const generateStoryId = (roomId: number) => {
@@ -9,7 +10,7 @@ const generateStoryId = (roomId: number) => {
 const getTotalTimeSpent = (
   current: number | undefined,
   start: number | undefined,
-  end: number | undefined
+  end: number | undefined,
 ) => {
   if (typeof start === "undefined" || typeof end === "undefined") return 0;
   return (
@@ -29,8 +30,10 @@ const registerStoryHandlers = ({
   roomPlayers,
 }: BaseHandlerParams) => {
   const updateActiveStory = (roomId: number, nextActiveId: number | null) => {
-    const roomIndex = rooms.findIndex(r => r.id === roomId);
-    const activeStoryIndex = rooms[roomIndex].stories.findIndex(s => s.active);
+    const roomIndex = rooms.findIndex((r) => r.id === roomId);
+    const activeStoryIndex = rooms[roomIndex].stories.findIndex(
+      (s) => s.active,
+    );
 
     if (activeStoryIndex !== -1) {
       rooms[roomIndex].stories[activeStoryIndex].active = false;
@@ -40,13 +43,13 @@ const registerStoryHandlers = ({
         getTotalTimeSpent(
           rooms[roomIndex].stories[activeStoryIndex].totalTimeSpent,
           rooms[roomIndex].stories[activeStoryIndex].startSeconds,
-          getTimeInSeconds()
+          getTimeInSeconds(),
         );
     }
 
     if (nextActiveId) {
       const nextStoryIndex = rooms[roomIndex].stories.findIndex(
-        s => s.id === nextActiveId
+        (s) => s.id === nextActiveId,
       );
 
       rooms[roomIndex].stories[nextStoryIndex].active = true;
@@ -66,21 +69,21 @@ const registerStoryHandlers = ({
     storyId: number;
   }) => {
     if (roomId) {
-      const roomIndex = rooms.findIndex(r => r.id === roomId);
+      const roomIndex = rooms.findIndex((r) => r.id === roomId);
       const storyIndex = rooms[roomIndex].stories.findIndex(
-        s => s.id === storyId
+        (s) => s.id === storyId,
       );
 
-      const voters = roomPlayers.filter(p => p.type === PlayerType.Voter);
+      const voters = roomPlayers.filter((p) => p.type === PlayerType.Voter);
       const spectators = roomPlayers.filter(
-        p => p.type === PlayerType.Spectator
+        (p) => p.type === PlayerType.Spectator,
       );
 
-      rooms[roomIndex].stories[storyIndex].voterIds = voters?.map(v => v.id);
+      rooms[roomIndex].stories[storyIndex].voterIds = voters?.map((v) => v.id);
       rooms[roomIndex].stories[storyIndex].spectatorIds = spectators?.map(
-        s => s.id
+        (s) => s.id,
       );
-      rooms[roomIndex].stories[storyIndex].votes = voters?.map(v => ({
+      rooms[roomIndex].stories[storyIndex].votes = voters?.map((v) => ({
         playerId: v.id,
         vote: v.vote,
       }));
@@ -88,7 +91,7 @@ const registerStoryHandlers = ({
 
       updateActiveStory(roomId, null);
 
-      if (!rooms[roomIndex].stories.find(s => !s.estimate)) return;
+      if (!rooms[roomIndex].stories.find((s) => !s.estimate)) return;
 
       if (
         rooms[roomIndex].stories.length > storyIndex + 1 &&
@@ -98,14 +101,14 @@ const registerStoryHandlers = ({
         return;
       }
 
-      const nextIndex = rooms[roomIndex].stories.findIndex(s => !s.estimate);
+      const nextIndex = rooms[roomIndex].stories.findIndex((s) => !s.estimate);
       updateActiveStory(roomId, rooms[roomIndex].stories[nextIndex].id);
     }
   };
 
   const handleAdd = (story: Story) => {
     if (roomId) {
-      const roomIndex = rooms.findIndex(r => r.id === roomId);
+      const roomIndex = rooms.findIndex((r) => r.id === roomId);
       const storyId = generateStoryId(roomId);
 
       rooms[roomIndex].stories.push({
@@ -127,9 +130,9 @@ const registerStoryHandlers = ({
 
   const handleEdit = (story: Story) => {
     if (roomId) {
-      const roomIndex = rooms.findIndex(r => r.id === roomId);
+      const roomIndex = rooms.findIndex((r) => r.id === roomId);
       const storyIndex = rooms[roomIndex].stories.findIndex(
-        s => s.id === story.id
+        (s) => s.id === story.id,
       );
       rooms[roomIndex].stories[storyIndex].description = story.description;
     }
@@ -138,7 +141,7 @@ const registerStoryHandlers = ({
 
   const handleImport = (stories: string[]) => {
     if (roomId) {
-      const roomIndex = rooms.findIndex(r => r.id === roomId);
+      const roomIndex = rooms.findIndex((r) => r.id === roomId);
 
       stories.forEach((story: string) => {
         const storyId = generateStoryId(roomId);
@@ -176,4 +179,3 @@ const registerStoryHandlers = ({
 };
 
 export default registerStoryHandlers;
-

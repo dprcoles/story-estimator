@@ -19,4 +19,3 @@ export type Settings = {
 export interface RoomIntegrations {
   jira?: number | null;
 }
-

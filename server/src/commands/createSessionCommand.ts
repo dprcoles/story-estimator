@@ -1,14 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 
-interface CreateSessionCommandParams {
+export interface CreateSessionRequest {
   name: string;
   teamId: number;
 }
 
-export default async (
-  prisma: PrismaClient,
-  params: CreateSessionCommandParams
-) => {
+export default async (prisma: PrismaClient, params: CreateSessionRequest) => {
   const { name, teamId } = params;
 
   const session = await prisma.sessions.create({
@@ -17,4 +14,3 @@ export default async (
 
   return session;
 };
-

@@ -1,16 +1,13 @@
 import { PrismaClient } from "@prisma/client";
-import { PlayerType } from "../types";
+import { PlayerType } from "../types/player";
 
-interface CreatePlayerCommandParams {
+export interface CreatePlayerRequest {
   name: string;
   defaultType: PlayerType;
   emoji: string;
 }
 
-export default async (
-  prisma: PrismaClient,
-  params: CreatePlayerCommandParams
-) => {
+export default async (prisma: PrismaClient, params: CreatePlayerRequest) => {
   const { name, defaultType, emoji } = params;
 
   const result = await prisma.players.create({
@@ -23,4 +20,3 @@ export default async (
 
   return result;
 };
-

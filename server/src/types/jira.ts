@@ -35,4 +35,3 @@ export interface FriendlyJiraIssue {
   status: Status;
   summary: string;
 }
-

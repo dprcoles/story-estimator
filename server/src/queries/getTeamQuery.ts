@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { TeamDetails } from "../types";
+import { TeamDetails } from "../types/team";
 
 interface GetTeamQueryParams {
   alias: string;
@@ -21,7 +21,7 @@ export default async (prisma: PrismaClient, params: GetTeamQueryParams) => {
     id: team.id,
     name: team.name,
     alias: team.alias,
-    sessions: sessions.map(s => ({
+    sessions: sessions.map((s) => ({
       id: s.id,
       name: s.name,
       active: s.active,
@@ -33,4 +33,3 @@ export default async (prisma: PrismaClient, params: GetTeamQueryParams) => {
 
   return data;
 };
-

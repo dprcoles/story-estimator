@@ -1,17 +1,14 @@
 import { PrismaClient } from "@prisma/client";
-import { PlayerType } from "../types";
+import { PlayerType } from "../types/player";
 
-interface UpdatePlayerCommandParams {
+export interface UpdatePlayerRequest {
   id: number;
   name: string;
   defaultType: PlayerType;
   emoji: string;
 }
 
-export default async (
-  prisma: PrismaClient,
-  params: UpdatePlayerCommandParams
-) => {
+export default async (prisma: PrismaClient, params: UpdatePlayerRequest) => {
   const { id, name, defaultType, emoji } = params;
 
   const result = await prisma.players.update({
@@ -25,4 +22,3 @@ export default async (
 
   return result;
 };
-

@@ -1,6 +1,8 @@
-import retry from "async-retry";
+import retry = require("async-retry");
 import { BaseHandlerParams } from ".";
-import { PlayerType, Settings, ShowType } from "../types";
+import { Settings } from "../types/room";
+import { PlayerType } from "../types/player";
+import { ShowType } from "../types/show";
 import { handleResetRoom, handleUpdateRoom } from "./globalHandlers";
 
 const registerRoomHandlers = ({
@@ -14,14 +16,14 @@ const registerRoomHandlers = ({
 }: BaseHandlerParams) => {
   const handleSettings = (settings: Settings) => {
     if (roomId) {
-      const roomIndex = rooms.findIndex(r => r.id == roomId);
+      const roomIndex = rooms.findIndex((r) => r.id == roomId);
       rooms[roomIndex].settings = settings;
 
       const currentRoomAdminIndex = roomPlayers.findIndex(
-        rp => rp.roomId === roomId && rp.admin
+        (rp) => rp.roomId === roomId && rp.admin,
       );
       const playerToUpdateIndex = roomPlayers.findIndex(
-        rp => rp.roomId === roomId && rp.id === settings.admin
+        (rp) => rp.roomId === roomId && rp.id === settings.admin,
       );
 
       if (playerToUpdateIndex === -1) {
@@ -41,17 +43,17 @@ const registerRoomHandlers = ({
   };
 
   const handleVote = (vote: string) => {
-    const player = [...roomPlayers].find(p => p.id === playerId);
+    const player = [...roomPlayers].find((p) => p.id === playerId);
     if (player) {
-      const playerIndex = roomPlayers.findIndex(x => x.id === playerId);
+      const playerIndex = roomPlayers.findIndex((x) => x.id === playerId);
       roomPlayers[playerIndex] = { ...player, vote };
       io.to(roomId.toString() || "").emit("room:vote");
     }
 
     const votersInRoom = [...roomPlayers].filter(
-      p => p.roomId === roomId && p.type === PlayerType.Voter
+      (p) => p.roomId === roomId && p.type === PlayerType.Voter,
     );
-    if (votersInRoom.every(p => p.vote)) {
+    if (votersInRoom.every((p) => p.vote)) {
       io.to(roomId.toString() || "").emit("room:show");
     }
     handleUpdateRoom({ io, playerId, roomId, roomPlayers, rooms, socket });
@@ -66,10 +68,10 @@ const registerRoomHandlers = ({
   };
 
   const handleComplete = async () => {
-    const roomIndex = rooms.findIndex(r => r.id === roomId);
+    const roomIndex = rooms.findIndex((r) => r.id === roomId);
     const stories = rooms[roomIndex].stories;
 
-    stories.forEach(async s => {
+    stories.forEach(async (s) => {
       await prisma.stories.create({
         data: {
           description: s.description,
@@ -79,13 +81,13 @@ const registerRoomHandlers = ({
           totalTimeSpent: s.totalTimeSpent,
           sessionId: roomId,
           votes: {
-            create: s.votes.map(v => ({
+            create: s.votes.map((v) => ({
               playerId: v.playerId,
               vote: v.vote || "",
             })),
           },
           spectators: {
-            create: s.spectatorIds.map(s => ({
+            create: s.spectatorIds.map((s) => ({
               playerId: s,
             })),
           },
@@ -102,7 +104,7 @@ const registerRoomHandlers = ({
 
     await retry(
       async () => {
-        let hasBeenRecorded = await prisma.sessions.findFirstOrThrow({
+        const hasBeenRecorded = await prisma.sessions.findFirstOrThrow({
           where: { id: roomId, stories: { some: {} } },
         });
 
@@ -119,7 +121,7 @@ const registerRoomHandlers = ({
       },
       {
         retries: 5,
-      }
+      },
     );
   };
 
@@ -131,4 +133,3 @@ const registerRoomHandlers = ({
 };
 
 export default registerRoomHandlers;
-

@@ -28,7 +28,7 @@ model Sessions {
   teamId    Int       @map("team_id")
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
-  active    Boolean
+  active    Boolean   @default(false)
 
   team    Teams     @relation(fields: [teamId], references: [id])
   stories Stories[]

@@ -1,13 +1,8 @@
 import { PrismaClient } from "@prisma/client";
-import { PlayerInfo, PlayerType, SessionDetails } from "../types";
+import { PlayerInfo, PlayerType } from "../types/player";
+import { SessionDetails } from "../types/session";
 
-interface GetSessionQueryParams {
-  id: number;
-}
-
-export default async (prisma: PrismaClient, params: GetSessionQueryParams) => {
-  const { id } = params;
-
+export default async (prisma: PrismaClient, id: number) => {
   const session = await prisma.sessions.findFirstOrThrow({
     where: { id: id },
     include: {
@@ -24,7 +19,7 @@ export default async (prisma: PrismaClient, params: GetSessionQueryParams) => {
     where: { id: { in: session?.playerIds } },
   });
 
-  const mappedPlayers: PlayerInfo[] = players.map(x => ({
+  const mappedPlayers: PlayerInfo[] = players.map((x) => ({
     emoji: x.emoji,
     id: x.id,
     name: x.name,
@@ -36,24 +31,23 @@ export default async (prisma: PrismaClient, params: GetSessionQueryParams) => {
     name: session.name,
     teamId: session.teamId,
     players: mappedPlayers,
-    stories: session.stories.map(x => ({
+    stories: session.stories.map((x) => ({
       description: x.description,
       endSeconds: x.endSeconds,
       estimate: x.estimate,
       id: x.id,
       sessionId: x.sessionId,
       spectators: x.spectators
-        .map(s => s.player)
-        .map(p => ({ ...p, type: p.defaultType as PlayerType })),
+        .map((s) => s.player)
+        .map((p) => ({ ...p, type: p.defaultType as PlayerType })),
       startSeconds: x.startSeconds,
       totalTimeSpent: x.totalTimeSpent,
       voters: x.votes
-        .map(v => v.player)
-        .map(p => ({ ...p, type: p.defaultType as PlayerType })),
+        .map((v) => v.player)
+        .map((p) => ({ ...p, type: p.defaultType as PlayerType })),
       votes: x.votes,
     })),
   };
 
   return data;
 };
-

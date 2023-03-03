@@ -3,4 +3,3 @@ export enum ShowType {
   Hurry = 2,
   Force = 3,
 }
-

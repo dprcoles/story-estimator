@@ -1,7 +1,8 @@
 import { Server, Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { PrismaClient, Sessions } from "@prisma/client";
-import { Player, Room } from "src/types";
+import { Room } from "../types/room";
+import { Player } from "../types/player";
 import registerSocketHandlers from "./socketHandlers";
 import registerPlayerHandlers from "./playerHandlers";
 import registerRoomHandlers from "./roomHandlers";
@@ -27,4 +28,3 @@ const registerHandlers = (params: BaseHandlerParams) => {
 };
 
 export { handleOnConnection, registerHandlers };
-

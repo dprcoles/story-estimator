@@ -31,4 +31,3 @@ export interface StoryDetails {
   totalTimeSpent: number | null;
   sessionId: number;
 }
-

@@ -1,6 +1,7 @@
-import retry from "async-retry";
+import retry = require("async-retry");
 import { BaseHandlerParams } from ".";
-import { PlayerType, RoomIntegrations } from "../types";
+import { RoomIntegrations } from "../types/room";
+import { PlayerType } from "../types/player";
 import { handleUpdateRoom } from "./globalHandlers";
 
 const handleOnConnection = async ({
@@ -22,7 +23,7 @@ const handleOnConnection = async ({
       },
       {
         retries: 5,
-      }
+      },
     );
   }
 
@@ -38,7 +39,7 @@ const handleOnConnection = async ({
     });
   }
 
-  if (!rooms.find(r => r.id === roomId)) {
+  if (!rooms.find((r) => r.id === roomId)) {
     let integrations: RoomIntegrations | null = null;
     if (session.teamId) {
       const teamData = await prisma.teams.findFirst({
@@ -68,19 +69,19 @@ const handleOnConnection = async ({
 
   socket.join(roomId.toString());
 
-  if (!roomPlayers.map(x => x.id).includes(playerId)) {
+  if (!roomPlayers.map((x) => x.id).includes(playerId)) {
     const playerInfo = await prisma.players.findFirst({
       where: { id: playerId },
     });
 
-    const currentRoomPlayers = roomPlayers.filter(rp => rp.roomId == roomId);
+    const currentRoomPlayers = roomPlayers.filter((rp) => rp.roomId == roomId);
 
     if (playerInfo) {
       roomPlayers.push({
         id: playerId,
         admin:
           currentRoomPlayers?.length === 0 ||
-          !currentRoomPlayers?.find(x => x.admin),
+          !currentRoomPlayers?.find((x) => x.admin),
         name: playerInfo.name,
         type: playerInfo.defaultType as PlayerType,
         emoji: playerInfo.emoji,
@@ -94,4 +95,3 @@ const handleOnConnection = async ({
 };
 
 export default handleOnConnection;
-

@@ -9,7 +9,7 @@ export const getJiraIntegrationById = async (
   params: IGetJiraIntegrationByIdParams
 ) => {
   const { id } = params;
-  const response = await fetch(`${API_URL}/jira-integration/${id}`, {
+  const response = await fetch(`${API_URL}/jira/integration/${id}`, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -32,7 +32,7 @@ export const getJiraIssuesByQueryId = async (
 ) => {
   const { integrationId, id } = params;
   const response = await fetch(
-    `${API_URL}/jql?integrationId=${integrationId}&queryId=${id}`,
+    `${API_URL}/jira/query?integrationId=${integrationId}&queryId=${id}`,
     {
       headers: {
         Accept: "application/json",
