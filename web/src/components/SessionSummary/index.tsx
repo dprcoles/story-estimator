@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import { createSession } from "@/api/session";
 import Button from "@/components/Button";
-import { PlayerInfo } from "@/types/player";
-import { StoryDetails } from "@/types/story";
 import { ROUTE_ROOM } from "@/utils/constants";
 import { useNavigate } from "react-router-dom";
 import CreateSessionModal from "../CreateSessionModal";
 import History from "../MainPanel/History";
+import { SessionDetails } from "@/types/session";
+import PlayerList from "./PlayerList";
 
 interface SessionSummaryProps {
-  stories: StoryDetails[];
-  players: PlayerInfo[];
-  teamId: number;
+  session: SessionDetails;
 }
 
-const SessionSummary: React.FC<SessionSummaryProps> = ({ stories, teamId }) => {
+const SessionSummary: React.FC<SessionSummaryProps> = ({ session }) => {
   const [isSessionModalOpen, setIsSessionModalOpen] = useState<boolean>(false);
+
+  const { name, teamId, stories, players } = session;
 
   const navigate = useNavigate();
 
@@ -37,29 +37,34 @@ const SessionSummary: React.FC<SessionSummaryProps> = ({ stories, teamId }) => {
         setIsOpen={setIsSessionModalOpen}
         handleCreateSession={handleCreateSession}
       />
-      <div className="p-8">
-        <div className="flex mb-4">
+      <div className="p-4 md:p-8">
+        <div className="md:flex mb-8">
           <Button onClick={handleGoBack}>{"<"} Go Back</Button>
+          <div className="mt-4 md:mt-0 md:ml-4">
+            <Button onClick={() => setIsSessionModalOpen(true)}>
+              Create New Session
+            </Button>
+          </div>
         </div>
-        <div className="text-5xl font-bold pb-8">Session Summary</div>
+        <div className="text-5xl font-bold pb-4">{name}</div>
         <div className="text-light-text dark:text-dark-text pb-4"></div>
-        <div className="py-8">
-          <History
-            stories={stories.map(x => ({
-              ...x,
-              active: false,
-              roomId: x.sessionId,
-              endSeconds: x.endSeconds ?? undefined,
-              startSeconds: x.startSeconds ?? undefined,
-              totalTimeSpent: x.totalTimeSpent ?? undefined,
-              estimate: x.estimate ?? undefined,
-            }))}
-          />
-        </div>
-        <div className="flex">
-          <Button onClick={() => setIsSessionModalOpen(true)}>
-            Create New Session
-          </Button>
+        <div className="grid md:grid-cols-3 py-8">
+          <div className="md:col-span-2">
+            <History
+              stories={stories.map(x => ({
+                ...x,
+                active: false,
+                roomId: x.sessionId,
+                endSeconds: x.endSeconds ?? undefined,
+                startSeconds: x.startSeconds ?? undefined,
+                totalTimeSpent: x.totalTimeSpent ?? undefined,
+                estimate: x.estimate ?? undefined,
+              }))}
+            />
+          </div>
+          <div className="mt-4 md:ml-4 md:mt-0">
+            <PlayerList players={players} />
+          </div>
         </div>
       </div>
     </>
