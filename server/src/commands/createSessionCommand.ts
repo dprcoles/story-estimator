@@ -12,7 +12,7 @@ export default async (
   const { name, teamId } = params;
 
   const session = await prisma.sessions.create({
-    data: { name: name, playerIds: [], teamId: teamId },
+    data: { name: name, playerIds: [], teamId: teamId, active: true },
   });
 
   return session;
