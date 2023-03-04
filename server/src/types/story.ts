@@ -1,5 +1,3 @@
-import { PlayerInfo } from "./player";
-
 export type Story = {
   id: number;
   roomId: number;
@@ -18,16 +16,3 @@ type Vote = {
   playerId: number;
   vote?: string;
 };
-
-export interface StoryDetails {
-  id: number;
-  description: string;
-  startSeconds: number | null;
-  endSeconds: number | null;
-  estimate: string | null;
-  voters: PlayerInfo[];
-  spectators: PlayerInfo[];
-  votes: Vote[];
-  totalTimeSpent: number | null;
-  sessionId: number;
-}

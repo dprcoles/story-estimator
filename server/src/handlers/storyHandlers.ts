@@ -1,6 +1,6 @@
+import { PlayerType } from "src/player/enums/player-type.enum";
 import { BaseHandlerParams } from ".";
 import { Story } from "../types/story";
-import { PlayerType } from "../types/player";
 import { handleResetRoom, handleUpdateRoom } from "./globalHandlers";
 
 const generateStoryId = (roomId: number) => {

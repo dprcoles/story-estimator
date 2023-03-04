@@ -1,7 +1,4 @@
-export enum PlayerType {
-  Voter = "voter",
-  Spectator = "spectator",
-}
+import { PlayerType } from "src/player/enums/player-type.enum";
 
 export type Player = {
   id: number;
@@ -12,24 +9,3 @@ export type Player = {
   roomId: number | number[];
   vote: string | undefined;
 };
-
-export interface PlayerInfo {
-  id: number;
-  emoji: string;
-  name: string;
-  type: PlayerType;
-}
-
-export interface ICreatePlayerBody {
-  name: string;
-  defaultType: PlayerType;
-  emoji: string;
-}
-
-export interface IPlayerByIdParams {
-  id: number;
-}
-
-export type IUpdatePlayerBody = ICreatePlayerBody;
-
-export type IUpdatePlayerParams = IPlayerByIdParams;
