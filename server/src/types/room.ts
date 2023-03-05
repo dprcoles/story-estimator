@@ -13,9 +13,9 @@ export type Room = {
 export type Settings = {
   countdown: boolean;
   fastMode: boolean;
+  admin: number;
 };
 
 export interface RoomIntegrations {
   jira?: number | null;
 }
-
