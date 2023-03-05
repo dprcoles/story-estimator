@@ -5,6 +5,7 @@ import {
 } from "@nestjs/websockets";
 import { Server, Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
+import { __prod__ } from "src/constants/app.constants";
 import { handleOnConnection, registerHandlers } from "src/handlers";
 import { PrismaService } from "src/prisma/prisma.service";
 import { Player } from "src/types/player";
@@ -12,7 +13,7 @@ import { Room } from "src/types/room";
 
 @WebSocketGateway({
   cors: {
-    origin: "*",
+    origin: __prod__ ? process.env.WEB_URL : "*",
   },
 })
 export class RoomGateway implements OnGatewayConnection {
