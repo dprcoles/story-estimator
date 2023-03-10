@@ -16,6 +16,7 @@ export enum EmitEvent {
   Complete = "story:complete",
   AddStory = "story:add",
   EditStory = "story:edit",
+  DeleteStory = "story:delete",
   SetActiveStory = "story:set-active",
   Update = "room:update",
   Ping = "ping",

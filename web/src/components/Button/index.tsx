@@ -5,6 +5,7 @@ import classnames from "classnames";
 export enum ButtonStyle {
   Default = "default",
   Primary = "primary",
+  Danger = "danger",
 }
 
 interface ButtonProps {
@@ -26,6 +27,8 @@ const Button: React.FC<ButtonProps> = ({
     switch (style) {
       case ButtonStyle.Primary:
         return "bg-light-main dark:bg-dark-main border-light-buttons dark:border-dark-buttons border-light-background dark:hover:border-dark-background text-white dark:text-black";
+      case ButtonStyle.Danger:
+        return "bg-danger-base text-white border-danger-border hover:bg-danger-hover";
       case ButtonStyle.Default:
       default:
         return "bg-light-buttons dark:bg-dark-buttons border-light-border-color dark:border-dark-border-color hover:border-black dark:hover:border-white";

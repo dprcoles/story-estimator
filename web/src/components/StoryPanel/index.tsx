@@ -6,13 +6,15 @@ import StoryCard from "./StoryCard";
 import { usePlayerStore } from "@/stores/playerStore";
 interface StoryPanelProps {
   stories: Story[];
-  setIsStoryModalOpen: (isStoryModalOpen: boolean) => void;
   handleSaveStory: (story: Story) => void;
+  handleDeleteStory: (id: number) => void;
+  setIsStoryModalOpen: (isStoryModalOpen: boolean) => void;
 }
 
 const StoryPanel: React.FC<StoryPanelProps> = ({
   stories,
   handleSaveStory,
+  handleDeleteStory,
   setIsStoryModalOpen,
 }) => {
   const { player } = usePlayerStore();
@@ -44,6 +46,7 @@ const StoryPanel: React.FC<StoryPanelProps> = ({
               story={x}
               onClick={player.admin ? handleSetActive : undefined}
               onEdit={handleSaveStory}
+              onDelete={player.admin ? handleDeleteStory : undefined}
             />
           </div>
         ))}

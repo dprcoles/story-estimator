@@ -9,16 +9,12 @@ import { useSocketStore } from "@/stores/socketStore";
 
 interface GetStartedDisplayProps {
   setIsStoryModalOpen: (isStoryModalOpen: boolean) => void;
-  setIsJiraImportModalOpen: (isJiraImportModalOpen: boolean) => void;
-  integrations: RoomIntegrations | null;
   hasStories: boolean;
   firstStoryId: number;
 }
 
 const GetStartedDisplay: React.FC<GetStartedDisplayProps> = ({
   setIsStoryModalOpen,
-  setIsJiraImportModalOpen,
-  integrations,
   hasStories,
   firstStoryId,
 }) => {

@@ -139,6 +139,16 @@ const registerStoryHandlers = ({
     handleUpdateRoom({ io, socket, roomId, playerId, rooms, roomPlayers });
   };
 
+  const handleDelete = (id: number) => {
+    if (roomId) {
+      const roomIndex = rooms.findIndex((r) => r.id === roomId);
+      const roomStories = rooms[roomIndex].stories;
+
+      rooms[roomIndex].stories = roomStories.filter((rs) => rs.id !== id);
+    }
+    handleUpdateRoom({ io, socket, roomId, playerId, rooms, roomPlayers });
+  };
+
   const handleImport = (stories: string[]) => {
     if (roomId) {
       const roomIndex = rooms.findIndex((r) => r.id === roomId);
@@ -174,6 +184,7 @@ const registerStoryHandlers = ({
   socket.on("story:complete", handleComplete);
   socket.on("story:add", handleAdd);
   socket.on("story:edit", handleEdit);
+  socket.on("story:delete", handleDelete);
   socket.on("story:import", handleImport);
   socket.on("story:set-active", handleSetActive);
 };
