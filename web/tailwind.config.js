@@ -40,6 +40,11 @@ module.exports = {
             hover: "#000",
           },
         },
+        danger: {
+          base: "#f44336",
+          border: "#b71c1c",
+          hover: "#ef5350",
+        },
       },
     },
   },

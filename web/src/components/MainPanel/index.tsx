@@ -21,8 +21,6 @@ interface MainPanelProps {
   stories: Array<Story>;
   setIsSettingsModalOpen: (isSettingsModalOpen: boolean) => void;
   setIsStoryModalOpen: (isStoryModalOpen: boolean) => void;
-  setIsJiraImportModalOpen: (isJiraImportModalOpen: boolean) => void;
-  integrations: RoomIntegrations | null;
 }
 
 const MainPanel: React.FC<MainPanelProps> = ({
@@ -36,8 +34,6 @@ const MainPanel: React.FC<MainPanelProps> = ({
   stories,
   setIsSettingsModalOpen,
   setIsStoryModalOpen,
-  setIsJiraImportModalOpen,
-  integrations,
 }) => {
   const [tab, setTab] = useState<InfoCardTab>(InfoCardTab.CurrentStory);
   const currentStory = stories.find(s => s.active);
@@ -61,8 +57,6 @@ const MainPanel: React.FC<MainPanelProps> = ({
     <div className="bg-light-panels dark:bg-dark-panels rounded-lg py-4 px-8 main-panel__container">
       {(!hasStories || noActiveStories) && (
         <GetStartedDisplay
-          integrations={integrations}
-          setIsJiraImportModalOpen={setIsJiraImportModalOpen}
           setIsStoryModalOpen={setIsStoryModalOpen}
           hasStories={hasStories}
           firstStoryId={stories[0]?.id}

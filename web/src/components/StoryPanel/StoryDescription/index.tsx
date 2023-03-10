@@ -48,7 +48,7 @@ const StoryDescription: React.FC<StoryDescriptionProps> = ({
           </>
         ) : (
           <span
-            className={`font-bold rounded-md hover:bg-light-hover dark:hover:bg-dark-hover ${
+            className={`font-bold rounded-md hover:bg-light-hover dark:hover:bg-dark-hover p-1 ${
               active
                 ? "text-black dark:text-white"
                 : "text-light-text dark:text-dark-text"
