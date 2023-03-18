@@ -1,5 +1,5 @@
 [build]
-  base = "web/"
+  base = "apps/web/"
   command = "pnpm build"
   publish = "build/"
 

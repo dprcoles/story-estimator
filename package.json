@@ -1,0 +1,18 @@
+{
+  "name": "story-estimator",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "nx run-many --target=build",
+    "dev": "nx run-many --target=dev",
+    "test": "nx run-many --target=test",
+    "format": "prettier --write \"**/*.{js,ts,tsx,md}\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nx": "^14.5.4",
+    "prettier": "^2.8.4"
+  }
+}
