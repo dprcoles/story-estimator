@@ -1,9 +1,9 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "../prisma/prisma.service";
 import { Players } from "@prisma/client";
 import { GetPlayerQuery } from "src/player/queries/get-player.query";
 import { CreatePlayerCommand } from "src/player/commands/create-player.command";
 import { UpdatePlayerCommand } from "src/player/commands/update-player.command";
+import { PrismaService } from "../prisma/prisma.service";
 import { CreatePlayerDto } from "./dto/create-player.dto";
 import { UpdatePlayerDto } from "./dto/update-player.dto";
 

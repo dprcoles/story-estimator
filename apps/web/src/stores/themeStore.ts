@@ -1,6 +1,6 @@
+import { useEffect, useState } from "react";
 import { StorageItem } from "@/types/storage";
 import { DARK_THEME, LIGHT_THEME } from "@/utils/constants";
-import { useEffect, useState } from "react";
 
 export const useThemeStore = () => {
   const getSystemTheme = () =>

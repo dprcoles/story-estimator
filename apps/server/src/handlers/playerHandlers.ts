@@ -1,6 +1,6 @@
-import { BaseHandlerParams } from ".";
 import { Player } from "../types/player";
 import { handleUpdateRoom } from "./globalHandlers";
+import { BaseHandlerParams } from ".";
 
 const registerPlayerHandlers = ({
   io,

@@ -1,6 +1,6 @@
-import { JiraIssue } from "../interfaces/jira-issue.interface";
 import { Version3Client } from "jira.js";
 import { Query } from "src/interfaces/query.interface";
+import { JiraIssue } from "../interfaces/jira-issue.interface";
 
 export class GetJqlIssuesQuery implements Query {
   public jqlQuery: string;

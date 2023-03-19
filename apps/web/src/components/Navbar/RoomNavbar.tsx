@@ -1,5 +1,4 @@
 import React from "react";
-import { Player } from "@/types/player";
 import UserIcon from "./UserIcon";
 import AnimatedLogo from "./AnimatedLogo";
 import ThemeToggle from "./ThemeToggle";

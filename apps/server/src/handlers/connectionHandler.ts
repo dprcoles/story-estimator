@@ -1,8 +1,8 @@
 import retry = require("async-retry");
 import { PlayerType } from "src/player/enums/player-type.enum";
-import { BaseHandlerParams } from ".";
 import { RoomIntegrations } from "../types/room";
 import { handleUpdateRoom } from "./globalHandlers";
+import { BaseHandlerParams } from ".";
 
 const handleOnConnection = async ({
   io,

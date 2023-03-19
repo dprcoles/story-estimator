@@ -1,7 +1,7 @@
 import { PlayerType } from "src/player/enums/player-type.enum";
-import { BaseHandlerParams } from ".";
 import { Story } from "../types/story";
 import { handleResetRoom, handleUpdateRoom } from "./globalHandlers";
+import { BaseHandlerParams } from ".";
 
 const generateStoryId = (roomId: number) => {
   return Math.floor(Math.random() * 1000000) + roomId;

@@ -1,8 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
+import SessionCard from "../SessionCard";
 import { TeamSession } from "@/types/team";
 import { FADE_IN, STAGGER } from "@/utils/variants";
-import SessionCard from "../SessionCard";
 
 interface SessionListProps {
   title: string;

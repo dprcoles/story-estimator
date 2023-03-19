@@ -1,7 +1,7 @@
 import { Button } from "ui";
-import { TeamSession } from "@/types/team";
 import React from "react";
 import SessionList from "./SessionList";
+import { TeamSession } from "@/types/team";
 
 interface SessionsPanelProps {
   setIsSessionModalOpen: (isOpen: boolean) => void;

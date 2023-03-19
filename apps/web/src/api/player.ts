@@ -25,7 +25,7 @@ export const createPlayer = async (body: ICreatePlayerBody) => {
   return result;
 };
 
-export interface IUpdatePlayerBody extends ICreatePlayerBody {}
+export type IUpdatePlayerBody = ICreatePlayerBody;
 
 export const updatePlayer = async (id: number, body: IUpdatePlayerBody) => {
   const response = await fetch(`${API_URL}/player/${id}`, {

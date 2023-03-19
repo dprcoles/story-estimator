@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { AiOutlineReload } from "react-icons/ai";
-import { getJiraIssuesByQueryId } from "@/api/integrations";
 import { Button } from "ui";
+import JiraIssueCard from "../../../JiraIssueCard";
+import { getJiraIssuesByQueryId } from "@/api/integrations";
 import { JqlQuery } from "@/types/integrations";
 import { JiraIssue } from "@/types/jira";
-import JiraIssueCard from "../../../JiraIssueCard";
 
 interface JiraQueryListProps {
   integrationId: number;

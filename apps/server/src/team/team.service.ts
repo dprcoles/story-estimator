@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "../prisma/prisma.service";
 import { GetTeamQuery } from "src/team/queries/get-team.query";
+import { PrismaService } from "../prisma/prisma.service";
 import { Team } from "./interfaces/team.interface";
 
 @Injectable()

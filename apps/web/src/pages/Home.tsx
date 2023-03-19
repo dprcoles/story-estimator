@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FADE_IN } from "@/utils/variants";
 import Wrapper from "@/components/Wrapper";
-import UserModal from "@/components/PlayerModal";
+import UserModal from "@/components/Modals/PlayerModal";
 import { StorageItem } from "@/types/storage";
 import { getPlayer } from "@/api/player";
 import { usePlayerStore } from "@/stores/playerStore";
 import { PlayerInfo } from "@/types/player";
 import { createSession } from "@/api/session";
 import { ROUTE_ROOM } from "@/utils/constants";
-import CreateSessionModal from "@/components/CreateSessionModal";
+import CreateSessionModal from "@/components/Modals/CreateSessionModal";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();

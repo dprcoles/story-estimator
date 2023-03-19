@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
+import { Version3Client } from "jira.js";
+import { GetJiraIntegrationQuery } from "src/jira/queries/get-jira-integration.query";
+import { GetJqlIssuesQuery } from "src/jira/queries/get-jql-issues.query";
 import { PrismaService } from "../prisma/prisma.service";
 import { JiraIssue } from "./interfaces/jira-issue.interface";
 import { JiraIntegration } from "./interfaces/jira-integration.interface";
-import { GetJiraIntegrationQuery } from "src/jira/queries/get-jira-integration.query";
-import { GetJqlIssuesQuery } from "src/jira/queries/get-jql-issues.query";
-import { Version3Client } from "jira.js";
 
 @Injectable()
 export class JiraService {

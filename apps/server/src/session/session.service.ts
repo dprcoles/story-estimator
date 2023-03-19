@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "../prisma/prisma.service";
 import { Sessions } from "@prisma/client";
 import { GetSessionQuery } from "src/session/queries/get-session.query";
 import { CreateSessionCommand } from "src/session/commands/create-session.command";
+import { PrismaService } from "../prisma/prisma.service";
 import { Session } from "./interfaces/session.interface";
 import { CreateSessionDto } from "./dto/create-session.dto";
 

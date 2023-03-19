@@ -1,5 +1,5 @@
-import { BaseHandlerParams } from ".";
 import { handleUpdateRoom } from "./globalHandlers";
+import { BaseHandlerParams } from ".";
 
 const registerSocketHandlers = ({
   io,

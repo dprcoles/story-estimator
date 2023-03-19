@@ -1,9 +1,9 @@
 import retry = require("async-retry");
 import { PlayerType } from "src/player/enums/player-type.enum";
-import { BaseHandlerParams } from ".";
 import { Settings } from "../types/room";
 import { ShowType } from "../session/enums/show-type.enum";
 import { handleResetRoom, handleUpdateRoom } from "./globalHandlers";
+import { BaseHandlerParams } from ".";
 
 const registerRoomHandlers = ({
   io,

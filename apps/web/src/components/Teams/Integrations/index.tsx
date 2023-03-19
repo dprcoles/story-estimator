@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
+import JiraPanel from "./Jira/JiraPanel";
+import JiraConfig from "./Jira/JiraConfig";
 import {
   IntegrationIds,
   IntegrationView,
   JiraIntegration,
 } from "@/types/integrations";
-import JiraPanel from "./Jira/JiraPanel";
 import { getJiraIntegrationById } from "@/api/integrations";
-import JiraConfig from "./Jira/JiraConfig";
 
 interface IntegrationsProps {
   integrations: IntegrationIds;

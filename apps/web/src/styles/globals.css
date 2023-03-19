@@ -34,7 +34,7 @@ html {
   margin: auto;
 }
 
-.toggle-button > input:checked ~ .dot {
+.switch > input:checked ~ .dot {
   transform: translateX(100%);
   background-color: var(--toggleColor);
 }
@@ -68,4 +68,3 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: #888;
 }
-

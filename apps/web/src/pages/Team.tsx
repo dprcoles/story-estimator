@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { useNavigate, useParams } from "react-router-dom";
+import { Tabs } from "ui";
 import { getTeam } from "@/api/team";
 import Wrapper from "@/components/Wrapper";
 import { TeamDetails, TeamPageTab } from "@/types/team";
-import { useNavigate, useParams } from "react-router-dom";
 import { DefaultNavbar } from "@/components/Navbar";
 import { FADE_FROM_LEFT, FADE_IN } from "@/utils/variants";
-import CreateSessionModal from "@/components/CreateSessionModal";
+import CreateSessionModal from "@/components/Modals/CreateSessionModal";
 import { createSession } from "@/api/session";
 import { ROUTE_ROOM } from "@/utils/constants";
 import SessionsPanel from "@/components/Teams/SessionsPanel";
@@ -24,7 +25,7 @@ const Team: React.FC<TeamPageProps> = ({ theme, setTheme }) => {
   const [isLoadingData, setIsLoadingData] = useState<boolean>(false);
   const [teamData, setTeamData] = useState<TeamDetails>();
   const [isSessionModalOpen, setIsSessionModalOpen] = useState<boolean>(false);
-  const [tab, setTab] = useState<TeamPageTab>(TeamPageTab.Sessions);
+  const [tab, setTab] = useState<string>(TeamPageTab.Sessions);
 
   const tabs = [
     {
@@ -88,19 +89,7 @@ const Team: React.FC<TeamPageProps> = ({ theme, setTheme }) => {
                 {name}
               </motion.div>
               <div className="pb-8">
-                {tabs.map((x) => (
-                  <button
-                    key={x.id}
-                    className={`rounded-md p-3 text-sm ${
-                      x.id === tab
-                        ? "bg-light-hover dark:bg-dark-hover"
-                        : "bg-transparent"
-                    }`}
-                    onClick={() => setTab(x.id)}
-                  >
-                    {x.label}
-                  </button>
-                ))}
+                <Tabs tabs={tabs} activeTab={tab} setActiveTab={setTab} />
               </div>
               {tab === TeamPageTab.Sessions && (
                 <SessionsPanel

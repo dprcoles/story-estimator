@@ -1,10 +1,14 @@
 {
   "name": "story-estimator",
   "version": "1.0.0",
-  "description": "",
+  "description": "A story estimation tool for agile teams.",
   "scripts": {
     "build": "nx run-many --target=build",
+    "build:web": "nx run-many --target=build --exclude server",
+    "build:server": "nx build server",
     "dev": "nx run-many --target=dev",
+    "dev:web": "nx run-many --target=dev --exclude server",
+    "dev:server": "nx dev server",
     "test": "nx run-many --target=test",
     "format": "prettier --write \"**/*.{js,ts,tsx,md}\""
   },
