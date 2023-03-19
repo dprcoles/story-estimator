@@ -1,7 +1,7 @@
 [build]
-  base = "apps/web/"
-  command = "pnpm build"
-  publish = "build/"
+  base = "/"
+  command = "pnpm build:web"
+  publish = "apps/web/build/"
 
 [[redirects]]
   from = "/*"
