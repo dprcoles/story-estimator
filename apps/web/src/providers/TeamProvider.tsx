@@ -2,6 +2,7 @@ import React, { PropsWithChildren, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { getTeam } from "@/api/team";
+import Loader from "@/components/Loader";
 import { useSocketStore } from "@/stores/socketStore";
 import { useTeamStore } from "@/stores/teamStore";
 import { EmitEvent } from "@/types/server";
@@ -34,7 +35,12 @@ const TeamProvider: React.FC<PropsWithChildren> = ({ children }) => {
     }
   }, [isLoading, team, socket]);
 
-  if (!socket) return <div>Loading...</div>;
+  if (!socket)
+    return (
+      <div className="min-h-[90vh] flex items-center justify-center">
+        <Loader />
+      </div>
+    );
 
   socket.on(EmitEvent.TeamUpdate, (data: TeamDetails) => {
     setTeam(data);

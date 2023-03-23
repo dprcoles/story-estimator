@@ -5,6 +5,7 @@ import {
   getJiraIntegrationById,
   getJiraIssuesByQueryId,
 } from "@/api/integrations";
+import Loader from "@/components/Loader";
 import JiraIssueCard from "@/components/Teams/Integrations/Jira/JiraIssueCard";
 import { JqlQuery } from "@/types/integrations";
 import { JiraIssue } from "@/types/jira";
@@ -106,7 +107,7 @@ const JiraImportTab: React.FC<JiraImportTabProps> = ({
         </div>
       )}
       <div className="p-4 overflow-y-auto max-h-96">
-        {isLoadingIssues && <div className="text-center">Loading...</div>}
+        {isLoadingIssues && <Loader />}
         {!isLoadingIssues &&
           issues.length > 0 &&
           issues.map((x) => (

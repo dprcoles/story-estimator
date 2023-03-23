@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { getSession } from "@/api/session";
+import Loader from "@/components/Loader";
 import SessionSummary from "@/components/SessionSummary";
 import { useTeamStore } from "@/stores/teamStore";
 import { SessionDetails } from "@/types/session";
@@ -33,7 +34,12 @@ const SummaryPage: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  if (isLoadingData || !sessionData) return <div>Loading...</div>;
+  if (isLoadingData || !sessionData)
+    return (
+      <div className="min-h-[90vh] flex items-center justify-center">
+        <Loader />
+      </div>
+    );
 
   return (
     <motion.div variants={FADE_IN} className="max-h-full h-screen">

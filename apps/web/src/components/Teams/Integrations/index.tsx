@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { getJiraIntegrationById } from "@/api/integrations";
+import Loader from "@/components/Loader";
 import {
   IntegrationIds,
   IntegrationView,
@@ -32,7 +33,7 @@ const Integrations: React.FC<IntegrationsProps> = ({ integrations }) => {
     }
   }, [integrations.jira]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loader />;
 
   return (
     <div>
