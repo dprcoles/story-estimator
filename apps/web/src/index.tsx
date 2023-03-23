@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { AnimatePresence } from "framer-motion";
 import App from "./App";

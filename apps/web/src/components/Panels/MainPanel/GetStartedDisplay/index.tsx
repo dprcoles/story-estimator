@@ -6,6 +6,7 @@ import { FADE_DOWN, FADE_UP, STAGGER, EXPAND_IN } from "@/utils/variants";
 import { RoomIntegrations } from "@/types/room";
 import { EmitEvent } from "@/types/server";
 import { useSocketStore } from "@/stores/socketStore";
+import { useRoomStore } from "@/stores/roomStore";
 
 interface GetStartedDisplayProps {
   setIsStoryModalOpen: (isStoryModalOpen: boolean) => void;
@@ -18,11 +19,12 @@ const GetStartedDisplay: React.FC<GetStartedDisplayProps> = ({
   hasStories,
   firstStoryId,
 }) => {
+  const isAdmin = useRoomStore((state) => state.isAdmin);
   const { emit } = useSocketStore();
   const [clicked, setClicked] = useState<boolean>(false);
 
   const handleStartEstimating = () =>
-    emit(EmitEvent.SetActiveStory, firstStoryId);
+    emit(EmitEvent.SetActiveStory, { id: firstStoryId });
 
   const handleInvitePlayers = () => {
     navigator.clipboard.writeText(window.location.href);

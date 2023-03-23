@@ -15,7 +15,7 @@ const PlayerVoteIcon: React.FC<PlayerIconProps> = ({
   showVote,
   countdownStatus,
 }) => {
-  const { type, vote } = player;
+  const { defaultType: type, vote } = player;
 
   if (type === PlayerType.Spectator) return null;
 

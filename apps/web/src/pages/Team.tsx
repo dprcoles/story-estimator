@@ -3,9 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate, useParams } from "react-router-dom";
 import { Tabs } from "ui";
 import { getTeam } from "@/api/team";
-import Wrapper from "@/components/Wrapper";
 import { TeamDetails, TeamPageTab } from "@/types/team";
-import { DefaultNavbar } from "@/components/Navbar";
 import { FADE_FROM_LEFT, FADE_IN } from "@/utils/variants";
 import CreateSessionModal from "@/components/Modals/CreateSessionModal";
 import { createSession } from "@/api/session";
@@ -69,16 +67,13 @@ const Team: React.FC<TeamPageProps> = ({ theme, setTheme }) => {
   const { name } = teamData;
 
   return (
-    <Wrapper>
+    <>
       <CreateSessionModal
         isOpen={isSessionModalOpen}
         setIsOpen={setIsSessionModalOpen}
         handleCreateSession={handleCreateSession}
       />
       <motion.div variants={FADE_IN} className="max-h-full h-screen">
-        <div className="p-4 lg:mx-auto">
-          <DefaultNavbar theme={theme} setTheme={setTheme} />
-        </div>
         <div className="px-2">
           <div className="bg-light-panels dark:bg-dark-panels rounded-lg py-4 px-8 main-panel__container">
             <div className="p-8">
@@ -109,7 +104,7 @@ const Team: React.FC<TeamPageProps> = ({ theme, setTheme }) => {
           </div>
         </div>
       </motion.div>
-    </Wrapper>
+    </>
   );
 };
 

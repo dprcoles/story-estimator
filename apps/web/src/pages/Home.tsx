@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FADE_IN } from "@/utils/variants";
 import Wrapper from "@/components/Wrapper";
-import UserModal from "@/components/Modals/PlayerModal";
 import { StorageItem } from "@/types/storage";
 import { getPlayer } from "@/api/player";
 import { usePlayerStore } from "@/stores/playerStore";
@@ -15,9 +14,8 @@ import CreateSessionModal from "@/components/Modals/CreateSessionModal";
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const [isJoining, setIsJoining] = useState<boolean>(false);
-  const [isUserModalOpen, setIsUserModalOpen] = useState<boolean>(false);
   const [isSessionModalOpen, setIsSessionModalOpen] = useState<boolean>(false);
-  const { player, setPlayer } = usePlayerStore((state) => state);
+  const { setPlayer, setIsPlayerModalOpen } = usePlayerStore((state) => state);
 
   const handleCreateSession = async (name: string) => {
     const session = await createSession({
@@ -40,7 +38,7 @@ const Home: React.FC = () => {
     const player = await getPlayer(id);
     const { emoji, defaultType: type, name } = player;
 
-    await handleSetPlayer({ id, emoji, name, type });
+    await handleSetPlayer({ id, emoji, name, defaultType: type });
   };
 
   const start = async () => {
@@ -56,24 +54,18 @@ const Home: React.FC = () => {
       return;
     }
 
-    setIsUserModalOpen(true);
+    setIsPlayerModalOpen(true);
   };
 
   return (
-    <Wrapper>
-      <UserModal
-        isOpen={isUserModalOpen}
-        setIsOpen={setIsUserModalOpen}
-        player={player}
-        setPlayer={handleSetPlayer}
-      />
+    <>
       <CreateSessionModal
         isOpen={isSessionModalOpen}
         setIsOpen={setIsSessionModalOpen}
         handleCreateSession={handleCreateSession}
       />
       <motion.div variants={FADE_IN}>
-        <div className="flex max-w-2xl mx-auto py-8 h-screen">
+        <div className="flex max-w-2xl mx-auto py-8 h-[90vh]">
           <div className="m-auto grid grid-flow-row grid-cols-2">
             <div className="text-4xl">
               A{" "}
@@ -98,7 +90,7 @@ const Home: React.FC = () => {
           </div>
         </div>
       </motion.div>
-    </Wrapper>
+    </>
   );
 };
 

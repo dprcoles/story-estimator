@@ -46,8 +46,8 @@ const FinalEstimate: React.FC<FinalEstimateProps> = ({
         <Button
           onClick={() =>
             emit(EmitEvent.Complete, {
-              finalVote: selected,
-              storyId: currentStoryId,
+              vote: selected,
+              id: currentStoryId,
             })
           }
           disabled={selected === ""}

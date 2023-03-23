@@ -5,6 +5,7 @@ import { useSocketStore } from "@/stores/socketStore";
 import { usePlayerStore } from "@/stores/playerStore";
 import { EmitEvent } from "@/types/server";
 import { FADE_IN, STAGGER } from "@/utils/variants";
+import { useRoomStore } from "@/stores/roomStore";
 
 interface NextStoryDisplayProps {
   setIsStoryModalOpen: (isStoryModalOpen: boolean) => void;
@@ -15,7 +16,7 @@ const NextStoryDisplay: React.FC<NextStoryDisplayProps> = ({
 }) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const { player } = usePlayerStore((state) => state);
+  const isAdmin = useRoomStore((state) => state.isAdmin);
   const { emit } = useSocketStore();
 
   const handleCompleteSession = () => {
@@ -31,7 +32,7 @@ const NextStoryDisplay: React.FC<NextStoryDisplayProps> = ({
             All stories have been estimated!
           </div>
         </motion.div>
-        {player.admin ? (
+        {isAdmin ? (
           <motion.div variants={FADE_IN}>
             <div className="text-md text-light-text dark:text-dark-text pb-8">
               You can either continue this session by adding another story, or

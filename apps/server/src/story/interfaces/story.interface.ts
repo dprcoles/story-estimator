@@ -1,4 +1,4 @@
-export type Story = {
+export interface Story {
   id: number;
   roomId: number;
   description: string;
@@ -10,9 +10,9 @@ export type Story = {
   spectatorIds: number[];
   voterIds: number[];
   votes: Vote[];
-};
+}
 
-type Vote = {
+export type Vote = {
   playerId: number;
   vote?: string;
 };

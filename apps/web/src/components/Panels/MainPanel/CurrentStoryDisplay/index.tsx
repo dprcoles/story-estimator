@@ -10,6 +10,7 @@ import { Story } from "@/types/story";
 import { OPTIONS } from "@/utils/constants";
 import { FADE_IN, STAGGER } from "@/utils/variants";
 import { usePlayerStore } from "@/stores/playerStore";
+import { useRoomStore } from "@/stores/roomStore";
 
 interface CurrentStoryDisplayProps {
   currentStory: Story;
@@ -21,7 +22,6 @@ interface CurrentStoryDisplayProps {
   players: Array<Player>;
   type: PlayerType;
   stories: Array<Story>;
-  setIsSettingsModalOpen: (isSettingsModalOpen: boolean) => void;
 }
 
 const CurrentStoryDisplay: React.FC<CurrentStoryDisplayProps> = ({
@@ -34,10 +34,7 @@ const CurrentStoryDisplay: React.FC<CurrentStoryDisplayProps> = ({
   players,
   type,
   stories,
-  setIsSettingsModalOpen,
 }) => {
-  const { player } = usePlayerStore((state) => state);
-
   return (
     <div>
       <div className="grid grid-cols-2 mb-4">
@@ -50,19 +47,6 @@ const CurrentStoryDisplay: React.FC<CurrentStoryDisplayProps> = ({
                 : 0
             }
           />
-        </div>
-        <div className="ml-auto">
-          {player.admin && (
-            <button
-              onClick={() => setIsSettingsModalOpen(true)}
-              className="rounded-full hover:bg-light-hover dark:hover:bg-dark-hover w-10 h-10 flex justify-center items-center"
-              disabled={
-                countdownStatus === CountdownStatus.STARTED || showVotes
-              }
-            >
-              <FiSettings className="text-light-text dark:text-dark-text text-xl m-0" />
-            </button>
-          )}
         </div>
       </div>
       <InfoCard

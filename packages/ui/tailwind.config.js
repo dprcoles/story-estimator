@@ -1,7 +1,8 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
+const { join } = require("path");
 
 module.exports = {
-  content: ["./src/**/*.{js,ts,jsx,tsx}"],
+  content: [join(__dirname, "src/**/*.{js,ts,jsx,tsx}")],
   darkMode: "class",
   theme: {
     extend: {

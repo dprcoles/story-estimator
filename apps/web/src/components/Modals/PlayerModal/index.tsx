@@ -22,10 +22,10 @@ const PlayerModal: React.FC<PlayerModalProps> = ({
 }) => {
   const [nameValue, setNameValue] = useState<string>(player.name);
   const [emojiValue, setEmojiValue] = useState<string>(player.emoji);
-  const [typeValue, setTypeValue] = useState<PlayerType>(player.type);
+  const [typeValue, setTypeValue] = useState<PlayerType>(player.defaultType);
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState<boolean>(false);
 
-  const { name, emoji, type } = player;
+  const { name, emoji, defaultType: type } = player;
 
   useEffect(() => {
     setNameValue(name);
@@ -49,7 +49,7 @@ const PlayerModal: React.FC<PlayerModalProps> = ({
         emoji,
         name,
       });
-      setPlayer({ id: player.id, emoji, name, type: playerType });
+      setPlayer({ id: player.id, emoji, name, defaultType: playerType });
       return;
     }
 
@@ -58,7 +58,7 @@ const PlayerModal: React.FC<PlayerModalProps> = ({
       emoji,
       name,
     });
-    setPlayer({ id: newPlayer.id, emoji, name, type: playerType });
+    setPlayer({ id: newPlayer.id, emoji, name, defaultType: playerType });
   };
 
   const handleSave = async () => {
@@ -67,7 +67,7 @@ const PlayerModal: React.FC<PlayerModalProps> = ({
   };
 
   return (
-    <>
+    <div className="text-black dark:text-white">
       <EmojiPicker
         isOpen={isEmojiPickerOpen}
         setIsOpen={setIsEmojiPickerOpen}
@@ -78,7 +78,7 @@ const PlayerModal: React.FC<PlayerModalProps> = ({
         handleClose={() => setIsOpen(false)}
         showClose={name.length > 0}
         size="sm"
-        heading={<div className="text-lg font-medium">User Settings</div>}
+        heading={<div className="text-lg font-medium">Player Settings</div>}
         footer={
           <Button
             onClick={() => handleSave()}
@@ -137,7 +137,7 @@ const PlayerModal: React.FC<PlayerModalProps> = ({
           </div>
         </div>
       </Modal>
-    </>
+    </div>
   );
 };
 

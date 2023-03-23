@@ -1,6 +1,6 @@
-import { Story } from "./story";
+import { Story } from "src/story/interfaces/story.interface";
 
-export type Room = {
+export interface Room {
   id: number;
   name: string;
   settings: Settings;
@@ -8,7 +8,7 @@ export type Room = {
   active: boolean;
   teamId: number | null;
   integrations: RoomIntegrations | null;
-};
+}
 
 export type Settings = {
   countdown: boolean;
@@ -16,6 +16,6 @@ export type Settings = {
   admin: number;
 };
 
-export interface RoomIntegrations {
+export type RoomIntegrations = {
   jira?: number | null;
-}
+};

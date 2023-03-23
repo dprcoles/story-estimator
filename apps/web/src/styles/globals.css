@@ -34,7 +34,7 @@ html {
   margin: auto;
 }
 
-.switch > input:checked ~ .dot {
+.toggle-button > input:checked ~ .dot {
   transform: translateX(100%);
   background-color: var(--toggleColor);
 }

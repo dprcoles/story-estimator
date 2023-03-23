@@ -35,13 +35,15 @@ const InfoCard: React.FC<InfoCardProps> = ({
   const currentStory = stories.find((s) => s.active);
 
   const playersToVote = players.filter(
-    (x) => !x.vote && x.type === PlayerType.Voter,
+    (x) => !x.vote && x.defaultType === PlayerType.Voter,
   );
   const playersVoted = players.filter(
-    (x) => x.vote && x.type === PlayerType.Voter,
+    (x) => x.vote && x.defaultType === PlayerType.Voter,
   );
   const playersVotedNumber = playersVoted.length;
-  const voters = players.filter((x) => x.type === PlayerType.Voter).length;
+  const voters = players.filter(
+    (x) => x.defaultType === PlayerType.Voter,
+  ).length;
 
   return (
     <div className="mx-auto">
@@ -50,10 +52,14 @@ const InfoCard: React.FC<InfoCardProps> = ({
         countdownStatus === CountdownStatus.STOPPED &&
         !showVotes ? (
           <div className="flex space-x-4 ml-auto">
-            <Button onClick={() => emit(EmitEvent.Show, ShowType.Hurry)}>
+            <Button
+              onClick={() => emit(EmitEvent.Show, { type: ShowType.Hurry })}
+            >
               Hurry other voters
             </Button>
-            <Button onClick={() => emit(EmitEvent.Show, ShowType.Force)}>
+            <Button
+              onClick={() => emit(EmitEvent.Show, { type: ShowType.Force })}
+            >
               Force show votes
             </Button>
           </div>

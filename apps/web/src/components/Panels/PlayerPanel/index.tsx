@@ -27,7 +27,7 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
         <div className="pr-2 space-y-2 overflow-y-scroll overflow-x-hidden panel__card-container">
           {players
             .sort((a, b) => a.name.localeCompare(b.name))
-            .sort((a) => (a.type === PlayerType.Voter ? -1 : 1))
+            .sort((a) => (a.defaultType === PlayerType.Voter ? -1 : 1))
             .map((p) => (
               <div key={p.id}>
                 <PlayerCard
