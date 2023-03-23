@@ -8,7 +8,7 @@ export class AddSessionPlayerCommand implements Command {
   constructor(private prisma: PrismaService) {}
 
   async executeAsync() {
-    await this.prisma.sessions.update({
+    return await this.prisma.sessions.update({
       data: { playerIds: { push: this.playerId } },
       where: { id: this.id },
     });

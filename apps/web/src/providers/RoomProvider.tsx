@@ -1,6 +1,7 @@
 import React, { PropsWithChildren, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import Loader from "@/components/Loader";
 import { usePlayerStore } from "@/stores/playerStore";
 import { useRoomStore } from "@/stores/roomStore";
 import { useSocketStore } from "@/stores/socketStore";
@@ -55,7 +56,12 @@ const RoomProvider: React.FC<PropsWithChildren> = ({ children }) => {
     setRoom(data.room);
   });
 
-  if (!socket || !room.id) return <div>Loading...</div>;
+  if (!socket || !room.id)
+    return (
+      <div className="min-h-[90vh] flex items-center justify-center">
+        <Loader />
+      </div>
+    );
 
   socket.on("room:error", () => {
     navigate("/");

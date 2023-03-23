@@ -24,4 +24,6 @@ export enum EmitEvent {
   Complete = "room:story.complete",
   Ping = "ping",
   Pong = "pong",
+  JoinTeam = "team:join",
+  TeamUpdate = "team:update",
 }

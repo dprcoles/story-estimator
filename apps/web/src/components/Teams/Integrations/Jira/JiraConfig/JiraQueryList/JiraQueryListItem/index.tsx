@@ -3,6 +3,7 @@ import { AiOutlineReload } from "react-icons/ai";
 import { Button } from "ui";
 
 import { getJiraIssuesByQueryId } from "@/api/integrations";
+import Loader from "@/components/Loader";
 import { JqlQuery } from "@/types/integrations";
 import { JiraIssue } from "@/types/jira";
 
@@ -75,7 +76,7 @@ const JiraQueryListItem: React.FC<JiraQueryListProps> = ({
           </div>
           <div className="py-2 overflow-y-auto max-h-96">
             {isLoading ? (
-              <div className="text-center">Loading...</div>
+              <Loader />
             ) : (
               results.map((x) => (
                 <div className="my-2 pr-2">

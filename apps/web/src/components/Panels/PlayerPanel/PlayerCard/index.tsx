@@ -3,6 +3,7 @@ import React from "react";
 import { useRoomStore } from "@/stores/roomStore";
 import { CountdownStatus } from "@/types/countdown";
 import { Player, PlayerType } from "@/types/player";
+import { ADMIN_ICON } from "@/utils/constants";
 
 import PlayerIcon from "../PlayerIcon";
 import PlayerVoteIcon from "../PlayerVoteIcon";
@@ -34,7 +35,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
               : "text-black dark:text-white"
           }`}
         >
-          {`${name}${admin === id ? " 👑" : ""}`}
+          {`${name}${admin === id ? ` ${ADMIN_ICON}` : ""}`}
         </div>
         <div className="text-sm text-light-text dark:text-dark-text">
           {defaultType === PlayerType.Voter && vote && <span>Voted</span>}

@@ -35,16 +35,18 @@ const RoomPage: React.FC = () => {
         <div className="lg:flex md:space-x-2 min-h-full">
           {room.stories.length > 0 && (
             <div
-              className={classNames("hidden lg:max-w-1xl lg:block", {
+              className={classNames("lg:max-w-1xl lg:block", {
                 block: activeMobileTab === MobileTabBarType.Stories,
+                hidden: activeMobileTab !== MobileTabBarType.Stories,
               })}
             >
               <StoryPanel setIsStoryModalOpen={setIsStoryModalOpen} />
             </div>
           )}
           <div
-            className={classNames("hidden lg:w-full lg:block", {
+            className={classNames("lg:w-full lg:block", {
               block: activeMobileTab === MobileTabBarType.Estimate,
+              hidden: activeMobileTab !== MobileTabBarType.Estimate,
             })}
           >
             <MainPanel
@@ -53,8 +55,9 @@ const RoomPage: React.FC = () => {
             />
           </div>
           <div
-            className={classNames("hidden lg:max-w-1xl lg:block", {
+            className={classNames("lg:max-w-1xl lg:block", {
               block: activeMobileTab === MobileTabBarType.Players,
+              hidden: activeMobileTab !== MobileTabBarType.Players,
             })}
           >
             <PlayerPanel />

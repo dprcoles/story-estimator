@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 import { TeamDetails } from "@/types/team";
+import { DEFAULT_TEAM_ID } from "@/utils/constants";
 
 type TeamStore = {
   team: TeamDetails;
@@ -10,7 +11,7 @@ type TeamStore = {
 export const useTeamStore = create<TeamStore>(
   (set, get): TeamStore => ({
     team: {
-      id: parseInt(import.meta.env.VITE_DEFAULT_TEAM_ID, 10),
+      id: DEFAULT_TEAM_ID,
       name: "Default Team",
       sessions: [],
       jiraIntegrationId: null,

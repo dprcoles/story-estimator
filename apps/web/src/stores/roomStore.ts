@@ -7,6 +7,7 @@ import {
 } from "@/types/countdown";
 import { Player } from "@/types/player";
 import { Room } from "@/types/room";
+import { DEFAULT_TEAM_ID } from "@/utils/constants";
 
 import { usePlayerStore } from "./playerStore";
 
@@ -21,7 +22,7 @@ const DEFAULT_ROOM: Room = {
     fastMode: false,
   },
   stories: [],
-  teamId: parseInt(import.meta.env.VITE_DEFAULT_TEAM_ID, 10),
+  teamId: DEFAULT_TEAM_ID,
 };
 
 export type Countdown = {

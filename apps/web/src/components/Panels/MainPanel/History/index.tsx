@@ -23,8 +23,9 @@ const History: React.FC<HistoryProps> = ({ stories }) => {
     .reduce((x, y) => x + y, 0);
 
   const getTotalTimeSpent = () => {
-    const total = Math.max(
-      ...completeStories.map((x) => x.totalTimeSpent as number),
+    const total = completeStories.reduce(
+      (x, y) => x + (y.totalTimeSpent as number),
+      0,
     );
 
     return getTimeSpent(total);

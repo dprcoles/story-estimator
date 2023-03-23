@@ -1,3 +1,5 @@
+@import "./_spinner.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

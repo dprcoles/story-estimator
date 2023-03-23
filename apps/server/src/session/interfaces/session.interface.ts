@@ -1,11 +1,12 @@
+import { Teams } from "@prisma/client";
 import { Player } from "src/player/interfaces/player.interface";
 
 export interface Session {
   id: number;
   name: string;
-  teamId: number;
   players: Player[];
   stories: StoryDetails[];
+  team: Teams;
 }
 
 type Vote = {
