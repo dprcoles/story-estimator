@@ -9,23 +9,25 @@ import {
 import { RoomSettings } from "@/types/room";
 import { PlayerInfo } from "@/types/player";
 import { useRoomStore } from "@/stores/roomStore";
+import { useSocketStore } from "@/stores/socketStore";
+import { EmitEvent } from "@/types/server";
 
 interface RoomSettingsModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  settings: RoomSettings;
-  setSettings: (settings: RoomSettings) => void;
-  players: PlayerInfo[];
 }
 
 const RoomSettingsModal: React.FC<RoomSettingsModalProps> = ({
   isOpen,
   setIsOpen,
-  settings,
-  setSettings,
-  players,
 }) => {
-  const admin = useRoomStore((state) => state.admin);
+  const {
+    room: { settings },
+    players,
+    admin,
+  } = useRoomStore();
+  const emit = useSocketStore((state) => state.emit);
+
   const [localSettings, setLocalSettings] = useState<RoomSettings>();
 
   useEffect(() => {
@@ -38,7 +40,7 @@ const RoomSettingsModal: React.FC<RoomSettingsModalProps> = ({
 
   const handleSave = () => {
     if (localSettings) {
-      setSettings(localSettings);
+      emit(EmitEvent.Settings, { settings: localSettings });
       setIsOpen(false);
     }
   };
@@ -50,7 +52,7 @@ const RoomSettingsModal: React.FC<RoomSettingsModalProps> = ({
       handleClose={() => setIsOpen(false)}
       showClose
       footer={
-        <Button onClick={handleSave} style="primary">
+        <Button disabled={!localSettings} onClick={handleSave} style="primary">
           Save
         </Button>
       }

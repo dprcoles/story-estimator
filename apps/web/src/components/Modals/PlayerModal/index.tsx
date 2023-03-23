@@ -67,7 +67,7 @@ const PlayerModal: React.FC<PlayerModalProps> = ({
   };
 
   return (
-    <div className="text-black dark:text-white">
+    <div>
       <EmojiPicker
         isOpen={isEmojiPickerOpen}
         setIsOpen={setIsEmojiPickerOpen}

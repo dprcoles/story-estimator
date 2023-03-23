@@ -11,18 +11,14 @@ import { ROUTE_ROOM } from "@/utils/constants";
 import SessionsPanel from "@/components/Teams/SessionsPanel";
 import Definitions from "@/components/Teams/Definitions";
 import Integrations from "@/components/Teams/Integrations";
+import { useTeamStore } from "@/stores/teamStore";
 
-interface TeamPageProps {
-  theme: string;
-  setTheme: (theme: string) => void;
-}
+interface TeamPageProps {}
 
-const Team: React.FC<TeamPageProps> = ({ theme, setTheme }) => {
+const Team: React.FC<TeamPageProps> = () => {
   const { alias } = useParams();
-  const navigate = useNavigate();
   const [isLoadingData, setIsLoadingData] = useState<boolean>(false);
-  const [teamData, setTeamData] = useState<TeamDetails>();
-  const [isSessionModalOpen, setIsSessionModalOpen] = useState<boolean>(false);
+  const { team, setTeam } = useTeamStore();
   const [tab, setTab] = useState<string>(TeamPageTab.Sessions);
 
   const tabs = [
@@ -42,17 +38,8 @@ const Team: React.FC<TeamPageProps> = ({ theme, setTheme }) => {
 
   const fetchTeamData = async (teamAlias: string) => {
     const data = await getTeam(teamAlias);
-    setTeamData(data);
+    setTeam(data);
     setIsLoadingData(false);
-  };
-
-  const handleCreateSession = async (name: string) => {
-    if (teamData) {
-      const session = await createSession({ name: name, teamId: teamData.id });
-      if (session.id) {
-        navigate(`${ROUTE_ROOM}/${session.id}`);
-      }
-    }
   };
 
   useEffect(() => {
@@ -62,17 +49,10 @@ const Team: React.FC<TeamPageProps> = ({ theme, setTheme }) => {
     }
   }, [alias]);
 
-  if (isLoadingData || !teamData) return <div>Loading...</div>;
-
-  const { name } = teamData;
+  if (isLoadingData || !team) return <div>Loading...</div>;
 
   return (
     <>
-      <CreateSessionModal
-        isOpen={isSessionModalOpen}
-        setIsOpen={setIsSessionModalOpen}
-        handleCreateSession={handleCreateSession}
-      />
       <motion.div variants={FADE_IN} className="max-h-full h-screen">
         <div className="px-2">
           <div className="bg-light-panels dark:bg-dark-panels rounded-lg py-4 px-8 main-panel__container">
@@ -81,22 +61,19 @@ const Team: React.FC<TeamPageProps> = ({ theme, setTheme }) => {
                 variants={FADE_FROM_LEFT}
                 className="font-bold text-5xl mb-8"
               >
-                {name}
+                {team.name}
               </motion.div>
               <div className="pb-8">
                 <Tabs tabs={tabs} activeTab={tab} setActiveTab={setTab} />
               </div>
               {tab === TeamPageTab.Sessions && (
-                <SessionsPanel
-                  sessions={teamData.sessions}
-                  setIsSessionModalOpen={setIsSessionModalOpen}
-                />
+                <SessionsPanel sessions={team.sessions} />
               )}
               {tab === TeamPageTab.Definitions && <Definitions />}
               {tab === TeamPageTab.Integrations && (
                 <Integrations
                   integrations={{
-                    jira: teamData.jiraIntegrationId,
+                    jira: team.jiraIntegrationId,
                   }}
                 />
               )}

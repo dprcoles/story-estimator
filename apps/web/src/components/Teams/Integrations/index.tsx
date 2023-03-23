@@ -31,6 +31,8 @@ const Integrations: React.FC<IntegrationsProps> = ({ integrations }) => {
     }
   }, []);
 
+  if (isLoading) return <div>Loading...</div>;
+
   return (
     <div>
       {view === IntegrationView.List && (

@@ -1,27 +1,20 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { FiSettings } from "react-icons/fi";
 import InfoCard from "../InfoCard";
 import Option from "../Option";
 import TimeSpentDisplay from "../TimeSpentDisplay";
-import { CountdownStatus } from "@/types/countdown";
 import { Player, PlayerType } from "@/types/player";
 import { Story } from "@/types/story";
 import { OPTIONS } from "@/utils/constants";
 import { FADE_IN, STAGGER } from "@/utils/variants";
 import { usePlayerStore } from "@/stores/playerStore";
-import { useRoomStore } from "@/stores/roomStore";
 
 interface CurrentStoryDisplayProps {
   currentStory: Story;
   vote: string;
   setVote: (vote: string) => void;
   showVotes: boolean;
-  countdown: number;
-  countdownStatus: CountdownStatus;
   players: Array<Player>;
-  type: PlayerType;
-  stories: Array<Story>;
 }
 
 const CurrentStoryDisplay: React.FC<CurrentStoryDisplayProps> = ({
@@ -29,12 +22,10 @@ const CurrentStoryDisplay: React.FC<CurrentStoryDisplayProps> = ({
   vote,
   setVote,
   showVotes,
-  countdown,
-  countdownStatus,
   players,
-  type,
-  stories,
 }) => {
+  const defaultType = usePlayerStore((state) => state.player.defaultType);
+
   return (
     <div>
       <div className="grid grid-cols-2 mb-4">
@@ -52,15 +43,11 @@ const CurrentStoryDisplay: React.FC<CurrentStoryDisplayProps> = ({
       <InfoCard
         vote={vote}
         showVotes={showVotes}
-        countdown={countdown}
-        countdownStatus={countdownStatus}
         players={players}
-        stories={stories}
         options={OPTIONS}
-        type={type}
       />
       <div className="mx-auto py-8">
-        {!showVotes && type === PlayerType.Voter && (
+        {!showVotes && defaultType === PlayerType.Voter && (
           <motion.div variants={STAGGER}>
             <div className="m-2 text-light-text dark:text-dark-text">
               Select an Estimate:

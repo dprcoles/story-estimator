@@ -12,36 +12,37 @@ import { InfoCardTab } from "@/types/info";
 import { RoomIntegrations } from "@/types/room";
 import { useRoomStore } from "@/stores/roomStore";
 import { FiSettings } from "react-icons/fi";
+import { usePlayerStore } from "@/stores/playerStore";
+import { useSocketStore } from "@/stores/socketStore";
+import { EmitEvent } from "@/types/server";
 
 interface MainPanelProps {
-  vote: string;
-  setVote: (vote: string) => void;
-  showVotes: boolean;
-  countdown: number;
-  countdownStatus: CountdownStatus;
-  players: Array<Player>;
-  type: PlayerType;
-  stories: Array<Story>;
   setIsSettingsModalOpen: (isSettingsModalOpen: boolean) => void;
   setIsStoryModalOpen: (isStoryModalOpen: boolean) => void;
 }
 
 const MainPanel: React.FC<MainPanelProps> = ({
-  vote,
-  setVote,
-  showVotes,
-  countdown,
-  countdownStatus,
-  players,
-  type,
-  stories,
   setIsSettingsModalOpen,
   setIsStoryModalOpen,
 }) => {
-  const isAdmin = useRoomStore((state) => state.isAdmin);
+  const {
+    isAdmin,
+    room: { stories },
+    players,
+    showVotes,
+    countdown,
+  } = useRoomStore();
+  const { vote, setVote } = usePlayerStore((state) => ({
+    vote: state.vote,
+    setVote: state.setVote,
+  }));
+  const emit = useSocketStore((state) => state.emit);
   const [tab, setTab] = useState<string>(InfoCardTab.CurrentStory);
+
   const currentStory = stories.find((s) => s.active);
   const hasStories = stories.length > 0;
+  const noActiveStories =
+    !stories.find((s) => s.active) && !stories.find((s) => s.estimate);
 
   const tabs = [
     {
@@ -54,8 +55,10 @@ const MainPanel: React.FC<MainPanelProps> = ({
     },
   ];
 
-  const noActiveStories =
-    !stories.find((s) => s.active) && !stories.find((s) => s.estimate);
+  const handleSetVote = (newVote: string) => {
+    emit(EmitEvent.Vote, { vote: newVote });
+    setVote(newVote);
+  };
 
   return (
     <div className="bg-light-panels dark:bg-dark-panels rounded-lg py-4 px-8 main-panel__container">
@@ -66,7 +69,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
               onClick={() => setIsSettingsModalOpen(true)}
               className="rounded-full hover:bg-light-hover dark:hover:bg-dark-hover w-10 h-10 flex justify-center items-center"
               disabled={
-                countdownStatus === CountdownStatus.STARTED || showVotes
+                countdown.status === CountdownStatus.STARTED || showVotes
               }
             >
               <FiSettings className="text-light-text dark:text-dark-text text-xl m-0" />
@@ -95,14 +98,10 @@ const MainPanel: React.FC<MainPanelProps> = ({
             <>
               {currentStory ? (
                 <CurrentStoryDisplay
-                  countdown={countdown}
-                  countdownStatus={countdownStatus}
                   currentStory={currentStory}
                   players={players}
-                  setVote={setVote}
+                  setVote={handleSetVote}
                   showVotes={showVotes}
-                  stories={stories}
-                  type={type}
                   vote={vote}
                 />
               ) : (

@@ -41,7 +41,7 @@ const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
   };
 
   socket?.on(EmitEvent.UpdatePlayerSuccess, () => {
-    if (room) {
+    if (room.id) {
       emit(EmitEvent.Update);
     }
   });

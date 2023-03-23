@@ -3,22 +3,29 @@ import { Button, Modal, Tabs } from "ui";
 import ManualImportTab from "./ManualImportTab";
 import JiraImportTab from "./JiraImportTab";
 import { AddStoryTab, Story } from "@/types/story";
+import { useRoomStore } from "@/stores/roomStore";
+import { useSocketStore } from "@/stores/socketStore";
+import { EmitEvent } from "@/types/server";
 
 interface AddStoryModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  handleSave: (stories: Story[]) => void;
-  jiraIntegrationId?: number | null;
 }
 
-const AddStoryModal: React.FC<AddStoryModalProps> = ({
-  isOpen,
-  setIsOpen,
-  handleSave,
-  jiraIntegrationId,
-}) => {
+const AddStoryModal: React.FC<AddStoryModalProps> = ({ isOpen, setIsOpen }) => {
   const [stories, setStories] = useState<Story[]>([]);
   const [tab, setTab] = useState<string>(AddStoryTab.Manual);
+  const {
+    room: { integrations },
+  } = useRoomStore();
+  const emit = useSocketStore((state) => state.emit);
+
+  const handleAddStories = (stories: Story[]) => {
+    emit(EmitEvent.ImportStories, {
+      stories: stories.map((x) => x.description),
+    });
+    setIsOpen(false);
+  };
 
   const tabs = [
     {
@@ -41,7 +48,7 @@ const AddStoryModal: React.FC<AddStoryModalProps> = ({
       footer={
         <div className="ml-auto">
           <Button
-            onClick={() => handleSave(stories)}
+            onClick={() => handleAddStories(stories)}
             disabled={stories.length === 0}
             style="primary"
           >
@@ -50,7 +57,7 @@ const AddStoryModal: React.FC<AddStoryModalProps> = ({
         </div>
       }
     >
-      {Boolean(jiraIntegrationId) && (
+      {Boolean(integrations?.jira) && (
         <div className="grid m-2 grid-cols-2">
           <Tabs tabs={tabs} activeTab={tab} setActiveTab={setTab} fullWidth />
         </div>
@@ -61,7 +68,7 @@ const AddStoryModal: React.FC<AddStoryModalProps> = ({
         </div>
         <div className={tab !== AddStoryTab.Jira ? "hidden" : ""}>
           <JiraImportTab
-            integrationId={jiraIntegrationId!}
+            integrationId={integrations?.jira!}
             setStories={setStories}
             isOpen={tab === AddStoryTab.Jira}
           />

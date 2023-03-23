@@ -48,7 +48,10 @@ export class RoomGatewayService {
       await this.createFromSessionAsync(playerId, session);
     }
 
-    await this.sessionService.addPlayerAsync(session.id, playerId);
+    if (!session.players.find((p) => p.id === playerId)) {
+      await this.sessionService.addPlayerAsync(session.id, playerId);
+    }
+
     await this.playerGatewayService.joinRoomAsync(playerId, id);
   }
 

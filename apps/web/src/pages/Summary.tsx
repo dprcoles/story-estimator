@@ -6,12 +6,9 @@ import { SessionDetails } from "@/types/session";
 import { getSession } from "@/api/session";
 import SessionSummary from "@/components/SessionSummary";
 
-interface RoomPageProps {
-  theme: string;
-  setTheme: (theme: string) => void;
-}
+interface SummaryPageProps {}
 
-const SummaryPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
+const SummaryPage: React.FC<SummaryPageProps> = () => {
   const { id } = useParams();
   const [isLoadingData, setIsLoadingData] = useState<boolean>(false);
   const [sessionData, setSessionData] = useState<SessionDetails>();

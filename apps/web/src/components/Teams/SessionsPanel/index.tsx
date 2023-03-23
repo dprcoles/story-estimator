@@ -2,16 +2,17 @@ import { Button } from "ui";
 import React from "react";
 import SessionList from "./SessionList";
 import { TeamSession } from "@/types/team";
+import { useSessionStore } from "@/stores/sessionStore";
 
 interface SessionsPanelProps {
-  setIsSessionModalOpen: (isOpen: boolean) => void;
   sessions: TeamSession[];
 }
 
-const SessionsPanel: React.FC<SessionsPanelProps> = ({
-  setIsSessionModalOpen,
-  sessions,
-}) => {
+const SessionsPanel: React.FC<SessionsPanelProps> = ({ sessions }) => {
+  const setIsSessionModalOpen = useSessionStore(
+    (state) => state.setIsSessionModalOpen,
+  );
+
   const splitSessions = sessions.reduce(
     (r, o) => {
       r[o.active ? "active" : "inactive"].push(o);

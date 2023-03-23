@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from "react";
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 import { motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
 import { ROUTE_HOME } from "@/utils/constants";

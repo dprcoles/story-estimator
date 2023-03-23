@@ -3,26 +3,30 @@ import StoryCard from "./StoryCard";
 import { useSocketStore } from "@/stores/socketStore";
 import { EmitEvent } from "@/types/server";
 import { Story } from "@/types/story";
-import { usePlayerStore } from "@/stores/playerStore";
 import { useRoomStore } from "@/stores/roomStore";
 interface StoryPanelProps {
-  stories: Story[];
-  handleSaveStory: (story: Story) => void;
-  handleDeleteStory: (id: number) => void;
   setIsStoryModalOpen: (isStoryModalOpen: boolean) => void;
 }
 
-const StoryPanel: React.FC<StoryPanelProps> = ({
-  stories,
-  handleSaveStory,
-  handleDeleteStory,
-  setIsStoryModalOpen,
-}) => {
-  const isAdmin = useRoomStore((state) => state.isAdmin);
+const StoryPanel: React.FC<StoryPanelProps> = ({ setIsStoryModalOpen }) => {
+  const {
+    isAdmin,
+    room: { stories },
+  } = useRoomStore();
   const { emit } = useSocketStore();
 
-  const handleSetActive = (id: number) =>
+  const handleSaveStory = (story: Story) => {
+    emit(EmitEvent.EditStory, { story });
+    setIsStoryModalOpen(false);
+  };
+
+  const handleDeleteStory = (id: number) => {
+    emit(EmitEvent.DeleteStory, { id });
+  };
+
+  const handleSetActive = (id: number) => {
     emit(EmitEvent.SetActiveStory, { id });
+  };
 
   return (
     <div className="bg-light-panels dark:bg-dark-panels min-h-full h-96 rounded-lg p-4">

@@ -2,20 +2,17 @@ import React from "react";
 import PlayerCard from "./PlayerCard";
 import { CountdownStatus } from "@/types/countdown";
 import { Player, PlayerType } from "@/types/player";
+import { useRoomStore } from "@/stores/roomStore";
+import { usePlayerStore } from "@/stores/playerStore";
 
-interface PlayerPanelProps {
-  players: Array<Player>;
-  showVote: boolean;
-  countdownStatus: CountdownStatus;
-  currentPlayer?: Player;
-}
+interface PlayerPanelProps {}
 
-const PlayerPanel: React.FC<PlayerPanelProps> = ({
-  players,
-  showVote,
-  countdownStatus,
-  currentPlayer,
-}) => {
+const PlayerPanel: React.FC<PlayerPanelProps> = () => {
+  const { players, showVotes, countdown } = useRoomStore();
+  const player = usePlayerStore((state) => state.player);
+
+  const currentPlayer = players.find((p) => p.id === player.id);
+
   return (
     <div className="bg-light-panels dark:bg-dark-panels min-h-full h-96 rounded-lg p-4">
       <div className="md:w-72 h-full">
@@ -32,8 +29,8 @@ const PlayerPanel: React.FC<PlayerPanelProps> = ({
               <div key={p.id}>
                 <PlayerCard
                   player={p}
-                  showVote={showVote}
-                  countdownStatus={countdownStatus}
+                  showVote={showVotes}
+                  countdownStatus={countdown.status}
                   isCurrentPlayer={currentPlayer?.id === p.id}
                 />
               </div>

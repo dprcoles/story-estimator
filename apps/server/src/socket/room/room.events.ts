@@ -70,6 +70,7 @@ export class RoomEventsHandler {
     room.settings = settings;
 
     await this.roomGatewayService.updateAsync(room);
+    await this.updateAsync(id);
   }
 
   async completeAsync(id: number) {

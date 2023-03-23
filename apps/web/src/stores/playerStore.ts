@@ -6,6 +6,8 @@ type PlayerStore = {
   setPlayer: (player: PlayerInfo) => void;
   isPlayerModalOpen: boolean;
   setIsPlayerModalOpen: (isPlayerModalOpen: boolean) => void;
+  vote: string;
+  setVote: (vote: string) => void;
 };
 
 export const usePlayerStore = create<PlayerStore>(
@@ -15,5 +17,7 @@ export const usePlayerStore = create<PlayerStore>(
     isPlayerModalOpen: false,
     setIsPlayerModalOpen: (isPlayerModalOpen: boolean) =>
       set((state) => ({ ...state, isPlayerModalOpen })),
+    vote: "",
+    setVote: (vote: string) => set((state) => ({ ...state, vote })),
   }),
 );
