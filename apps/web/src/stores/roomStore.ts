@@ -1,4 +1,3 @@
-import { DEFAULT_TEAM_ID } from "constants/app.constants";
 import { create } from "zustand";
 
 import {
@@ -8,6 +7,7 @@ import {
 } from "@/types/countdown";
 import { Player } from "@/types/player";
 import { Room } from "@/types/room";
+import { DEFAULT_TEAM_ID } from "@/utils/constants";
 
 import { usePlayerStore } from "./playerStore";
 

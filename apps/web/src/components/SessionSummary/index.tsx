@@ -1,4 +1,3 @@
-import { DEFAULT_TEAM_ID } from "constants/app.constants";
 import React from "react";
 import { FaChevronLeft, FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +6,7 @@ import { Button } from "ui";
 import History from "@/components/Panels/MainPanel/History";
 import { useSessionStore } from "@/stores/sessionStore";
 import { SessionDetails } from "@/types/session";
+import { DEFAULT_TEAM_ID } from "@/utils/constants";
 import { ROUTE_TEAM } from "@/utils/constants";
 
 import PlayerList from "./PlayerList";

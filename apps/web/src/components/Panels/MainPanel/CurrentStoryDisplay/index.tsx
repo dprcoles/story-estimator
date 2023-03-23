@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import React from "react";
 
 import { usePlayerStore } from "@/stores/playerStore";
+import { useRoomStore } from "@/stores/roomStore";
 import { Player, PlayerType } from "@/types/player";
 import { Story } from "@/types/story";
 import { OPTIONS } from "@/utils/constants";
@@ -9,6 +10,7 @@ import { FADE_IN, STAGGER } from "@/utils/variants";
 
 import InfoCard from "../InfoCard";
 import Option from "../Option";
+import SkipButton from "../SkipButton";
 import TimeSpentDisplay from "../TimeSpentDisplay";
 
 interface CurrentStoryDisplayProps {
@@ -27,10 +29,11 @@ const CurrentStoryDisplay: React.FC<CurrentStoryDisplayProps> = ({
   players,
 }) => {
   const defaultType = usePlayerStore((state) => state.player.defaultType);
+  const isAdmin = useRoomStore((state) => state.isAdmin);
 
   return (
     <div>
-      <div className="grid grid-cols-2 mb-4">
+      <div className="grid grid-cols-2 mb-4 items-center">
         <div className="mr-auto">
           <TimeSpentDisplay
             startTime={currentStory.startSeconds as number}
@@ -41,6 +44,11 @@ const CurrentStoryDisplay: React.FC<CurrentStoryDisplayProps> = ({
             }
           />
         </div>
+        {isAdmin && (
+          <div className="ml-auto">
+            <SkipButton currentStoryId={currentStory.id} />
+          </div>
+        )}
       </div>
       <InfoCard
         vote={vote}

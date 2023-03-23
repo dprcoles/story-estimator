@@ -1,7 +1,7 @@
-import { DEFAULT_TEAM_ID } from "constants/app.constants";
 import { create } from "zustand";
 
 import { TeamDetails } from "@/types/team";
+import { DEFAULT_TEAM_ID } from "@/utils/constants";
 
 type TeamStore = {
   team: TeamDetails;

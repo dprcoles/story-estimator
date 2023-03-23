@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FiSettings } from "react-icons/fi";
-import { Tabs } from "ui";
+import { Tabs, Tag } from "ui";
 
 import { usePlayerStore } from "@/stores/playerStore";
 import { useRoomStore } from "@/stores/roomStore";
@@ -8,6 +8,7 @@ import { useSocketStore } from "@/stores/socketStore";
 import { CountdownStatus } from "@/types/countdown";
 import { InfoCardTab } from "@/types/info";
 import { EmitEvent } from "@/types/server";
+import { ADMIN_ICON } from "@/utils/constants";
 
 import CurrentStoryDisplay from "./CurrentStoryDisplay";
 import GetStartedDisplay from "./GetStartedDisplay";
@@ -61,18 +62,21 @@ const MainPanel: React.FC<MainPanelProps> = ({
 
   return (
     <div className="bg-light-panels dark:bg-dark-panels rounded-lg py-4 px-8 main-panel__container">
-      <div className="flex">
+      <div className="flex pb-2">
         <div className="ml-auto pb-2">
           {isAdmin && (
-            <button
-              onClick={() => setIsSettingsModalOpen(true)}
-              className="rounded-full hover:bg-light-hover dark:hover:bg-dark-hover w-10 h-10 flex justify-center items-center"
-              disabled={
-                countdown.status === CountdownStatus.STARTED || showVotes
-              }
-            >
-              <FiSettings className="text-light-text dark:text-dark-text text-xl m-0" />
-            </button>
+            <div className="flex gap-2">
+              <Tag color="primary">{ADMIN_ICON} Room Admin</Tag>
+              <button
+                onClick={() => setIsSettingsModalOpen(true)}
+                className="rounded-full hover:bg-light-hover dark:hover:bg-dark-hover w-10 h-10 flex justify-center items-center"
+                disabled={
+                  countdown.status === CountdownStatus.STARTED || showVotes
+                }
+              >
+                <FiSettings className="text-light-text dark:text-dark-text text-xl m-0" />
+              </button>
+            </div>
           )}
         </div>
       </div>

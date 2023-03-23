@@ -52,6 +52,15 @@ export class RoomGatewayService {
       await this.sessionService.addPlayerAsync(session.id, playerId);
     }
 
+    const players = await this.playerGatewayService.getByRoomIdAsync(id);
+
+    if (room && players.filter((p) => p.id !== playerId).length === 0) {
+      await this.roomRepository.updateAsync({
+        ...room,
+        settings: { ...room.settings, admin: playerId },
+      });
+    }
+
     await this.playerGatewayService.joinRoomAsync(playerId, id);
   }
 

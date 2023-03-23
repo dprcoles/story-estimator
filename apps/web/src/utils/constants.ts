@@ -8,7 +8,13 @@ export const ROUTE_ROOM = "/room";
 export const ROUTE_TEAM = "/team";
 export const ROUTE_SUMMARY = "/summary";
 
+export const DEFAULT_TEAM_ID = parseInt(
+  import.meta.env.VITE_DEFAULT_TEAM_ID,
+  10,
+);
 export const REQUIRED_ROUTES = [ROUTE_ROOM, ROUTE_TEAM];
+
+export const SKIP_VOTE_OPTION = "?";
 
 export const NON_NUMERIC_OPTIONS = ["∞", "?", "☕️"];
 export const OPTIONS: Array<string> = [
@@ -47,3 +53,5 @@ export const DEFAULT_STORY: Story = {
   estimate: undefined,
   totalTimeSpent: 0,
 };
+
+export const ADMIN_ICON = "👑";
