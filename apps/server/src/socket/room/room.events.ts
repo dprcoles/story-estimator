@@ -3,6 +3,7 @@ import { Server, Socket } from "socket.io";
 import { PlayerType } from "src/player/enums/player-type.enum";
 import { ShowType } from "src/session/enums/show-type.enum";
 import { Story } from "src/story/interfaces/story.interface";
+import { SocketRoomPrefix } from "../enums/socket.enums";
 import { PlayerGatewayService } from "../player/player.service";
 import { RoomClientEvent, RoomServerEvent } from "./enums/room-events.enum";
 import { Settings } from "./interfaces/room.interface";
@@ -21,7 +22,7 @@ export class RoomEventsHandler {
     try {
       await this.roomGatewayService.connectAsync(id, playerId);
 
-      client.join(id.toString());
+      client.join(`${SocketRoomPrefix.Room}${id.toString()}`);
       client.emit(RoomClientEvent.Connected);
     } catch (e) {
       client.emit(RoomClientEvent.Error, e);
@@ -37,18 +38,24 @@ export class RoomEventsHandler {
   async updateAsync(id: number) {
     const data = await this.roomGatewayService.getStateAsync(id);
 
-    this.server.to(id.toString()).emit(RoomServerEvent.Update, data);
+    this.server
+      .to(`${SocketRoomPrefix.Room}${id.toString()}`)
+      .emit(RoomServerEvent.Update, data);
   }
 
   async resetAsync(id: number) {
     await this.roomGatewayService.resetAsync(id);
 
-    this.server.to(id.toString()).emit(RoomServerEvent.Reset);
+    this.server
+      .to(`${SocketRoomPrefix.Room}${id.toString()}`)
+      .emit(RoomServerEvent.Reset);
     await this.updateAsync(id);
   }
 
   async showAsync(id: number, type?: ShowType) {
-    this.server.to(id.toString()).emit(RoomServerEvent.Show, type);
+    this.server
+      .to(`${SocketRoomPrefix.Room}${id.toString()}`)
+      .emit(RoomServerEvent.Show, type);
   }
 
   async voteAsync(id: number, playerId: number, vote: string) {

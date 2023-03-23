@@ -1,9 +1,8 @@
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import TeamProvider from "providers/TeamProvider";
+import React, { useState } from "react";
 import { Tabs } from "ui";
 
-import { getTeam } from "@/api/team";
 import Definitions from "@/components/Teams/Definitions";
 import Integrations from "@/components/Teams/Integrations";
 import SessionsPanel from "@/components/Teams/SessionsPanel";
@@ -12,9 +11,7 @@ import { TeamPageTab } from "@/types/team";
 import { FADE_FROM_LEFT, FADE_IN } from "@/utils/variants";
 
 const Team: React.FC = () => {
-  const { alias } = useParams();
-  const [isLoadingData, setIsLoadingData] = useState<boolean>(false);
-  const { team, setTeam } = useTeamStore();
+  const { team } = useTeamStore();
   const [tab, setTab] = useState<string>(TeamPageTab.Sessions);
 
   const tabs = [
@@ -31,23 +28,8 @@ const Team: React.FC = () => {
       label: "Integrations",
     },
   ];
-  useEffect(() => {
-    const fetchTeamData = async (teamAlias: string) => {
-      const data = await getTeam(teamAlias);
-      setTeam(data);
-      setIsLoadingData(false);
-    };
-
-    setIsLoadingData(true);
-    if (alias) {
-      fetchTeamData(alias);
-    }
-  }, [alias, setTeam]);
-
-  if (isLoadingData || !team) return <div>Loading...</div>;
-
   return (
-    <>
+    <TeamProvider>
       <motion.div variants={FADE_IN} className="max-h-full h-screen">
         <div className="px-2">
           <div className="bg-light-panels dark:bg-dark-panels rounded-lg py-4 px-8 main-panel__container">
@@ -76,7 +58,7 @@ const Team: React.FC = () => {
           </div>
         </div>
       </motion.div>
-    </>
+    </TeamProvider>
   );
 };
 

@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { Sessions } from "@prisma/client";
 import { GetSessionQuery } from "src/session/queries/get-session.query";
 import { CreateSessionCommand } from "src/session/commands/create-session.command";
+import { TeamEventsHandler } from "src/socket/team/team.events";
 import { PrismaService } from "../prisma/prisma.service";
 import { Session } from "./interfaces/session.interface";
 import { CreateSessionDto } from "./dto/create-session.dto";
@@ -10,14 +11,21 @@ import { CompleteSessionCommand } from "./commands/complete-session.command";
 
 @Injectable()
 export class SessionService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private teamEventsHandler: TeamEventsHandler,
+  ) {}
 
   async createAsync(data: CreateSessionDto): Promise<Sessions> {
     const command = new CreateSessionCommand(this.prisma);
     command.name = data.name;
     command.teamId = data.teamId;
 
-    return await command.executeAsync();
+    const result = await command.executeAsync();
+
+    await this.handleTeamUpdateAsync(result.teamId);
+
+    return result;
   }
 
   async getAsync(id: number): Promise<Session> {
@@ -32,13 +40,23 @@ export class SessionService {
     command.id = id;
     command.playerId = playerId;
 
-    await command.executeAsync();
+    const result = await command.executeAsync();
+
+    await this.handleTeamUpdateAsync(result.teamId);
   }
 
   async completeAsync(id: number) {
     const command = new CompleteSessionCommand(this.prisma);
     command.id = id;
 
-    await command.executeAsync();
+    const result = await command.executeAsync();
+
+    await this.handleTeamUpdateAsync(result.teamId);
+  }
+
+  private async handleTeamUpdateAsync(id: number) {
+    if (id) {
+      await this.teamEventsHandler.updateAsync(id);
+    }
   }
 }
