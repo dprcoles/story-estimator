@@ -42,7 +42,7 @@ const SummaryPage: React.FC = () => {
     );
 
   return (
-    <motion.div variants={FADE_IN} className="max-h-full h-screen">
+    <motion.div variants={FADE_IN} className="max-h-[90vh] h-full">
       <div className="px-2">
         <div className="bg-light-panels dark:bg-dark-panels rounded-lg py-4 px-8 main-panel__container">
           <SessionSummary session={sessionData} />
