@@ -1,15 +1,16 @@
 import React from "react";
 import { Button } from "ui";
-import Countdown from "../Countdown";
-import Results from "../Results";
+
+import { usePlayerStore } from "@/stores/playerStore";
+import { useRoomStore } from "@/stores/roomStore";
 import { useSocketStore } from "@/stores/socketStore";
 import { CountdownStatus } from "@/types/countdown";
 import { Player, PlayerType } from "@/types/player";
-import { ShowType } from "@/types/show";
-import { Story } from "@/types/story";
 import { EmitEvent } from "@/types/server";
-import { useRoomStore } from "@/stores/roomStore";
-import { usePlayerStore } from "@/stores/playerStore";
+import { ShowType } from "@/types/show";
+
+import Countdown from "../Countdown";
+import Results from "../Results";
 
 interface InfoCardProps {
   vote: string;

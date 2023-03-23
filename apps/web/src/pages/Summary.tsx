@@ -1,14 +1,13 @@
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { motion } from "framer-motion";
-import { FADE_IN } from "@/utils/variants";
-import { SessionDetails } from "@/types/session";
+
 import { getSession } from "@/api/session";
 import SessionSummary from "@/components/SessionSummary";
+import { SessionDetails } from "@/types/session";
+import { FADE_IN } from "@/utils/variants";
 
-interface SummaryPageProps {}
-
-const SummaryPage: React.FC<SummaryPageProps> = () => {
+const SummaryPage: React.FC = () => {
   const { id } = useParams();
   const [isLoadingData, setIsLoadingData] = useState<boolean>(false);
   const [sessionData, setSessionData] = useState<SessionDetails>();

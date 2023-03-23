@@ -1,9 +1,11 @@
 import React from "react";
+
+import { useRoomStore } from "@/stores/roomStore";
+import { CountdownStatus } from "@/types/countdown";
+import { Player, PlayerType } from "@/types/player";
+
 import PlayerIcon from "../PlayerIcon";
 import PlayerVoteIcon from "../PlayerVoteIcon";
-import { Player, PlayerType } from "@/types/player";
-import { CountdownStatus } from "@/types/countdown";
-import { useRoomStore } from "@/stores/roomStore";
 
 interface PlayerCardProps {
   player: Player;

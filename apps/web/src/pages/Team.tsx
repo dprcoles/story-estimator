@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Tabs } from "ui";
+
 import { getTeam } from "@/api/team";
-import { TeamDetails, TeamPageTab } from "@/types/team";
-import { FADE_FROM_LEFT, FADE_IN } from "@/utils/variants";
-import CreateSessionModal from "@/components/Modals/CreateSessionModal";
-import { createSession } from "@/api/session";
-import { ROUTE_ROOM } from "@/utils/constants";
-import SessionsPanel from "@/components/Teams/SessionsPanel";
 import Definitions from "@/components/Teams/Definitions";
 import Integrations from "@/components/Teams/Integrations";
+import SessionsPanel from "@/components/Teams/SessionsPanel";
 import { useTeamStore } from "@/stores/teamStore";
+import { TeamPageTab } from "@/types/team";
+import { FADE_FROM_LEFT, FADE_IN } from "@/utils/variants";
 
-interface TeamPageProps {}
-
-const Team: React.FC<TeamPageProps> = () => {
+const Team: React.FC = () => {
   const { alias } = useParams();
   const [isLoadingData, setIsLoadingData] = useState<boolean>(false);
   const { team, setTeam } = useTeamStore();
@@ -35,19 +31,18 @@ const Team: React.FC<TeamPageProps> = () => {
       label: "Integrations",
     },
   ];
-
-  const fetchTeamData = async (teamAlias: string) => {
-    const data = await getTeam(teamAlias);
-    setTeam(data);
-    setIsLoadingData(false);
-  };
-
   useEffect(() => {
+    const fetchTeamData = async (teamAlias: string) => {
+      const data = await getTeam(teamAlias);
+      setTeam(data);
+      setIsLoadingData(false);
+    };
+
     setIsLoadingData(true);
     if (alias) {
       fetchTeamData(alias);
     }
-  }, [alias]);
+  }, [alias, setTeam]);
 
   if (isLoadingData || !team) return <div>Loading...</div>;
 

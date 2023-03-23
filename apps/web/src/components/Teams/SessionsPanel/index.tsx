@@ -1,8 +1,10 @@
-import { Button } from "ui";
 import React from "react";
-import SessionList from "./SessionList";
-import { TeamSession } from "@/types/team";
+import { Button } from "ui";
+
 import { useSessionStore } from "@/stores/sessionStore";
+import { TeamSession } from "@/types/team";
+
+import SessionList from "./SessionList";
 
 interface SessionsPanelProps {
   sessions: TeamSession[];

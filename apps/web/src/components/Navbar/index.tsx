@@ -1,9 +1,11 @@
 import React from "react";
-import UserIcon from "./UserIcon";
-import AnimatedLogo from "./AnimatedLogo";
-import ThemeToggle from "./ThemeToggle";
+
 import { usePlayerStore } from "@/stores/playerStore";
 import { useThemeStore } from "@/stores/themeStore";
+
+import AnimatedLogo from "./AnimatedLogo";
+import ThemeToggle from "./ThemeToggle";
+import UserIcon from "./UserIcon";
 
 const Navbar: React.FC = () => {
   const { player, setIsPlayerModalOpen } = usePlayerStore((state) => state);

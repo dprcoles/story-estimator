@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import definitionOfReadyExamples from "../examples/definitionOfReady.json";
 
 const DefinitionOfReady: React.FC = () => {

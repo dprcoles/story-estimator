@@ -9,6 +9,7 @@
     "dev": "nx run-many --target=dev",
     "dev:web": "nx run-many --target=dev --exclude server",
     "dev:server": "nx dev server",
+    "lint": "nx run-many --target=lint",
     "test": "nx run-many --target=test",
     "format": "prettier --write \"**/*.{js,ts,tsx,md}\""
   },

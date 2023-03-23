@@ -1,12 +1,14 @@
 import { create } from "zustand";
-import { Room } from "@/types/room";
-import { usePlayerStore } from "./playerStore";
-import { Player } from "@/types/player";
+
 import {
   CountdownStatus,
   CountdownTimer,
   CountdownType,
 } from "@/types/countdown";
+import { Player } from "@/types/player";
+import { Room } from "@/types/room";
+
+import { usePlayerStore } from "./playerStore";
 
 const DEFAULT_ROOM: Room = {
   id: 0,

@@ -1,13 +1,12 @@
 import React from "react";
-import PlayerCard from "./PlayerCard";
-import { CountdownStatus } from "@/types/countdown";
-import { Player, PlayerType } from "@/types/player";
-import { useRoomStore } from "@/stores/roomStore";
+
 import { usePlayerStore } from "@/stores/playerStore";
+import { useRoomStore } from "@/stores/roomStore";
+import { PlayerType } from "@/types/player";
 
-interface PlayerPanelProps {}
+import PlayerCard from "./PlayerCard";
 
-const PlayerPanel: React.FC<PlayerPanelProps> = () => {
+const PlayerPanel: React.FC = () => {
   const { players, showVotes, countdown } = useRoomStore();
   const player = usePlayerStore((state) => state.player);
 

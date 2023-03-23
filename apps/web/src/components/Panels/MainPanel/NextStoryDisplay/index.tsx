@@ -1,11 +1,11 @@
-import React, { useState } from "react";
 import { motion } from "framer-motion";
+import React, { useState } from "react";
 import { Button } from "ui";
+
+import { useRoomStore } from "@/stores/roomStore";
 import { useSocketStore } from "@/stores/socketStore";
-import { usePlayerStore } from "@/stores/playerStore";
 import { EmitEvent } from "@/types/server";
 import { FADE_IN, STAGGER } from "@/utils/variants";
-import { useRoomStore } from "@/stores/roomStore";
 
 interface NextStoryDisplayProps {
   setIsStoryModalOpen: (isStoryModalOpen: boolean) => void;
@@ -56,7 +56,7 @@ const NextStoryDisplay: React.FC<NextStoryDisplayProps> = ({
                 <Button
                   fullWidth
                   onClick={handleCompleteSession}
-                  style="primary"
+                  color="primary"
                   disabled={isSubmitting}
                 >
                   End Session

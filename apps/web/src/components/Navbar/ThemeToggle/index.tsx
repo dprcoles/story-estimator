@@ -1,5 +1,6 @@
 import React from "react";
 import { FaMoon, FaSun } from "react-icons/fa";
+
 import { DARK_THEME, LIGHT_THEME } from "@/utils/constants";
 
 interface ThemeToggleProps {

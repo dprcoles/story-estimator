@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import JiraPanel from "./Jira/JiraPanel";
-import JiraConfig from "./Jira/JiraConfig";
+
+import { getJiraIntegrationById } from "@/api/integrations";
 import {
   IntegrationIds,
   IntegrationView,
   JiraIntegration,
 } from "@/types/integrations";
-import { getJiraIntegrationById } from "@/api/integrations";
+
+import JiraConfig from "./Jira/JiraConfig";
+import JiraPanel from "./Jira/JiraPanel";
 
 interface IntegrationsProps {
   integrations: IntegrationIds;
@@ -17,19 +19,18 @@ const Integrations: React.FC<IntegrationsProps> = ({ integrations }) => {
   const [isLoading, setIsLoading] = useState<boolean>();
   const [view, setView] = useState<IntegrationView>(IntegrationView.List);
 
-  const fetchIntegrationData = async (id: number) => {
-    const res = await getJiraIntegrationById({ id });
-    setData(res);
-    setIsLoading(false);
-  };
-
   useEffect(() => {
+    const fetchIntegrationData = async (id: number) => {
+      const res = await getJiraIntegrationById({ id });
+      setData(res);
+      setIsLoading(false);
+    };
     setIsLoading(true);
 
     if (integrations.jira) {
       fetchIntegrationData(integrations.jira);
     }
-  }, []);
+  }, [integrations.jira]);
 
   if (isLoading) return <div>Loading...</div>;
 

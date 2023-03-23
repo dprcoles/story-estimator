@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { Button } from "ui";
 import { useNavigate } from "react-router-dom";
-import PlayerList from "./PlayerList";
+import { Button } from "ui";
+
 import { createSession } from "@/api/session";
-import { ROUTE_ROOM } from "@/utils/constants";
 import CreateSessionModal from "@/components/Modals/CreateSessionModal";
 import History from "@/components/Panels/MainPanel/History";
 import { SessionDetails } from "@/types/session";
+import { ROUTE_ROOM } from "@/utils/constants";
+
+import PlayerList from "./PlayerList";
 
 interface SessionSummaryProps {
   session: SessionDetails;

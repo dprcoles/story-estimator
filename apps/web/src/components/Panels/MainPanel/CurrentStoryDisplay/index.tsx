@@ -1,13 +1,15 @@
-import React from "react";
 import { motion } from "framer-motion";
-import InfoCard from "../InfoCard";
-import Option from "../Option";
-import TimeSpentDisplay from "../TimeSpentDisplay";
+import React from "react";
+
+import { usePlayerStore } from "@/stores/playerStore";
 import { Player, PlayerType } from "@/types/player";
 import { Story } from "@/types/story";
 import { OPTIONS } from "@/utils/constants";
 import { FADE_IN, STAGGER } from "@/utils/variants";
-import { usePlayerStore } from "@/stores/playerStore";
+
+import InfoCard from "../InfoCard";
+import Option from "../Option";
+import TimeSpentDisplay from "../TimeSpentDisplay";
 
 interface CurrentStoryDisplayProps {
   currentStory: Story;

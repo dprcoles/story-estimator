@@ -1,5 +1,6 @@
-import React from "react";
 import { motion } from "framer-motion";
+import React from "react";
+
 import { Player } from "@/types/player";
 
 interface CountdownProps {

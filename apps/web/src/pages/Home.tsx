@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { FADE_IN } from "@/utils/variants";
+import React, { useEffect, useState } from "react";
+
 import { usePlayerStore } from "@/stores/playerStore";
 import { useSessionStore } from "@/stores/sessionStore";
+import { FADE_IN } from "@/utils/variants";
 
-interface HomePageProps {}
-
-const Home: React.FC<HomePageProps> = () => {
+const Home: React.FC = () => {
   const [isJoining, setIsJoining] = useState<boolean>(false);
   const { player, setIsPlayerModalOpen } = usePlayerStore((state) => state);
   const setIsSessionModalOpen = useSessionStore(
@@ -16,12 +15,10 @@ const Home: React.FC<HomePageProps> = () => {
   const start = async () => {
     setIsJoining(true);
 
-    if (player.id) {
+    if (!player.id) {
+      setIsPlayerModalOpen(true);
       setIsSessionModalOpen(true);
-      return;
     }
-
-    setIsPlayerModalOpen(true);
   };
 
   useEffect(() => {
@@ -29,9 +26,7 @@ const Home: React.FC<HomePageProps> = () => {
       setIsSessionModalOpen(true);
       return;
     }
-
-    setIsJoining(false);
-  }, [player]);
+  }, [isJoining, player, setIsSessionModalOpen]);
 
   return (
     <>

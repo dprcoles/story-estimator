@@ -1,17 +1,19 @@
 import React, { PropsWithChildren, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useInterval } from "../hooks/index";
+
+import { usePlayerStore } from "@/stores/playerStore";
+import { useRoomStore } from "@/stores/roomStore";
 import { useSocketStore } from "@/stores/socketStore";
-import { EmitEvent, UpdateResponse } from "@/types/server";
 import {
   CountdownStatus,
   CountdownTimer,
   CountdownType,
 } from "@/types/countdown";
+import { EmitEvent, UpdateResponse } from "@/types/server";
 import { ShowType } from "@/types/show";
 import { ROUTE_SUMMARY } from "@/utils/constants";
-import { usePlayerStore } from "@/stores/playerStore";
-import { useRoomStore } from "@/stores/roomStore";
+
+import { useInterval } from "../hooks/index";
 
 const RoomProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const { id } = useParams();
@@ -28,7 +30,7 @@ const RoomProvider: React.FC<PropsWithChildren> = ({ children }) => {
         playerId: player.id,
       });
     }
-  }, [socket]);
+  }, [id, player.id, socket]);
 
   useEffect(() => {
     if (room.id && !room.active) {
@@ -48,7 +50,7 @@ const RoomProvider: React.FC<PropsWithChildren> = ({ children }) => {
     countdown.status === CountdownStatus.STARTED ? 1000 : null,
   );
 
-  socket!.on(EmitEvent.Update, (data: UpdateResponse) => {
+  socket?.on(EmitEvent.Update, (data: UpdateResponse) => {
     setPlayers(data.players);
     setRoom(data.room);
   });

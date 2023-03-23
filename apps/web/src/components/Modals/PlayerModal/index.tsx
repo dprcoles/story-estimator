@@ -1,11 +1,12 @@
+import "./index.css";
+
 import React, { useEffect, useState } from "react";
-import { Button, Modal } from "ui";
 import { MdOutlineEdit } from "react-icons/md";
+import { Button, Modal } from "ui";
+
+import { createPlayer, updatePlayer } from "@/api/player";
 import EmojiPicker from "@/components/EmojiPicker";
 import { PlayerInfo, PlayerType } from "@/types/player";
-import { createPlayer, updatePlayer } from "@/api/player";
-
-import "./index.css";
 
 interface PlayerModalProps {
   isOpen: boolean;
@@ -85,7 +86,7 @@ const PlayerModal: React.FC<PlayerModalProps> = ({
             disabled={
               nameValue.replace(/^\s+|\s+$|\s+(?=\s)/g, "").length === 0
             }
-            style="primary"
+            color="primary"
           >
             Save
           </Button>

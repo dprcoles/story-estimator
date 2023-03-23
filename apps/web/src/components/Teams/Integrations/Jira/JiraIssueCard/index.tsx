@@ -1,4 +1,5 @@
 import React from "react";
+
 import { JiraIssue } from "@/types/jira";
 
 interface JiraIssueCardProps {

@@ -1,19 +1,18 @@
-import React, { useState } from "react";
+import classNames from "classnames";
 import { motion } from "framer-motion";
-import RoomSettingsModal from "@/components/Modals/RoomSettingsModal";
-import { FADE_IN } from "@/utils/variants";
-import StoryPanel from "@/components/Panels/StoryPanel";
-import PlayerPanel from "@/components/Panels/PlayerPanel";
-import MainPanel from "@/components/Panels/MainPanel";
+import RoomProvider from "providers/RoomProvider";
+import React, { useState } from "react";
+
 import MobileTabBar, { MobileTabBarType } from "@/components/MobileTabBar";
 import AddStoryModal from "@/components/Modals/AddStoryModal";
+import RoomSettingsModal from "@/components/Modals/RoomSettingsModal";
+import MainPanel from "@/components/Panels/MainPanel";
+import PlayerPanel from "@/components/Panels/PlayerPanel";
+import StoryPanel from "@/components/Panels/StoryPanel";
 import { useRoomStore } from "@/stores/roomStore";
-import classNames from "classnames";
-import RoomProvider from "providers/RoomProvider";
+import { FADE_IN } from "@/utils/variants";
 
-interface RoomPageProps {}
-
-const RoomPage: React.FC<RoomPageProps> = () => {
+const RoomPage: React.FC = () => {
   const [isSettingsModalOpen, setIsSettingsModalOpen] =
     useState<boolean>(false);
   const [isStoryModalOpen, setIsStoryModalOpen] = useState<boolean>(false);

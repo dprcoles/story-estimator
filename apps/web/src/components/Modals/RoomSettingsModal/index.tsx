@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { IoMdClose } from "react-icons/io";
 import { Button, Modal, Select, Switch } from "ui";
+
+import { useRoomStore } from "@/stores/roomStore";
+import { useSocketStore } from "@/stores/socketStore";
+import { RoomSettings } from "@/types/room";
+import { EmitEvent } from "@/types/server";
 import {
   ADMIN_DESCRIPTION,
   COUNTDOWN_DESCRIPTION,
   FAST_MODE_DESCRIPTION,
 } from "@/utils/constants";
-import { RoomSettings } from "@/types/room";
-import { PlayerInfo } from "@/types/player";
-import { useRoomStore } from "@/stores/roomStore";
-import { useSocketStore } from "@/stores/socketStore";
-import { EmitEvent } from "@/types/server";
 
 interface RoomSettingsModalProps {
   isOpen: boolean;
@@ -52,7 +51,7 @@ const RoomSettingsModal: React.FC<RoomSettingsModalProps> = ({
       handleClose={() => setIsOpen(false)}
       showClose
       footer={
-        <Button disabled={!localSettings} onClick={handleSave} style="primary">
+        <Button disabled={!localSettings} onClick={handleSave} color="primary">
           Save
         </Button>
       }

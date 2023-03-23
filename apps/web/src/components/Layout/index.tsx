@@ -1,8 +1,10 @@
-import React, { PropsWithChildren } from "react";
-import Navbar from "../Navbar";
 import { motion } from "framer-motion";
+import React, { PropsWithChildren } from "react";
 import { useLocation } from "react-router-dom";
+
 import { ROUTE_HOME } from "@/utils/constants";
+
+import Navbar from "../Navbar";
 
 const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   const location = useLocation();

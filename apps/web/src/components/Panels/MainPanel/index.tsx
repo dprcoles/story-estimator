@@ -1,20 +1,19 @@
 import React, { useState } from "react";
+import { FiSettings } from "react-icons/fi";
 import { Tabs } from "ui";
+
+import { usePlayerStore } from "@/stores/playerStore";
+import { useRoomStore } from "@/stores/roomStore";
+import { useSocketStore } from "@/stores/socketStore";
+import { CountdownStatus } from "@/types/countdown";
+import { InfoCardTab } from "@/types/info";
+import { EmitEvent } from "@/types/server";
+
+import CurrentStoryDisplay from "./CurrentStoryDisplay";
+import GetStartedDisplay from "./GetStartedDisplay";
 import History from "./History";
 import InviteButton from "./InviteButton";
-import GetStartedDisplay from "./GetStartedDisplay";
-import CurrentStoryDisplay from "./CurrentStoryDisplay";
 import NextStoryDisplay from "./NextStoryDisplay";
-import { CountdownStatus } from "@/types/countdown";
-import { Player, PlayerType } from "@/types/player";
-import { Story } from "@/types/story";
-import { InfoCardTab } from "@/types/info";
-import { RoomIntegrations } from "@/types/room";
-import { useRoomStore } from "@/stores/roomStore";
-import { FiSettings } from "react-icons/fi";
-import { usePlayerStore } from "@/stores/playerStore";
-import { useSocketStore } from "@/stores/socketStore";
-import { EmitEvent } from "@/types/server";
 
 interface MainPanelProps {
   setIsSettingsModalOpen: (isSettingsModalOpen: boolean) => void;
@@ -63,7 +62,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
   return (
     <div className="bg-light-panels dark:bg-dark-panels rounded-lg py-4 px-8 main-panel__container">
       <div className="flex">
-        <div className="ml-auto">
+        <div className="ml-auto pb-2">
           {isAdmin && (
             <button
               onClick={() => setIsSettingsModalOpen(true)}

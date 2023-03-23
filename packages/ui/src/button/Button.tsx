@@ -8,7 +8,7 @@ interface ButtonProps {
   onClick: (e?: any) => void;
   children?: React.ReactNode;
   disabled?: boolean;
-  style?: ButtonStyle;
+  color?: ButtonStyle;
   fullWidth?: boolean;
 }
 
@@ -16,7 +16,7 @@ const Button: React.FC<ButtonProps> = ({
   children,
   onClick,
   disabled,
-  style = "default",
+  color = "default",
   fullWidth,
 }) => {
   return (
@@ -28,11 +28,11 @@ const Button: React.FC<ButtonProps> = ({
       <button
         className={classNames(
           "text-sm font-medium px-4 py-2 rounded-full border disabled:opacity-50 ease-linear transition-all duration-150",
-          style === "primary" &&
+          color === "primary" &&
             "bg-light-main dark:bg-dark-main border-light-buttons dark:border-dark-buttons hover:border-light-background dark:hover:border-dark-background text-white dark:text-black",
-          style === "danger" &&
+          color === "danger" &&
             "bg-danger-base dark:bg-danger-base text-white border-danger-border dark:border-danger-border hover:bg-danger-hover hover:dark:bg-danger-hover",
-          style === "default" &&
+          color === "default" &&
             "bg-light-buttons dark:bg-dark-buttons border-light-border-color dark:border-dark-border-color hover:border-black dark:hover:border-white",
           fullWidth && "w-full",
         )}

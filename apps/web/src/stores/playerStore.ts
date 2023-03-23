@@ -1,4 +1,5 @@
 import { create } from "zustand";
+
 import { PlayerInfo, PlayerType } from "@/types/player";
 
 type PlayerStore = {

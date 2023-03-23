@@ -29,7 +29,7 @@ const CreateSessionModal: React.FC<CreateSessionModalProps> = ({
         <Button
           onClick={() => handleOnCreate()}
           disabled={name.replace(/^\s+|\s+$|\s+(?=\s)/g, "").length === 0}
-          style="primary"
+          color="primary"
         >
           Create
         </Button>

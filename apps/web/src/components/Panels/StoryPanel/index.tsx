@@ -1,9 +1,11 @@
 import React from "react";
-import StoryCard from "./StoryCard";
+
+import { useRoomStore } from "@/stores/roomStore";
 import { useSocketStore } from "@/stores/socketStore";
 import { EmitEvent } from "@/types/server";
 import { Story } from "@/types/story";
-import { useRoomStore } from "@/stores/roomStore";
+
+import StoryCard from "./StoryCard";
 interface StoryPanelProps {
   setIsStoryModalOpen: (isStoryModalOpen: boolean) => void;
 }

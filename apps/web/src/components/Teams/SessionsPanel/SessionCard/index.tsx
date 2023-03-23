@@ -1,8 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "ui";
-import { ROUTE_ROOM, ROUTE_SUMMARY } from "@/utils/constants";
+
 import { TeamSession } from "@/types/team";
+import { ROUTE_ROOM, ROUTE_SUMMARY } from "@/utils/constants";
 
 interface SessionCardProps {
   session: TeamSession;
@@ -38,7 +39,7 @@ const SessionCard: React.FC<SessionCardProps> = ({ session }) => {
         </div>
         <div className="ml-auto flex">
           <Button
-            style={active ? "primary" : "default"}
+            color={active ? "primary" : "default"}
             onClick={handleOnClick}
           >
             {active ? "Join" : "View Summary"}

@@ -1,12 +1,14 @@
+import "./styles/globals.css";
+
+import AppProvider from "providers/AppProvider";
+import PlayerProvider from "providers/PlayerProvider";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+
+import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import Room from "./pages/Room";
-import Team from "./pages/Team";
 import Summary from "./pages/Summary";
-import "./styles/globals.css";
-import PlayerProvider from "providers/PlayerProvider";
-import Layout from "./components/Layout";
-import AppProvider from "providers/AppProvider";
+import Team from "./pages/Team";
 
 const App = () => {
   return (
