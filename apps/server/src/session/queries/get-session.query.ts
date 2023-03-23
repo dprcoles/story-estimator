@@ -30,7 +30,7 @@ export class GetSessionQuery implements Query {
       emoji: x.emoji,
       id: x.id,
       name: x.name,
-      type: x.defaultType as PlayerType,
+      defaultType: x.defaultType as PlayerType,
     }));
 
     const data: Session = {
@@ -46,12 +46,12 @@ export class GetSessionQuery implements Query {
         sessionId: x.sessionId,
         spectators: x.spectators
           .map((s) => s.player)
-          .map((p) => ({ ...p, type: p.defaultType as PlayerType })),
+          .map((p) => ({ ...p, defaultType: p.defaultType as PlayerType })),
         startSeconds: x.startSeconds,
         totalTimeSpent: x.totalTimeSpent,
         voters: x.votes
           .map((v) => v.player)
-          .map((p) => ({ ...p, type: p.defaultType as PlayerType })),
+          .map((p) => ({ ...p, defaultType: p.defaultType as PlayerType })),
         votes: x.votes,
       })),
     };

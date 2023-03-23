@@ -1,5 +1,6 @@
-import React from "react";
 import { motion } from "framer-motion";
+import React from "react";
+
 import { CountdownStatus } from "@/types/countdown";
 import { Player, PlayerType } from "@/types/player";
 import { FADE_IN } from "@/utils/variants";
@@ -15,7 +16,7 @@ const PlayerVoteIcon: React.FC<PlayerIconProps> = ({
   showVote,
   countdownStatus,
 }) => {
-  const { type, vote } = player;
+  const { defaultType: type, vote } = player;
 
   if (type === PlayerType.Spectator) return null;
 

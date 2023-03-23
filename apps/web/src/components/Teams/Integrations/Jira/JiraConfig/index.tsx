@@ -1,7 +1,9 @@
-import { Button } from "ui";
 import React from "react";
-import JiraQueryList from "./JiraQueryList";
+import { Button } from "ui";
+
 import { IntegrationView, JiraIntegration } from "@/types/integrations";
+
+import JiraQueryList from "./JiraQueryList";
 
 interface JiraConfigProps {
   data: JiraIntegration;

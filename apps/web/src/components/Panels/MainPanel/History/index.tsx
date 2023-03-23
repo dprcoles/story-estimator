@@ -1,10 +1,11 @@
-import React from "react";
 import { motion } from "framer-motion";
+import React from "react";
 import { MdOutlineHistory } from "react-icons/md";
+
 import { Story } from "@/types/story";
 import { NON_NUMERIC_OPTIONS } from "@/utils/constants";
-import { FADE_IN, STAGGER } from "@/utils/variants";
 import { getTimeSpent } from "@/utils/functions";
+import { FADE_IN, STAGGER } from "@/utils/variants";
 
 interface HistoryProps {
   stories: Array<Story>;

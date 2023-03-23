@@ -1,19 +1,13 @@
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { motion } from "framer-motion";
-import { FADE_IN } from "@/utils/variants";
-import { DefaultNavbar } from "@/components/Navbar";
-import Wrapper from "@/components/Wrapper";
-import { SessionDetails } from "@/types/session";
+
 import { getSession } from "@/api/session";
 import SessionSummary from "@/components/SessionSummary";
+import { SessionDetails } from "@/types/session";
+import { FADE_IN } from "@/utils/variants";
 
-interface RoomPageProps {
-  theme: string;
-  setTheme: (theme: string) => void;
-}
-
-const SummaryPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
+const SummaryPage: React.FC = () => {
   const { id } = useParams();
   const [isLoadingData, setIsLoadingData] = useState<boolean>(false);
   const [sessionData, setSessionData] = useState<SessionDetails>();
@@ -34,18 +28,13 @@ const SummaryPage: React.FC<RoomPageProps> = ({ theme, setTheme }) => {
   if (isLoadingData || !sessionData) return <div>Loading...</div>;
 
   return (
-    <Wrapper>
-      <motion.div variants={FADE_IN} className="max-h-full h-screen">
-        <div className="p-4 lg:mx-auto">
-          <DefaultNavbar theme={theme} setTheme={setTheme} />
+    <motion.div variants={FADE_IN} className="max-h-full h-screen">
+      <div className="px-2">
+        <div className="bg-light-panels dark:bg-dark-panels rounded-lg py-4 px-8 main-panel__container">
+          <SessionSummary session={sessionData} />
         </div>
-        <div className="px-2">
-          <div className="bg-light-panels dark:bg-dark-panels rounded-lg py-4 px-8 main-panel__container">
-            <SessionSummary session={sessionData} />
-          </div>
-        </div>
-      </motion.div>
-    </Wrapper>
+      </div>
+    </motion.div>
   );
 };
 

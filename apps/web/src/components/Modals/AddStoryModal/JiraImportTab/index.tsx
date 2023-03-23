@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "ui";
+
 import {
   getJiraIntegrationById,
   getJiraIssuesByQueryId,
@@ -28,12 +29,6 @@ const JiraImportTab: React.FC<JiraImportTabProps> = ({
   const [issues, setIssues] = useState<JiraIssue[]>([]);
   const [selectedIssueKeys, setSelectedIssueKeys] = useState<string[]>([]);
 
-  const fetchQueries = async () => {
-    const res = await getJiraIntegrationById({ id: integrationId });
-    setQueries(res.jqlQueries);
-    setIsLoadingQueries(false);
-  };
-
   const fetchIssues = async () => {
     setIsLoadingIssues(true);
     const res: JiraIssue[] = await getJiraIssuesByQueryId({
@@ -61,11 +56,17 @@ const JiraImportTab: React.FC<JiraImportTabProps> = ({
   };
 
   useEffect(() => {
+    const fetchQueries = async () => {
+      const res = await getJiraIntegrationById({ id: integrationId });
+      setQueries(res.jqlQueries);
+      setIsLoadingQueries(false);
+    };
+
     if (queries.length === 0 && integrationId) {
       setIsLoadingQueries(true);
       fetchQueries();
     }
-  }, [integrationId]);
+  }, [integrationId, queries]);
 
   useEffect(() => {
     if (isOpen && selectedIssueKeys.length > 0) {
@@ -76,7 +77,7 @@ const JiraImportTab: React.FC<JiraImportTabProps> = ({
     }
 
     setStories([]);
-  }, [isOpen, selectedIssueKeys]);
+  }, [isOpen, selectedIssueKeys, setStories]);
 
   return (
     <>

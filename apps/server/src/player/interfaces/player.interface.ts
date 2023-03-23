@@ -4,5 +4,5 @@ export interface Player {
   id: number;
   emoji: string;
   name: string;
-  type: PlayerType;
+  defaultType: PlayerType;
 }

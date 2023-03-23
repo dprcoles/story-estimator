@@ -3,8 +3,13 @@ import { Story } from "@/types/story";
 export const API_URL =
   import.meta.env.VITE_SERVER_URL || "http://localhost:4000";
 
+export const ROUTE_HOME = "/";
 export const ROUTE_ROOM = "/room";
+export const ROUTE_TEAM = "/team";
 export const ROUTE_SUMMARY = "/summary";
+
+export const REQUIRED_ROUTES = [ROUTE_ROOM, ROUTE_TEAM];
+
 export const NON_NUMERIC_OPTIONS = ["∞", "?", "☕️"];
 export const OPTIONS: Array<string> = [
   "1",

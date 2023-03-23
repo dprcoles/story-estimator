@@ -8,8 +8,8 @@ export class CreateSessionCommand implements Command {
 
   constructor(private prisma: PrismaService) {}
 
-  executeAsync(): Promise<Sessions> {
-    const session = this.prisma.sessions.create({
+  async executeAsync(): Promise<Sessions> {
+    const session = await this.prisma.sessions.create({
       data: {
         name: this.name,
         playerIds: [],

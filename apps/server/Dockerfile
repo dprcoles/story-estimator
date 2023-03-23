@@ -8,7 +8,7 @@ COPY pnpm-lock.yaml .
 RUN pnpm fetch
 
 ADD . .
-RUN pnpm install -r --offline
+RUN pnpm install -r --prefer-offline
 
 RUN npx prisma db push --accept-data-loss
 

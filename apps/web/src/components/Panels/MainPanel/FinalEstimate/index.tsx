@@ -1,10 +1,12 @@
-import React, { useState } from "react";
 import { motion } from "framer-motion";
+import React, { useState } from "react";
 import { Button } from "ui";
-import Option from "../Option";
-import { FADE_IN, STAGGER } from "@/utils/variants";
+
 import { useSocketStore } from "@/stores/socketStore";
 import { EmitEvent } from "@/types/server";
+import { FADE_IN, STAGGER } from "@/utils/variants";
+
+import Option from "../Option";
 
 interface FinalEstimateProps {
   options: Array<string>;
@@ -46,12 +48,12 @@ const FinalEstimate: React.FC<FinalEstimateProps> = ({
         <Button
           onClick={() =>
             emit(EmitEvent.Complete, {
-              finalVote: selected,
-              storyId: currentStoryId,
+              vote: selected,
+              id: currentStoryId,
             })
           }
           disabled={selected === ""}
-          style="primary"
+          color="primary"
         >
           Complete Estimate
         </Button>

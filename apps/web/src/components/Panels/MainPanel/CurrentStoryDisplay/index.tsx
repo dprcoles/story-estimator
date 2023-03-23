@@ -1,27 +1,22 @@
-import React from "react";
 import { motion } from "framer-motion";
-import { FiSettings } from "react-icons/fi";
-import InfoCard from "../InfoCard";
-import Option from "../Option";
-import TimeSpentDisplay from "../TimeSpentDisplay";
-import { CountdownStatus } from "@/types/countdown";
+import React from "react";
+
+import { usePlayerStore } from "@/stores/playerStore";
 import { Player, PlayerType } from "@/types/player";
 import { Story } from "@/types/story";
 import { OPTIONS } from "@/utils/constants";
 import { FADE_IN, STAGGER } from "@/utils/variants";
-import { usePlayerStore } from "@/stores/playerStore";
+
+import InfoCard from "../InfoCard";
+import Option from "../Option";
+import TimeSpentDisplay from "../TimeSpentDisplay";
 
 interface CurrentStoryDisplayProps {
   currentStory: Story;
   vote: string;
   setVote: (vote: string) => void;
   showVotes: boolean;
-  countdown: number;
-  countdownStatus: CountdownStatus;
   players: Array<Player>;
-  type: PlayerType;
-  stories: Array<Story>;
-  setIsSettingsModalOpen: (isSettingsModalOpen: boolean) => void;
 }
 
 const CurrentStoryDisplay: React.FC<CurrentStoryDisplayProps> = ({
@@ -29,14 +24,9 @@ const CurrentStoryDisplay: React.FC<CurrentStoryDisplayProps> = ({
   vote,
   setVote,
   showVotes,
-  countdown,
-  countdownStatus,
   players,
-  type,
-  stories,
-  setIsSettingsModalOpen,
 }) => {
-  const { player } = usePlayerStore((state) => state);
+  const defaultType = usePlayerStore((state) => state.player.defaultType);
 
   return (
     <div>
@@ -51,32 +41,15 @@ const CurrentStoryDisplay: React.FC<CurrentStoryDisplayProps> = ({
             }
           />
         </div>
-        <div className="ml-auto">
-          {player.admin && (
-            <button
-              onClick={() => setIsSettingsModalOpen(true)}
-              className="rounded-full hover:bg-light-hover dark:hover:bg-dark-hover w-10 h-10 flex justify-center items-center"
-              disabled={
-                countdownStatus === CountdownStatus.STARTED || showVotes
-              }
-            >
-              <FiSettings className="text-light-text dark:text-dark-text text-xl m-0" />
-            </button>
-          )}
-        </div>
       </div>
       <InfoCard
         vote={vote}
         showVotes={showVotes}
-        countdown={countdown}
-        countdownStatus={countdownStatus}
         players={players}
-        stories={stories}
         options={OPTIONS}
-        type={type}
       />
       <div className="mx-auto py-8">
-        {!showVotes && type === PlayerType.Voter && (
+        {!showVotes && defaultType === PlayerType.Voter && (
           <motion.div variants={STAGGER}>
             <div className="m-2 text-light-text dark:text-dark-text">
               Select an Estimate:

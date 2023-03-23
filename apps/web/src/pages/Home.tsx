@@ -1,79 +1,37 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FADE_IN } from "@/utils/variants";
-import Wrapper from "@/components/Wrapper";
-import UserModal from "@/components/Modals/PlayerModal";
-import { StorageItem } from "@/types/storage";
-import { getPlayer } from "@/api/player";
+import React, { useEffect, useState } from "react";
+
 import { usePlayerStore } from "@/stores/playerStore";
-import { PlayerInfo } from "@/types/player";
-import { createSession } from "@/api/session";
-import { ROUTE_ROOM } from "@/utils/constants";
-import CreateSessionModal from "@/components/Modals/CreateSessionModal";
+import { useSessionStore } from "@/stores/sessionStore";
+import { FADE_IN } from "@/utils/variants";
 
 const Home: React.FC = () => {
-  const navigate = useNavigate();
   const [isJoining, setIsJoining] = useState<boolean>(false);
-  const [isUserModalOpen, setIsUserModalOpen] = useState<boolean>(false);
-  const [isSessionModalOpen, setIsSessionModalOpen] = useState<boolean>(false);
-  const { player, setPlayer } = usePlayerStore((state) => state);
-
-  const handleCreateSession = async (name: string) => {
-    const session = await createSession({
-      name: name,
-      teamId: parseInt(import.meta.env.VITE_DEFAULT_TEAM_ID, 10),
-    });
-
-    if (session.id) {
-      navigate(`${ROUTE_ROOM}/${session.id}`);
-    }
-  };
-
-  const handleSetPlayer = async (player: PlayerInfo) => {
-    setPlayer(player);
-
-    setIsSessionModalOpen(true);
-  };
-
-  const fetchPlayer = async (id: number) => {
-    const player = await getPlayer(id);
-    const { emoji, defaultType: type, name } = player;
-
-    await handleSetPlayer({ id, emoji, name, type });
-  };
+  const { player, setIsPlayerModalOpen } = usePlayerStore((state) => state);
+  const setIsSessionModalOpen = useSessionStore(
+    (state) => state.setIsSessionModalOpen,
+  );
 
   const start = async () => {
     setIsJoining(true);
 
-    const storedPlayerId = parseInt(
-      localStorage.getItem(StorageItem.PlayerId) || "0",
-      10,
-    );
-
-    if (storedPlayerId) {
-      await fetchPlayer(storedPlayerId);
-      return;
+    if (!player.id) {
+      setIsPlayerModalOpen(true);
+      setIsSessionModalOpen(true);
     }
-
-    setIsUserModalOpen(true);
   };
 
+  useEffect(() => {
+    if (player.id && isJoining) {
+      setIsSessionModalOpen(true);
+      return;
+    }
+  }, [isJoining, player, setIsSessionModalOpen]);
+
   return (
-    <Wrapper>
-      <UserModal
-        isOpen={isUserModalOpen}
-        setIsOpen={setIsUserModalOpen}
-        player={player}
-        setPlayer={handleSetPlayer}
-      />
-      <CreateSessionModal
-        isOpen={isSessionModalOpen}
-        setIsOpen={setIsSessionModalOpen}
-        handleCreateSession={handleCreateSession}
-      />
+    <>
       <motion.div variants={FADE_IN}>
-        <div className="flex max-w-2xl mx-auto py-8 h-screen">
+        <div className="flex max-w-2xl mx-auto py-8 h-[90vh]">
           <div className="m-auto grid grid-flow-row grid-cols-2">
             <div className="text-4xl">
               A{" "}
@@ -98,7 +56,7 @@ const Home: React.FC = () => {
           </div>
         </div>
       </motion.div>
-    </Wrapper>
+    </>
   );
 };
 

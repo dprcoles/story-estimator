@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "ui";
+
 import { Story } from "@/types/story";
 import { DEFAULT_STORY } from "@/utils/constants";
 
@@ -46,7 +47,7 @@ const ManualImportTab: React.FC<ManualImportTabProps> = ({
           disabled={
             story.description.replace(/^\s+|\s+$|\s+(?=\s)/g, "").length === 0
           }
-          style="primary"
+          color="primary"
         >
           Add
         </Button>

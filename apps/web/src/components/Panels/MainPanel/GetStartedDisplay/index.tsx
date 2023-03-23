@@ -1,11 +1,11 @@
-import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Button } from "ui";
+import React, { useState } from "react";
 import { GiCardRandom } from "react-icons/gi";
-import { FADE_DOWN, FADE_UP, STAGGER, EXPAND_IN } from "@/utils/variants";
-import { RoomIntegrations } from "@/types/room";
-import { EmitEvent } from "@/types/server";
+import { Button } from "ui";
+
 import { useSocketStore } from "@/stores/socketStore";
+import { EmitEvent } from "@/types/server";
+import { EXPAND_IN, FADE_DOWN, FADE_UP, STAGGER } from "@/utils/variants";
 
 interface GetStartedDisplayProps {
   setIsStoryModalOpen: (isStoryModalOpen: boolean) => void;
@@ -22,7 +22,7 @@ const GetStartedDisplay: React.FC<GetStartedDisplayProps> = ({
   const [clicked, setClicked] = useState<boolean>(false);
 
   const handleStartEstimating = () =>
-    emit(EmitEvent.SetActiveStory, firstStoryId);
+    emit(EmitEvent.SetActiveStory, { id: firstStoryId });
 
   const handleInvitePlayers = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -59,7 +59,7 @@ const GetStartedDisplay: React.FC<GetStartedDisplayProps> = ({
         </motion.div>
         <motion.div variants={EXPAND_IN} className="flex justify-center py-4">
           {hasStories && (
-            <Button fullWidth style="primary" onClick={handleStartEstimating}>
+            <Button fullWidth color="primary" onClick={handleStartEstimating}>
               <div className="p-2 text-lg font-semibold">Start Estimating</div>
             </Button>
           )}

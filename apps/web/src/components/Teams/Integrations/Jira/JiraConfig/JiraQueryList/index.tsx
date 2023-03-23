@@ -1,6 +1,8 @@
 import React from "react";
-import JiraQueryListItem from "./JiraQueryListItem";
+
 import { JqlQuery } from "@/types/integrations";
+
+import JiraQueryListItem from "./JiraQueryListItem";
 
 interface JiraQueryListProps {
   integrationId: number;

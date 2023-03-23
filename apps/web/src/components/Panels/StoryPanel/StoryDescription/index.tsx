@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { IconButton } from "ui";
-import { usePlayerStore } from "@/stores/playerStore";
+
+import { useRoomStore } from "@/stores/roomStore";
 
 interface StoryDescriptionProps {
   active: boolean;
@@ -14,7 +15,7 @@ const StoryDescription: React.FC<StoryDescriptionProps> = ({
   description,
   setDescription,
 }) => {
-  const { player } = usePlayerStore((state) => state);
+  const isAdmin = useRoomStore((state) => state.isAdmin);
   const [localDescription, setLocalDescription] = useState<string>("");
   const [showInput, setShowInput] = useState<boolean>(false);
 
@@ -53,7 +54,7 @@ const StoryDescription: React.FC<StoryDescriptionProps> = ({
                 ? "text-black dark:text-white"
                 : "text-light-text dark:text-dark-text"
             }`}
-            onClick={player.admin ? () => setShowInput(true) : undefined}
+            onClick={isAdmin ? () => setShowInput(true) : undefined}
           >
             {description}
           </span>

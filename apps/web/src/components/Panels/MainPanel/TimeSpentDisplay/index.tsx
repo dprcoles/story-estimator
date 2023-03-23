@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import { useInterval } from "@/hooks/index";
 
 interface TimeSpentDisplayProps {

@@ -1,9 +1,11 @@
-import React from "react";
 import { motion } from "framer-motion";
-import FinalEstimate from "../FinalEstimate";
+import React from "react";
+
 import { Player } from "@/types/player";
-import { FADE_IN, STAGGER } from "@/utils/variants";
 import { NON_NUMERIC_OPTIONS, OPTIONS } from "@/utils/constants";
+import { FADE_IN, STAGGER } from "@/utils/variants";
+
+import FinalEstimate from "../FinalEstimate";
 
 interface ResultsProps {
   players: Array<Player>;

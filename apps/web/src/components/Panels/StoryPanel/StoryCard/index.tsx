@@ -1,9 +1,11 @@
-import React, { useState } from "react";
 import classnames from "classnames";
-import StoryDescription from "../StoryDescription";
+import React, { useState } from "react";
+
+import DeleteStoryModal from "@/components/Modals/DeleteStoryModal";
 import { Story } from "@/types/story";
 import { getTimeSpent } from "@/utils/functions";
-import DeleteStoryModal from "@/components/Modals/DeleteStoryModal";
+
+import StoryDescription from "../StoryDescription";
 
 interface StoryCardProps {
   story: Story;

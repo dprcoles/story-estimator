@@ -1,8 +1,11 @@
 import React from "react";
+
+import { useRoomStore } from "@/stores/roomStore";
+import { CountdownStatus } from "@/types/countdown";
+import { Player, PlayerType } from "@/types/player";
+
 import PlayerIcon from "../PlayerIcon";
 import PlayerVoteIcon from "../PlayerVoteIcon";
-import { Player, PlayerType } from "@/types/player";
-import { CountdownStatus } from "@/types/countdown";
 
 interface PlayerCardProps {
   player: Player;
@@ -17,7 +20,8 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
   countdownStatus,
   isCurrentPlayer,
 }) => {
-  const { name, type, vote, admin } = player;
+  const admin = useRoomStore((state) => state.admin);
+  const { id, name, defaultType, vote } = player;
 
   return (
     <div className="p-2 flex">
@@ -30,12 +34,12 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
               : "text-black dark:text-white"
           }`}
         >
-          {`${name}${admin ? " 👑" : ""}`}
+          {`${name}${admin === id ? " 👑" : ""}`}
         </div>
         <div className="text-sm text-light-text dark:text-dark-text">
-          {type === PlayerType.Voter && vote && <span>Voted</span>}
-          {type === PlayerType.Voter && !vote && <span>Voting</span>}
-          {type === PlayerType.Spectator && <span>Spectating</span>}
+          {defaultType === PlayerType.Voter && vote && <span>Voted</span>}
+          {defaultType === PlayerType.Voter && !vote && <span>Voting</span>}
+          {defaultType === PlayerType.Spectator && <span>Spectating</span>}
         </div>
       </div>
       <div className="ml-auto">
