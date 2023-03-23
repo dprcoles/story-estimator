@@ -204,8 +204,8 @@ export class RoomGatewayService {
   private async createFromSessionAsync(playerId: number, session: Session) {
     let integrations: RoomIntegrations | null = null;
 
-    if (session.teamId) {
-      const team = await this.teamService.getByIdAsync(session.teamId);
+    if (session.team.id) {
+      const team = await this.teamService.getByIdAsync(session.team.id);
 
       integrations = {
         jira: team.jiraIntegrationId,
@@ -223,7 +223,7 @@ export class RoomGatewayService {
         fastMode: false,
       },
       stories: [],
-      teamId: session.teamId,
+      teamId: session.team.id,
     });
   }
 }

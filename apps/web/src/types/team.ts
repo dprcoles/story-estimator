@@ -1,3 +1,12 @@
+export interface Team {
+  id: number;
+  name: string;
+  alias: string;
+  organisationId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface TeamSession {
   id: number;
   name: string;

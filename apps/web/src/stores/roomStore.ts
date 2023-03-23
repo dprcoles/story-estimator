@@ -1,3 +1,4 @@
+import { DEFAULT_TEAM_ID } from "constants/app.constants";
 import { create } from "zustand";
 
 import {
@@ -21,7 +22,7 @@ const DEFAULT_ROOM: Room = {
     fastMode: false,
   },
   stories: [],
-  teamId: parseInt(import.meta.env.VITE_DEFAULT_TEAM_ID, 10),
+  teamId: DEFAULT_TEAM_ID,
 };
 
 export type Countdown = {

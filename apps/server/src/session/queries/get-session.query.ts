@@ -19,6 +19,7 @@ export class GetSessionQuery implements Query {
             spectators: { include: { player: true } },
           },
         },
+        team: true,
       },
     });
 
@@ -36,7 +37,6 @@ export class GetSessionQuery implements Query {
     const data: Session = {
       id: session.id,
       name: session.name,
-      teamId: session.teamId,
       players: mappedPlayers,
       stories: session.stories.map((x) => ({
         description: x.description,
@@ -54,6 +54,7 @@ export class GetSessionQuery implements Query {
           .map((p) => ({ ...p, defaultType: p.defaultType as PlayerType })),
         votes: x.votes,
       })),
+      team: session.team,
     };
 
     return data;

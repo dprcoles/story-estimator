@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import { DEFAULT_TEAM_ID } from "constants/app.constants";
+import React from "react";
+import { FaChevronLeft, FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { Button } from "ui";
 
-import { createSession } from "@/api/session";
-import CreateSessionModal from "@/components/Modals/CreateSessionModal";
 import History from "@/components/Panels/MainPanel/History";
+import { useSessionStore } from "@/stores/sessionStore";
 import { SessionDetails } from "@/types/session";
-import { ROUTE_ROOM } from "@/utils/constants";
+import { ROUTE_TEAM } from "@/utils/constants";
 
 import PlayerList from "./PlayerList";
 
@@ -15,36 +16,37 @@ interface SessionSummaryProps {
 }
 
 const SessionSummary: React.FC<SessionSummaryProps> = ({ session }) => {
-  const [isSessionModalOpen, setIsSessionModalOpen] = useState<boolean>(false);
+  const setIsSessionModalOpen = useSessionStore(
+    (state) => state.setIsSessionModalOpen,
+  );
 
-  const { name, teamId, stories, players } = session;
+  const { name, team, stories, players } = session;
 
   const navigate = useNavigate();
 
-  const handleCreateSession = async (name: string) => {
-    const session = await createSession({ name: name, teamId });
-    if (session.id) {
-      navigate(`${ROUTE_ROOM}/${session.id}`);
-    }
-  };
-
   const handleGoBack = () => {
-    navigate(-1);
+    if (team.id !== DEFAULT_TEAM_ID) {
+      navigate(`${ROUTE_TEAM}/${team.alias}`);
+    } else {
+      navigate("/");
+    }
   };
 
   return (
     <>
-      <CreateSessionModal
-        isOpen={isSessionModalOpen}
-        setIsOpen={setIsSessionModalOpen}
-        handleCreateSession={handleCreateSession}
-      />
       <div className="p-4 md:p-8">
         <div className="md:flex mb-8">
-          <Button onClick={handleGoBack}>{"<"} Go Back</Button>
+          <Button onClick={handleGoBack}>
+            <div className="flex items-center">
+              <FaChevronLeft className="mr-2" />{" "}
+              {team.id !== DEFAULT_TEAM_ID ? "Team" : "Home"} Page
+            </div>
+          </Button>
           <div className="mt-4 md:mt-0 md:ml-4">
-            <Button onClick={() => setIsSessionModalOpen(true)}>
-              Create New Session
+            <Button onClick={() => setIsSessionModalOpen(true)} color="primary">
+              <div className="flex items-center">
+                <FaPlus className="mr-2" /> Create New Session
+              </div>
             </Button>
           </div>
         </div>

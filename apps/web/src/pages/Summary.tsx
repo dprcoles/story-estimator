@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 
 import { getSession } from "@/api/session";
 import SessionSummary from "@/components/SessionSummary";
+import { useTeamStore } from "@/stores/teamStore";
 import { SessionDetails } from "@/types/session";
 import { FADE_IN } from "@/utils/variants";
 
@@ -11,6 +12,7 @@ const SummaryPage: React.FC = () => {
   const { id } = useParams();
   const [isLoadingData, setIsLoadingData] = useState<boolean>(false);
   const [sessionData, setSessionData] = useState<SessionDetails>();
+  const { team, setTeam } = useTeamStore();
 
   useEffect(() => {
     setIsLoadingData(true);
@@ -19,10 +21,16 @@ const SummaryPage: React.FC = () => {
         const data = await getSession(parseInt(id, 10));
         setSessionData(data);
         setIsLoadingData(false);
+
+        if (data.team?.id) {
+          setTeam({ ...team, id: data.team.id });
+        }
       };
 
       fetchSessionData();
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   if (isLoadingData || !sessionData) return <div>Loading...</div>;
