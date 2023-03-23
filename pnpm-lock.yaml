@@ -101,6 +101,7 @@ importers:
       '@vitejs/plugin-react': ^3.0.1
       autoprefixer: ^10.4.8
       classnames: ^2.3.2
+      emoji-mart: ^5.5.2
       eslint: ^8.36.0
       eslint-config-prettier: 8.6.0
       eslint-config-react-app: ^7.0.1
@@ -124,7 +125,8 @@ importers:
       zustand: ^4.3.2
     dependencies:
       '@emoji-mart/data': 1.1.2
-      '@emoji-mart/react': 1.1.1_react@18.2.0
+      '@emoji-mart/react': 1.1.1_kyrnz3vmphzqyjjk2ivrm6bcsu
+      emoji-mart: 5.5.2
       eslint-config-react-app: 7.0.1_oshcoim5rktpj4dwtr6xfipf34
       framer-motion: 6.5.1_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
@@ -1652,12 +1654,13 @@ packages:
     resolution: {integrity: sha512-1HP8BxD2azjqWJvxIaWAMyTySeZY0Osr83ukYjltPVkNXeJvTz7yDrPLBtnrD5uqJ3tg4CcLuuBW09wahqL/fg==}
     dev: false
 
-  /@emoji-mart/react/1.1.1_react@18.2.0:
+  /@emoji-mart/react/1.1.1_kyrnz3vmphzqyjjk2ivrm6bcsu:
     resolution: {integrity: sha512-NMlFNeWgv1//uPsvLxvGQoIerPuVdXwK/EUek8OOkJ6wVOWPUizRBJU0hDqWZCOROVpfBgCemaC3m6jDOXi03g==}
     peerDependencies:
       emoji-mart: ^5.2
       react: ^16.8 || ^17 || ^18
     dependencies:
+      emoji-mart: 5.5.2
       react: 18.2.0
     dev: false
 
@@ -4354,6 +4357,10 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
+  /emoji-mart/5.5.2:
+    resolution: {integrity: sha512-Sqc/nso4cjxhOwWJsp9xkVm8OF5c+mJLZJFoFfzRuKO+yWiN7K8c96xmtughYb0d/fZ8UC6cLIQ/p4BR6Pv3/A==}
+    dev: false
+
   /emoji-regex/8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
     dev: true
@@ -4632,6 +4639,7 @@ packages:
       synckit: 0.8.5
     transitivePeerDependencies:
       - supports-color
+    dev: true
 
   /eslint-import-resolver-typescript/3.5.3_eslint@8.36.0:
     resolution: {integrity: sha512-njRcKYBc3isE42LaTcJNVANR3R99H9bAxBDMNDr2W7yq5gYPxbU3MkdhsQukxZ/Xg9C2vcyLlDsbKfRDg0QvCQ==}
@@ -4650,7 +4658,6 @@ packages:
       synckit: 0.8.5
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /eslint-module-utils/2.7.4_bzi2otav6wbllxnnsq4kdu5z6u:
     resolution: {integrity: sha512-j4GT+rqzCoRKHwURX7pddtIPGySnX9Si/cgMI5ztrcqOPtk5dDEeZ34CQVPphnqkJytlc97Vuk05Um2mJ3gEQA==}
@@ -4677,7 +4684,7 @@ packages:
       debug: 3.2.7
       eslint: 8.36.0
       eslint-import-resolver-node: 0.3.7
-      eslint-import-resolver-typescript: 3.5.3_eakrjjutlgqjxe5ydhtnd4qdmy
+      eslint-import-resolver-typescript: 3.5.3_eslint@8.36.0
     transitivePeerDependencies:
       - supports-color
 
