@@ -1,11 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import retry = require("async-retry");
-import { PlayerType } from "src/player/enums/player-type.enum";
-import { Session } from "src/session/interfaces/session.interface";
-import { SessionService } from "src/session/session.service";
-import { Story } from "src/story/interfaces/story.interface";
-import { StoryService } from "src/story/story.service";
-import { TeamService } from "src/team/team.service";
+import { PlayerType } from "src/domain/enums/player.enums";
+import { Session } from "src/domain/models/session.model";
+import { SessionService } from "src/application/session/session.service";
+import { Story } from "src/domain/models/story.model";
+import { StoryService } from "src/application/story/story.service";
+import { TeamService } from "src/application/team/team.service";
 import { PlayerGatewayService } from "../player/player.service";
 import { Room, RoomIntegrations } from "./interfaces/room.interface";
 import { RoomRepository } from "./room.repository";
@@ -49,7 +49,10 @@ export class RoomGatewayService {
     }
 
     if (!session.players.find((p) => p.id === playerId)) {
-      await this.sessionService.addPlayerAsync(session.id, playerId);
+      await this.sessionService.addPlayerAsync({
+        id: session.id,
+        playerId,
+      });
     }
 
     const players = await this.playerGatewayService.getByRoomIdAsync(id);

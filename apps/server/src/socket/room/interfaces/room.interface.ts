@@ -1,4 +1,4 @@
-import { Story } from "src/story/interfaces/story.interface";
+import { Story } from "src/domain/models/story.model";
 
 export interface Room {
   id: number;

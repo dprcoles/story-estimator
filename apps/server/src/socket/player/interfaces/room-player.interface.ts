@@ -1,4 +1,4 @@
-import { Player } from "src/player/interfaces/player.interface";
+import { Player } from "src/domain/models/player.model";
 
 export interface RoomPlayer extends Player {
   roomId?: number;

@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
-import { SessionModule } from "src/session/session.module";
-import { StoryModule } from "src/story/story.module";
-import { TeamModule } from "src/team/team.module";
+import { SessionModule } from "src/application/session/session.module";
+import { StoryModule } from "src/application/story/story.module";
+import { TeamModule } from "src/application/team/team.module";
 import { PlayerGatewayModule } from "../player/player.module";
 import { SocketStore } from "../socket.store";
 import { RoomEventsHandler } from "./room.events";

@@ -1,25 +1,16 @@
 import { Module } from "@nestjs/common";
-import { TeamModule } from "./team/team.module";
-import { PrismaModule } from "./prisma/prisma.module";
-import { PlayerModule } from "./player/player.module";
-import { SessionModule } from "./session/session.module";
-import { JiraModule } from "./jira/jira.module";
-import { PlayerGatewayModule } from "./socket/player/player.module";
-import { RoomGatewayModule } from "./socket/room/room.module";
-import { TeamGatewayModule } from "./socket/team/team.module";
+import { PlayerGatewayModule } from "src/socket/player/player.module";
+import { RoomGatewayModule } from "src/socket/room/room.module";
+import { TeamGatewayModule } from "src/socket/team/team.module";
+import { ApiModule } from "./api/api.module";
 
 @Module({
   imports: [
-    JiraModule,
-    PlayerModule,
-    PrismaModule,
-    SessionModule,
-    TeamModule,
+    ApiModule,
     PlayerGatewayModule,
     RoomGatewayModule,
     TeamGatewayModule,
   ],
-  controllers: [],
   providers: [],
 })
 export class AppModule {}

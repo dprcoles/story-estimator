@@ -8,8 +8,8 @@ import {
 } from "@nestjs/websockets";
 import { Server, Socket } from "socket.io";
 import { __prod__ } from "src/constants/app.constants";
-import { ShowType } from "src/session/enums/show-type.enum";
-import { Story } from "src/story/interfaces/story.interface";
+import { ShowType } from "src/domain/enums/session.enums";
+import { Story } from "src/domain/models/story.model";
 import { getSocketInfo } from "../utils/get-socket-info.utils";
 import { RoomMessage } from "./enums/room-messages.enum";
 import { Settings } from "./interfaces/room.interface";

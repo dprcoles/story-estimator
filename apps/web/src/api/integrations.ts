@@ -42,7 +42,7 @@ export const getJiraIssuesByQueryId = async (
     },
   );
 
-  const result = await handleApiResponse(response);
+  const { issues } = await handleApiResponse(response);
 
-  return result;
+  return issues;
 };

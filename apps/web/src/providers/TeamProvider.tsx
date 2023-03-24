@@ -35,7 +35,7 @@ const TeamProvider: React.FC<PropsWithChildren> = ({ children }) => {
     }
   }, [isLoading, team, socket]);
 
-  if (!socket)
+  if (!socket || isLoading)
     return (
       <div className="min-h-[90vh] flex items-center justify-center">
         <Loader />
