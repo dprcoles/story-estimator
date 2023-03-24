@@ -1,23 +1,24 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "../prisma/prisma.service";
+import { CommandBus } from "@nestjs/cqrs";
 import { CreateStoryCommand } from "./commands/create-story.command";
-import { CreateStoryDto } from "./dtos/create-story.dto";
+import { CreateStoryRequest } from "./models/requests/create-story.request";
 
 @Injectable()
 export class StoryService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private commandBus: CommandBus) {}
 
-  async createAsync(data: CreateStoryDto) {
-    const command = new CreateStoryCommand(this.prisma);
-    command.description = data.description;
-    command.endSeconds = data.endSeconds;
-    command.estimate = data.estimate;
-    command.sessionId = data.sessionId;
-    command.spectatorIds = data.spectatorIds;
-    command.startSeconds = data.startSeconds;
-    command.totalTimeSpent = data.totalTimeSpent;
-    command.votes = data.votes;
+  async createAsync(data: CreateStoryRequest) {
+    const command = new CreateStoryCommand(
+      data.description,
+      data.startSeconds,
+      data.endSeconds,
+      data.estimate,
+      data.totalTimeSpent,
+      data.sessionId,
+      data.votes,
+      data.spectatorIds,
+    );
 
-    return await command.executeAsync();
+    return await this.commandBus.execute(command);
   }
 }

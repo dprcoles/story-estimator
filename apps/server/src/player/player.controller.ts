@@ -8,8 +8,8 @@ import {
   Post,
 } from "@nestjs/common";
 import { Players } from "@prisma/client";
-import { CreatePlayerDto } from "./dto/create-player.dto";
-import { UpdatePlayerDto } from "./dto/update-player.dto";
+import { CreatePlayerRequest } from "./models/request/create-player.request";
+import { UpdatePlayerRequest } from "./models/request/update-player.request";
 import { PlayerService } from "./player.service";
 
 @Controller("player")
@@ -17,7 +17,7 @@ export class PlayerController {
   constructor(private readonly playerService: PlayerService) {}
 
   @Post()
-  async create(@Body() data: CreatePlayerDto): Promise<Players> {
+  async create(@Body() data: CreatePlayerRequest): Promise<Players> {
     return await this.playerService.createAsync(data);
   }
 
@@ -29,7 +29,7 @@ export class PlayerController {
   @Patch(":id")
   async update(
     @Param("id", ParseIntPipe) id: number,
-    @Body() data: UpdatePlayerDto,
+    @Body() data: UpdatePlayerRequest,
   ): Promise<Players> {
     return await this.playerService.updateAsync(id, data);
   }
