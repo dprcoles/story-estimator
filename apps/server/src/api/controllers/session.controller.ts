@@ -20,7 +20,6 @@ export class SessionController {
   async create(
     @Body() data: CreateSessionRequest,
   ): Promise<CreateSessionResponse> {
-    console.log(data);
     const result = await this.sessionService.createAsync({
       name: data.name,
       teamId: data.teamId,
