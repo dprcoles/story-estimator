@@ -8,7 +8,7 @@ RUN pnpm fetch
 ADD . .
 RUN pnpm install -r --prefer-offline
 
-RUN npx prisma db push --accept-data-loss
+RUN npx prisma db push --accept-data-loss --schema=./src/infrastructure/prisma/schema.prisma
 
 RUN pnpm build
 

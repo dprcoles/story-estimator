@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { PlayerType } from "src/player/enums/player-type.enum";
-import { PlayerService } from "src/player/player.service";
+import { PlayerType } from "src/domain/enums/player.enums";
+import { PlayerService } from "src/application/player/player.service";
 import { RoomPlayer } from "./interfaces/room-player.interface";
 import { PlayerRepository } from "./player.repository";
 

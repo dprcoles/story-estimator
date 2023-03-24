@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { PlayerModule } from "src/player/player.module";
+import { PlayerModule } from "src/application/player/player.module";
 import { SocketStore } from "../socket.store";
 import { PlayerEventsHandler } from "./player.events";
 import { PlayerGateway } from "./player.gateway";

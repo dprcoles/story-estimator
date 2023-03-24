@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { Server, Socket } from "socket.io";
-import { PlayerType } from "src/player/enums/player-type.enum";
-import { ShowType } from "src/session/enums/show-type.enum";
-import { Story } from "src/story/interfaces/story.interface";
+import { PlayerType } from "src/domain/enums/player.enums";
+import { ShowType } from "src/domain/enums/session.enums";
+import { Story } from "src/domain/models/story.model";
 import { SocketRoomPrefix } from "../enums/socket.enums";
 import { PlayerGatewayService } from "../player/player.service";
 import { RoomClientEvent, RoomServerEvent } from "./enums/room-events.enum";
