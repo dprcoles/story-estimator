@@ -15,6 +15,7 @@ importers:
       '@nestjs/cli': ^9.0.0
       '@nestjs/common': ^9.0.0
       '@nestjs/core': ^9.0.0
+      '@nestjs/cqrs': ^9.0.3
       '@nestjs/platform-express': ^9.0.0
       '@nestjs/platform-socket.io': ^9.3.9
       '@nestjs/schematics': ^9.0.0
@@ -52,6 +53,7 @@ importers:
     dependencies:
       '@nestjs/common': 9.3.10_welcnyot5bzd5wa2aovbkxpi4i
       '@nestjs/core': 9.3.10_i2tkvbtpib2wozcqyjnrgbgzoy
+      '@nestjs/cqrs': 9.0.3_a35b4njzmq35teptds6ij3qrdm
       '@nestjs/platform-express': 9.3.10_7ftkheainf6elxr73aabueoaxm
       '@nestjs/platform-socket.io': 9.3.10_ix52exclojweof7jgzapqibjfe
       '@nestjs/websockets': 9.3.10_qbcmjeipsdh37q7ieeqzg52f44
@@ -2338,6 +2340,21 @@ packages:
       uid: 2.0.1
     transitivePeerDependencies:
       - encoding
+
+  /@nestjs/cqrs/9.0.3_a35b4njzmq35teptds6ij3qrdm:
+    resolution: {integrity: sha512-hmbrqf51BVdgmnnxErnLVXfPNTEqr4Hz8DyLa9dKLIW3BuOyI5RDwJ/9sKbJ47UDBhumC5nQlNK9qk27mhqHfw==}
+    peerDependencies:
+      '@nestjs/common': ^9.0.0
+      '@nestjs/core': ^9.0.0
+      reflect-metadata: 0.1.13
+      rxjs: ^7.2.0
+    dependencies:
+      '@nestjs/common': 9.3.10_welcnyot5bzd5wa2aovbkxpi4i
+      '@nestjs/core': 9.3.10_i2tkvbtpib2wozcqyjnrgbgzoy
+      reflect-metadata: 0.1.13
+      rxjs: 7.8.0
+      uuid: 9.0.0
+    dev: false
 
   /@nestjs/platform-express/9.3.10_7ftkheainf6elxr73aabueoaxm:
     resolution: {integrity: sha512-5aWokr8s0pipD5c/n40xC1iv3cMXfWrOhciX430p53cy4uyTAE+sTBk0PhB6tdG8NpK33aNqqHz/tyKlauQu/Q==}
@@ -4639,7 +4656,6 @@ packages:
       synckit: 0.8.5
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /eslint-import-resolver-typescript/3.5.3_eslint@8.36.0:
     resolution: {integrity: sha512-njRcKYBc3isE42LaTcJNVANR3R99H9bAxBDMNDr2W7yq5gYPxbU3MkdhsQukxZ/Xg9C2vcyLlDsbKfRDg0QvCQ==}
@@ -4658,6 +4674,7 @@ packages:
       synckit: 0.8.5
     transitivePeerDependencies:
       - supports-color
+    dev: true
 
   /eslint-module-utils/2.7.4_bzi2otav6wbllxnnsq4kdu5z6u:
     resolution: {integrity: sha512-j4GT+rqzCoRKHwURX7pddtIPGySnX9Si/cgMI5ztrcqOPtk5dDEeZ34CQVPphnqkJytlc97Vuk05Um2mJ3gEQA==}
@@ -4684,7 +4701,7 @@ packages:
       debug: 3.2.7
       eslint: 8.36.0
       eslint-import-resolver-node: 0.3.7
-      eslint-import-resolver-typescript: 3.5.3_eslint@8.36.0
+      eslint-import-resolver-typescript: 3.5.3_eakrjjutlgqjxe5ydhtnd4qdmy
     transitivePeerDependencies:
       - supports-color
 
@@ -8431,6 +8448,11 @@ packages:
   /utils-merge/1.0.1:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
+
+  /uuid/9.0.0:
+    resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==}
+    hasBin: true
+    dev: false
 
   /v8-compile-cache-lib/3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}

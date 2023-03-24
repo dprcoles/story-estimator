@@ -15,11 +15,12 @@ const JiraQueryList: React.FC<JiraQueryListProps> = ({
 }) => {
   return (
     <div>
-      {queries.map((q) => (
-        <div key={q.name} className="my-2">
-          <JiraQueryListItem integrationId={integrationId} query={q} />
-        </div>
-      ))}
+      {queries &&
+        queries.map((q) => (
+          <div key={q.name} className="my-2">
+            <JiraQueryListItem integrationId={integrationId} query={q} />
+          </div>
+        ))}
     </div>
   );
 };

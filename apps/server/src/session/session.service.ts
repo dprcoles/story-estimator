@@ -3,25 +3,24 @@ import { Sessions } from "@prisma/client";
 import { GetSessionQuery } from "src/session/queries/get-session.query";
 import { CreateSessionCommand } from "src/session/commands/create-session.command";
 import { TeamEventsHandler } from "src/socket/team/team.events";
-import { PrismaService } from "../prisma/prisma.service";
+import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { Session } from "./interfaces/session.interface";
-import { CreateSessionDto } from "./dto/create-session.dto";
 import { AddSessionPlayerCommand } from "./commands/add-session-player.command";
 import { CompleteSessionCommand } from "./commands/complete-session.command";
+import { CreateSessionRequest } from "./models/requests/create-session.request";
 
 @Injectable()
 export class SessionService {
   constructor(
-    private prisma: PrismaService,
+    private queryBus: QueryBus,
+    private commandBus: CommandBus,
     private teamEventsHandler: TeamEventsHandler,
   ) {}
 
-  async createAsync(data: CreateSessionDto): Promise<Sessions> {
-    const command = new CreateSessionCommand(this.prisma);
-    command.name = data.name;
-    command.teamId = data.teamId;
+  async createAsync(data: CreateSessionRequest): Promise<Sessions> {
+    const command = new CreateSessionCommand(data.name, data.teamId);
 
-    const result = await command.executeAsync();
+    const result = await this.commandBus.execute(command);
 
     await this.handleTeamUpdateAsync(result.teamId);
 
@@ -29,27 +28,23 @@ export class SessionService {
   }
 
   async getAsync(id: number): Promise<Session> {
-    const query = new GetSessionQuery(this.prisma);
-    query.id = id;
+    const query = new GetSessionQuery(id);
 
-    return await query.executeAsync();
+    return await this.queryBus.execute(query);
   }
 
   async addPlayerAsync(id: number, playerId: number) {
-    const command = new AddSessionPlayerCommand(this.prisma);
-    command.id = id;
-    command.playerId = playerId;
+    const command = new AddSessionPlayerCommand(id, playerId);
 
-    const result = await command.executeAsync();
+    const result = await this.commandBus.execute(command);
 
     await this.handleTeamUpdateAsync(result.teamId);
   }
 
   async completeAsync(id: number) {
-    const command = new CompleteSessionCommand(this.prisma);
-    command.id = id;
+    const command = new CompleteSessionCommand(id);
 
-    const result = await command.executeAsync();
+    const result = await this.commandBus.execute(command);
 
     await this.handleTeamUpdateAsync(result.teamId);
   }

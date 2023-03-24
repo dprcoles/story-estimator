@@ -3,37 +3,38 @@ import { Players } from "@prisma/client";
 import { GetPlayerQuery } from "src/player/queries/get-player.query";
 import { CreatePlayerCommand } from "src/player/commands/create-player.command";
 import { UpdatePlayerCommand } from "src/player/commands/update-player.command";
-import { PrismaService } from "../prisma/prisma.service";
-import { CreatePlayerDto } from "./dto/create-player.dto";
-import { UpdatePlayerDto } from "./dto/update-player.dto";
+import { CommandBus, QueryBus } from "@nestjs/cqrs";
+import { CreatePlayerDto } from "./models/dtos/create-player.dto";
+import { UpdatePlayerRequest } from "./models/request/update-player.request";
 
 @Injectable()
 export class PlayerService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private queryBus: QueryBus, private commandBus: CommandBus) {}
 
   async createAsync(data: CreatePlayerDto): Promise<Players | null> {
-    const command = new CreatePlayerCommand(this.prisma);
-    command.defaultType = data.defaultType;
-    command.emoji = data.emoji;
-    command.name = data.name;
+    const command = new CreatePlayerCommand(
+      data.defaultType,
+      data.emoji,
+      data.name,
+    );
 
-    return await command.executeAsync();
+    return await this.commandBus.execute(command);
   }
 
   async getAsync(id: number): Promise<Players> {
-    const query = new GetPlayerQuery(this.prisma);
-    query.id = id;
+    const query = new GetPlayerQuery(id);
 
-    return await query.executeAsync();
+    return await this.queryBus.execute(query);
   }
 
-  async updateAsync(id: number, data: UpdatePlayerDto): Promise<Players> {
-    const command = new UpdatePlayerCommand(this.prisma);
-    command.id = id;
-    command.defaultType = data.defaultType;
-    command.emoji = data.emoji;
-    command.name = data.name;
+  async updateAsync(id: number, data: UpdatePlayerRequest): Promise<Players> {
+    const command = new UpdatePlayerCommand(
+      id,
+      data.defaultType,
+      data.emoji,
+      data.name,
+    );
 
-    return await command.executeAsync();
+    return await this.commandBus.execute(command);
   }
 }

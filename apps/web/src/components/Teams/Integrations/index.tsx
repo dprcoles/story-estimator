@@ -17,7 +17,7 @@ interface IntegrationsProps {
 
 const Integrations: React.FC<IntegrationsProps> = ({ integrations }) => {
   const [data, setData] = useState<JiraIntegration | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [view, setView] = useState<IntegrationView>(IntegrationView.List);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const Integrations: React.FC<IntegrationsProps> = ({ integrations }) => {
     }
   }, [integrations.jira]);
 
-  if (isLoading) return <Loader />;
+  if (!data || isLoading) return <Loader />;
 
   return (
     <div>

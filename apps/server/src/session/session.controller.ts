@@ -7,16 +7,16 @@ import {
   Post,
 } from "@nestjs/common";
 import { Sessions } from "@prisma/client";
-import { CreateSessionDto } from "src/session/dto/create-session.dto";
 import { SessionService } from "src/session/session.service";
 import { Session } from "./interfaces/session.interface";
+import { CreateSessionRequest } from "./models/requests/create-session.request";
 
 @Controller("session")
 export class SessionController {
   constructor(private readonly sessionService: SessionService) {}
 
   @Post()
-  async create(@Body() data: CreateSessionDto): Promise<Sessions> {
+  async create(@Body() data: CreateSessionRequest): Promise<Sessions> {
     return await this.sessionService.createAsync(data);
   }
 
