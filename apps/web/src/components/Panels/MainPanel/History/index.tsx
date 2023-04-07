@@ -17,14 +17,16 @@ const History: React.FC<HistoryProps> = ({ stories }) => {
   const totalEstimate = completeStories
     .filter(
       (x) =>
-        ![...NON_NUMERIC_OPTIONS, "", undefined].includes(x.estimate as string),
+        ![...NON_NUMERIC_OPTIONS, "", undefined, null].includes(
+          x.estimate as string,
+        ),
     )
     .map((x) => Number(x.estimate))
     .reduce((x, y) => x + y, 0);
 
   const getTotalTimeSpent = () => {
     const total = completeStories.reduce(
-      (x, y) => x + (y.totalTimeSpent as number),
+      (x, y) => x + ((y.totalTimeSpent ?? 0) as number),
       0,
     );
 

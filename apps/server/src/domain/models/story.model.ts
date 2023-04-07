@@ -1,5 +1,6 @@
 export class Story {
   id: number;
+  order?: number;
   roomId: number;
   description: string;
   active: boolean;

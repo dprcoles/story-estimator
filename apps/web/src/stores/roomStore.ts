@@ -7,6 +7,7 @@ import {
 } from "@/types/countdown";
 import { Player } from "@/types/player";
 import { Room } from "@/types/room";
+import { Story } from "@/types/story";
 import { DEFAULT_TEAM_ID } from "@/utils/constants";
 
 import { usePlayerStore } from "./playerStore";
@@ -34,6 +35,7 @@ export type Countdown = {
 type RoomStore = {
   room: Room;
   setRoom: (room: Room) => void;
+  setStories: (stories: Story[]) => void;
   players: Player[];
   setPlayers: (players: Player[]) => void;
   showVotes: boolean;
@@ -53,6 +55,11 @@ export const useRoomStore = create<RoomStore>(
         room,
         admin: room.settings.admin,
         isAdmin: room.settings.admin === usePlayerStore.getState().player.id,
+      })),
+    setStories: (stories: Story[]) =>
+      set((state) => ({
+        ...state,
+        room: { ...state.room, stories: stories },
       })),
     players: [],
     setPlayers: (players: Player[]) => set((state) => ({ ...state, players })),

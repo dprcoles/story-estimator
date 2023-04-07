@@ -121,8 +121,12 @@ export class RoomGatewayService {
   }
 
   async createStoryAsync(roomId: number, name: string) {
+    const stories = await this.roomRepository.getStoriesByRoomIdAsync(roomId);
+
     const story: Story = {
       id: generateId(roomId),
+      order:
+        stories.length === 0 ? 0 : Math.max(...stories.map((s) => s.order)) + 1,
       description: name,
       roomId: roomId,
       active: false,
@@ -177,7 +181,9 @@ export class RoomGatewayService {
 
     if (!stories.find((s) => !s.estimate)) return;
 
-    const nextActiveStory = stories.find((s) => !s.estimate);
+    const nextActiveStory = stories
+      .filter((s) => !s.estimate)
+      .sort((a, b) => a.order - b.order)[0];
 
     nextActiveStory.active = true;
     nextActiveStory.startSeconds = seconds;

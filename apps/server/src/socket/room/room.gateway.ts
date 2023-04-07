@@ -28,6 +28,11 @@ export class RoomGateway implements OnGatewayInit {
 
   afterInit(server: Server) {
     this.roomEventsHandler.server = server;
+    server.emit(RoomMessage.Ping);
+
+    setInterval(() => {
+      this.server.emit(RoomMessage.Ping);
+    }, 10000);
   }
 
   @SubscribeMessage(RoomMessage.Join)
@@ -113,6 +118,11 @@ export class RoomGateway implements OnGatewayInit {
     await this.roomEventsHandler.updateStoryAsync(data.story);
   }
 
+  @SubscribeMessage(RoomMessage.StoryEditMultiple)
+  async updateStories(@MessageBody() data: { stories: Story[] }) {
+    await this.roomEventsHandler.updateStoriesAsync(data.stories);
+  }
+
   @SubscribeMessage(RoomMessage.StoryDelete)
   async deleteStory(
     @ConnectedSocket() client: Socket,
@@ -141,5 +151,12 @@ export class RoomGateway implements OnGatewayInit {
     const { roomId } = getSocketInfo(client);
 
     await this.roomEventsHandler.setActiveStoryAsync(roomId, data.id);
+  }
+
+  @SubscribeMessage(RoomMessage.Pong)
+  async pong(@ConnectedSocket() client: Socket) {
+    const { roomId } = getSocketInfo(client);
+
+    return await this.roomEventsHandler.getPlayersAsync(roomId);
   }
 }
