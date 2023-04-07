@@ -1,4 +1,6 @@
 import React, { PropsWithChildren, useEffect } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Loader from "@/components/Loader";
@@ -122,7 +124,7 @@ const RoomProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   socket.on(EmitEvent.Ping, () => emit(EmitEvent.Pong));
 
-  return <>{children}</>;
+  return <DndProvider backend={HTML5Backend}>{children}</DndProvider>;
 };
 
 export default RoomProvider;

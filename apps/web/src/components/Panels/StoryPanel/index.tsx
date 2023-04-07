@@ -5,16 +5,13 @@ import { useSocketStore } from "@/stores/socketStore";
 import { EmitEvent } from "@/types/server";
 import { Story } from "@/types/story";
 
-import StoryCard from "./StoryCard";
+import StoryCardContainer from "./StoryCardContainer";
 interface StoryPanelProps {
   setIsStoryModalOpen: (isStoryModalOpen: boolean) => void;
 }
 
 const StoryPanel: React.FC<StoryPanelProps> = ({ setIsStoryModalOpen }) => {
-  const {
-    isAdmin,
-    room: { stories },
-  } = useRoomStore();
+  const { isAdmin, setStories } = useRoomStore();
   const { emit } = useSocketStore();
 
   const handleSaveStory = (story: Story) => {
@@ -28,6 +25,11 @@ const StoryPanel: React.FC<StoryPanelProps> = ({ setIsStoryModalOpen }) => {
 
   const handleSetActive = (id: number) => {
     emit(EmitEvent.SetActiveStory, { id });
+  };
+
+  const handleUpdateStories = (stories: Story[]) => {
+    setStories(stories);
+    emit(EmitEvent.EditStories, { stories });
   };
 
   return (
@@ -48,16 +50,12 @@ const StoryPanel: React.FC<StoryPanelProps> = ({ setIsStoryModalOpen }) => {
         )}
       </div>
       <div className="pr-2 space-y-2 overflow-y-scroll overflow-x-hidden panel__card-container">
-        {stories.map((x) => (
-          <div key={x.id}>
-            <StoryCard
-              story={x}
-              onClick={isAdmin ? handleSetActive : undefined}
-              onEdit={handleSaveStory}
-              onDelete={isAdmin ? handleDeleteStory : undefined}
-            />
-          </div>
-        ))}
+        <StoryCardContainer
+          handleDeleteStory={handleDeleteStory}
+          handleSaveStory={handleSaveStory}
+          handleSetActive={handleSetActive}
+          handleUpdateStories={handleUpdateStories}
+        />
       </div>
     </div>
   );

@@ -100,6 +100,14 @@ export class RoomEventsHandler {
     await this.updateAsync(story.roomId);
   }
 
+  async updateStoriesAsync(stories: Story[]) {
+    stories.forEach(async (story) => {
+      await this.roomGatewayService.updateStoryAsync(story);
+    });
+
+    await this.updateAsync(stories[0].roomId);
+  }
+
   async deleteStoryAsync(roomId: number, id: number) {
     await this.roomGatewayService.deleteStoryAsync(roomId, id);
 
@@ -116,5 +124,11 @@ export class RoomEventsHandler {
     await this.roomGatewayService.setActiveStoryAsync(roomId, id);
 
     await this.resetAsync(roomId);
+  }
+
+  async getPlayersAsync(id: number) {
+    const players = await this.playerGatewayService.getByRoomIdAsync(id);
+
+    return players;
   }
 }

@@ -1,6 +1,14 @@
 FROM node:17-alpine
 WORKDIR /app
 
+ARG PORT
+ARG DATABASE_URL
+ARG WEB_URL
+
+ENV PORT=$PORT
+ENV DATABASE_URL=$DATABASE_URL
+ENV WEB_URL=$WEB_URL
+
 RUN npm install -g pnpm
 
 RUN pnpm fetch

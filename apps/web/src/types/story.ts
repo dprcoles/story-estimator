@@ -2,6 +2,7 @@ import { PlayerInfo } from "./player";
 
 export type Story = {
   id: number;
+  order?: number;
   roomId: number;
   description: string;
   active: boolean;
