@@ -5,6 +5,7 @@ import { PlayerRepository } from "./repositories/player.repository";
 import { SessionRepository } from "./repositories/session.repository";
 import { StoryRepository } from "./repositories/story.repository";
 import { TeamRepository } from "./repositories/team.repository";
+import { OrganisationRepository } from "./repositories/organisation.repository";
 
 @Module({
   providers: [
@@ -14,6 +15,7 @@ import { TeamRepository } from "./repositories/team.repository";
     SessionRepository,
     StoryRepository,
     TeamRepository,
+    OrganisationRepository,
   ],
   exports: [
     PrismaService,
@@ -22,6 +24,7 @@ import { TeamRepository } from "./repositories/team.repository";
     SessionRepository,
     StoryRepository,
     TeamRepository,
+    OrganisationRepository,
   ],
 })
 export class InfrastructureModule {}
