@@ -12,6 +12,10 @@ export const DEFAULT_TEAM_ID = parseInt(
   import.meta.env.VITE_DEFAULT_TEAM_ID,
   10,
 );
+export const DEFAULT_ORGANISATION_ID = parseInt(
+  import.meta.env.VITE_DEFAULT_ORGANISATION_ID,
+  10,
+);
 export const REQUIRED_ROUTES = [ROUTE_ROOM, ROUTE_TEAM];
 
 export const SKIP_VOTE_OPTION = "?";
