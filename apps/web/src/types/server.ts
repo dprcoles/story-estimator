@@ -27,4 +27,5 @@ export enum EmitEvent {
   Pong = "room:pong",
   JoinTeam = "team:join",
   TeamUpdate = "team:update",
+  JoinOrganisation = "organisation:join",
 }

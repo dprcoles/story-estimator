@@ -59,4 +59,16 @@ export class TeamRepository {
 
     return data;
   }
+
+  async createAsync(organisationId: number, name: string, alias: string) {
+    const team = await this.prisma.teams.create({
+      data: {
+        name: name,
+        alias: alias,
+        organisationId: organisationId,
+      },
+    });
+
+    return team.alias;
+  }
 }

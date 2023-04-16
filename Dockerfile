@@ -13,8 +13,10 @@ RUN npm install -g pnpm
 
 RUN pnpm fetch
 
-ADD . .
-RUN pnpm install -r --prefer-offline
+ADD ./apps/server/ .
+ADD pnpm-lock.yaml .
+
+RUN pnpm i
 
 RUN npx prisma db push --accept-data-loss --schema=./src/infrastructure/prisma/schema.prisma
 

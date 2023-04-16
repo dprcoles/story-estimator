@@ -14,3 +14,22 @@ export const getTeam = async (alias: string) => {
 
   return result;
 };
+
+export const createTeam = async (data: {
+  organisationId: number;
+  name: string;
+  alias: string;
+}) => {
+  const response = await fetch(`${API_URL}/team`, {
+    body: JSON.stringify(data),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+  });
+
+  const result = await handleApiResponse(response);
+
+  return result;
+};

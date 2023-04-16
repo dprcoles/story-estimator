@@ -7,12 +7,17 @@ export const ROUTE_HOME = "/";
 export const ROUTE_ROOM = "/room";
 export const ROUTE_TEAM = "/team";
 export const ROUTE_SUMMARY = "/summary";
+export const ROUTE_ORGANISATION = "/organisation";
 
 export const DEFAULT_TEAM_ID = parseInt(
   import.meta.env.VITE_DEFAULT_TEAM_ID,
   10,
 );
-export const REQUIRED_ROUTES = [ROUTE_ROOM, ROUTE_TEAM];
+export const DEFAULT_ORGANISATION_ID = parseInt(
+  import.meta.env.VITE_DEFAULT_ORGANISATION_ID,
+  10,
+);
+export const REQUIRED_ROUTES = [ROUTE_ROOM, ROUTE_TEAM, ROUTE_ORGANISATION];
 
 export const SKIP_VOTE_OPTION = "?";
 
