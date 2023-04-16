@@ -31,14 +31,14 @@ export class TeamService {
     return TeamMap.toDomain(response);
   }
 
-  async createAsync(data: CreateTeamCommand): Promise<number> {
+  async createAsync(data: CreateTeamCommand): Promise<string> {
     const command = new CreateTeamCommand(
       data.organisationId,
       data.name,
       data.alias,
     );
 
-    const result = await this.commandBus.execute<CreateTeamCommand, number>(
+    const result = await this.commandBus.execute<CreateTeamCommand, string>(
       command,
     );
 

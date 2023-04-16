@@ -1,3 +1,3 @@
 export class CreateTeamResponse {
-  id: number;
+  alias: string;
 }

@@ -11,17 +11,17 @@ export class CreateTeamCommand {
 
 @CommandHandler(CreateTeamCommand)
 export class CreateTeamHandler
-  implements ICommandHandler<CreateTeamCommand, number>
+  implements ICommandHandler<CreateTeamCommand, string>
 {
   constructor(private repository: TeamRepository) {}
 
   async execute(command: CreateTeamCommand) {
-    const teamId = await this.repository.createAsync(
+    const teamAlias = await this.repository.createAsync(
       command.organisationId,
       command.name,
       command.alias,
     );
 
-    return teamId;
+    return teamAlias;
   }
 }

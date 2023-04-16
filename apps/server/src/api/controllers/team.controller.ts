@@ -25,7 +25,7 @@ export class TeamController {
     });
 
     return {
-      id: result,
+      alias: result,
     };
   }
 }

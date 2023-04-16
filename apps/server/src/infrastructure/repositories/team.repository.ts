@@ -69,6 +69,6 @@ export class TeamRepository {
       },
     });
 
-    return team.id;
+    return team.alias;
   }
 }
