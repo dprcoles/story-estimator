@@ -1,11 +1,65 @@
-import { Injectable } from "@nestjs/common";
+import {
+  Injectable,
+  OnApplicationBootstrap,
+  OnApplicationShutdown,
+} from "@nestjs/common";
+import { PrismaService } from "src/infrastructure/prisma/prisma.service";
 import { RoomPlayer } from "./player/interfaces/room-player.interface";
 import { Room } from "./room/interfaces/room.interface";
 
 @Injectable()
-export class SocketStore {
+export class SocketStore
+  implements OnApplicationShutdown, OnApplicationBootstrap
+{
+  constructor(private prisma: PrismaService) {}
+
   public rooms: Room[] = [];
   public players: RoomPlayer[] = [];
+
+  async onApplicationBootstrap() {
+    console.log("⌛️ Loading state...");
+
+    const loadedState = await this.prisma.applicationState.findMany({
+      select: {
+        id: true,
+        payload: true,
+      },
+      orderBy: {
+        timestamp: "desc",
+      },
+      take: 1,
+    });
+
+    if (loadedState.length > 0) {
+      const state = JSON.parse(loadedState[0].payload);
+      this.rooms = state.rooms;
+      this.players = state.players;
+    }
+
+    console.log("✅ State loaded");
+  }
+
+  async onApplicationShutdown() {
+    console.log("💾 Saving state...");
+
+    const rooms = this.rooms.filter((r) => r.active);
+    const players = this.players.filter((p) =>
+      rooms.map((r) => r.id).includes(p.roomId),
+    );
+
+    const payload = JSON.stringify({
+      rooms,
+      players,
+    });
+
+    await this.prisma.applicationState.create({
+      data: {
+        payload,
+      },
+    });
+
+    console.log("✅ State saved");
+  }
 
   async getRooms(): Promise<Room[]> {
     return this.rooms;
@@ -30,6 +84,7 @@ export class SocketStore {
 
   async removeRoom(id: number) {
     this.rooms = this.rooms.filter((r) => r.id !== id);
+    this.players = this.players.filter((p) => p.roomId !== id);
   }
 
   async getPlayers(): Promise<RoomPlayer[]> {

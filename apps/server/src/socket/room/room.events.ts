@@ -35,12 +35,16 @@ export class RoomEventsHandler {
     await this.playerGatewayService.leaveRoomAsync(playerId);
   }
 
-  async updateAsync(id: number) {
+  async updateAsync(id: number, isComplete?: boolean) {
     const data = await this.roomGatewayService.getStateAsync(id);
 
     this.server
       .to(`${SocketRoomPrefix.Room}${id.toString()}`)
       .emit(RoomServerEvent.Update, data);
+
+    if (isComplete) {
+      await this.roomGatewayService.deleteAsync(id);
+    }
   }
 
   async resetAsync(id: number) {

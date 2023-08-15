@@ -23,6 +23,10 @@ export class RoomRepository {
     await this.store.updateRoom(room);
   }
 
+  async deleteAsync(id: number) {
+    await this.store.removeRoom(id);
+  }
+
   async getStoryByIdAsync(roomId: number, id: number) {
     const rooms = await this.store.getRooms();
     return rooms.find((r) => r.id === roomId).stories.find((s) => s.id === id);
