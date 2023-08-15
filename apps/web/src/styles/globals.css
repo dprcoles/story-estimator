@@ -7,11 +7,15 @@
 :root {
   --backgroundColor: theme("colors.light.background");
   --toggleColor: theme("colors.light.main");
+  --primaryColor: theme("colors.light.main");
+  --buttonColor: theme("colors.light.buttons");
 }
 
 [class="dark"] {
   --backgroundColor: theme("colors.dark.background");
   --toggleColor: theme("colors.dark.main");
+  --primaryColor: theme("colors.dark.main");
+  --buttonColor: theme("colors.dark.buttons");
 }
 
 html {

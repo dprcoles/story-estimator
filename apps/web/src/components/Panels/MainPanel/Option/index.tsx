@@ -16,12 +16,12 @@ const Option: React.FC<OptionProps> = ({
 }) => {
   return (
     <motion.div
-      whileHover={!disabled ? { scale: 1.03 } : {}}
-      whileTap={!disabled ? { scale: 0.97 } : {}}
+      whileHover={!disabled ? { scale: 1.02 } : {}}
+      whileTap={!disabled ? { scale: 0.98 } : {}}
       className="flex justify-center"
     >
       <button
-        className={`p-4 border-2 rounded-md bg-light-buttons dark:bg-dark-buttons hover:bg-light-hover dark:hover:bg-dark-hover shadow-md h-24 w-full text-2xl font-bold ease-linear transition-all duration-150 ${
+        className={`p-4 border-2 rounded-md bg-light-buttons dark:bg-dark-buttons hover:bg-light-hover dark:hover:bg-dark-hover shadow-sm h-24 w-full text-2xl font-bold ease-linear transition-all duration-150 ${
           selected
             ? "border-light-main dark:border-dark-main"
             : "border-transparent"

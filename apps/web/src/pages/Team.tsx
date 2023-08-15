@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import TeamProvider from "providers/TeamProvider";
 import React, { useState } from "react";
-import { Tabs } from "ui";
 
+import { Tabs } from "@/components/Core";
 import Definitions from "@/components/Teams/Definitions";
 import Integrations from "@/components/Teams/Integrations";
 import SessionsPanel from "@/components/Teams/SessionsPanel";

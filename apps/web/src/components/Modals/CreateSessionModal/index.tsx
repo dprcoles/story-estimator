@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Button, Modal } from "ui";
+
+import { Button, Modal } from "@/components/Core";
 
 interface CreateSessionModalProps {
   isOpen: boolean;

@@ -1,0 +1,86 @@
+.se-c-button {
+  @apply text-sm
+  font-medium
+  px-4
+  py-2
+  rounded-full
+  border
+  disabled:opacity-50
+  border-light-border-color
+  dark:border-dark-border-color
+  bg-[var(--buttonColor)];
+
+  background-image: linear-gradient(
+    -183deg,
+    var(--buttonColor) 49.5%,
+    var(--primaryColor) 50.5%
+  );
+  background-size: 100% 255%;
+  background-position: 50% 0;
+  background-repeat: no-repeat;
+  transition-property: color, background-color, background-position;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-out;
+}
+
+.se-c-button:hover:not(:disabled),
+.se-c-button:focus:not(:disabled),
+.se-c-button:active:not(:disabled) {
+  @apply text-white
+  dark:text-black;
+
+  background-position: 0 100%;
+  outline: 0;
+  transition-duration: 0.1s;
+}
+
+.se-c-button--primary {
+  @apply border-light-main
+  dark:border-dark-main
+  text-white 
+  dark:text-black
+  bg-[var(--primaryColor)];
+
+  background-image: linear-gradient(
+    -183deg,
+    var(--primaryColor) 49.5%,
+    var(--buttonColor) 50.5%
+  );
+}
+
+.se-c-button--primary:hover:not(:disabled),
+.se-c-button--primary:focus:not(:disabled),
+.se-c-button--primary:active:not(:disabled) {
+  @apply border-light-main
+    dark:border-dark-main
+    text-light-main
+    dark:text-dark-main;
+
+  background-position: 0 100%;
+  outline: 0;
+  transition-duration: 0.1s;
+}
+
+.se-c-button--danger {
+  @apply border-danger-border
+    text-white
+    bg-danger-base;
+
+  background-image: linear-gradient(
+    -183deg,
+    var(--dangerColor) 49.5%,
+    var(--buttonColor) 50.5%
+  );
+}
+
+.se-c-button--danger:hover:not(:disabled),
+.se-c-button--danger:focus:not(:disabled),
+.se-c-button--danger:active:not(:disabled) {
+  @apply border-danger-border
+  text-danger-base
+  bg-[var(--buttonColor)];
+
+  background-position: 0 100%;
+  outline: 0;
+  transition-duration: 0.1s;
+}

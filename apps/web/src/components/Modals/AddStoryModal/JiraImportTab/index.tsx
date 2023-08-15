@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "ui";
 
 import {
   getJiraIntegrationById,
   getJiraIssuesByQueryId,
 } from "@/api/integrations";
+import { Button } from "@/components/Core";
 import Loader from "@/components/Loader";
 import JiraIssueCard from "@/components/Teams/Integrations/Jira/JiraIssueCard";
 import { JqlQuery } from "@/types/integrations";

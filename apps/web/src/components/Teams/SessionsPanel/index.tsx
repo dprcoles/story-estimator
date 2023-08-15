@@ -1,6 +1,6 @@
 import React from "react";
-import { Button } from "ui";
 
+import { Button } from "@/components/Core";
 import { useSessionStore } from "@/stores/sessionStore";
 import { TeamSession } from "@/types/team";
 

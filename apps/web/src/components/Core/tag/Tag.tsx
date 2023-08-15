@@ -1,5 +1,5 @@
-import React from "react";
 import classNames from "classnames";
+import React from "react";
 
 export type TagStyle = "default" | "primary" | "danger";
 
@@ -18,12 +18,12 @@ const Tag: React.FC<TagProps> = ({
     <div className={fullWidth ? "w-full" : ""}>
       <div
         className={classNames(
-          "bg-transparent text-sm font-medium px-4 py-2 rounded-full border disabled:opacity-50 ease-linear transition-all duration-150",
-          color === "primary" && "border-light-main dark:border-dark-main",
-          color === "danger" &&
-            "border-danger-border dark:border-danger-border",
+          "text-sm font-medium px-4 py-2 rounded-full disabled:opacity-50 ease-linear transition-all duration-150",
+          color === "primary" &&
+            "bg-light-main text-white dark:bg-dark-main dark:text-black",
+          color === "danger" && "bg-danger-border text-white",
           color === "default" &&
-            "border-light-border-color dark:border-dark-border-color",
+            "border border-light-border-color dark:border-dark-border-color",
           fullWidth && "w-full",
         )}
       >

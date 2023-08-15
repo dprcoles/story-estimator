@@ -1,6 +1,6 @@
+import classNames from "classnames";
 import React, { PropsWithChildren } from "react";
 import { IoMdClose } from "react-icons/io";
-import classNames from "classnames";
 
 type ModalSize = "sm" | "md" | "lg";
 

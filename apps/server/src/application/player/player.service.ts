@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
+import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { CreatePlayerCommand } from "src/application/player/commands/create-player.command";
 import { UpdatePlayerCommand } from "src/application/player/commands/update-player.command";
-import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { Player } from "src/domain/models/player.model";
 import { GetPlayerQuery } from "./queries/get-player.query";
 import { PlayerDto } from "./dtos/player.dto";

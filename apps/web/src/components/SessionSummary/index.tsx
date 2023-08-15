@@ -1,8 +1,8 @@
 import React from "react";
 import { FaChevronLeft, FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { Button } from "ui";
 
+import { Button } from "@/components/Core";
 import History from "@/components/Panels/MainPanel/History";
 import { useSessionStore } from "@/stores/sessionStore";
 import { SessionDetails } from "@/types/session";

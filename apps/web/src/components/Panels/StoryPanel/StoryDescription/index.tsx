@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaCheck, FaTimes } from "react-icons/fa";
-import { IconButton } from "ui";
 
+import { IconButton } from "@/components/Core";
 import { useRoomStore } from "@/stores/roomStore";
 
 interface StoryDescriptionProps {

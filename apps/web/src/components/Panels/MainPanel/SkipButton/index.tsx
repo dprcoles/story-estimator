@@ -1,6 +1,6 @@
 import React from "react";
-import { Button } from "ui";
 
+import { Button } from "@/components/Core";
 import { useSocketStore } from "@/stores/socketStore";
 import { EmitEvent } from "@/types/server";
 import { SKIP_VOTE_OPTION } from "@/utils/constants";

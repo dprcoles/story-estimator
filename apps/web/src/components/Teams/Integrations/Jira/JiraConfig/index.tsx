@@ -1,6 +1,6 @@
 import React from "react";
-import { Button } from "ui";
 
+import { Button } from "@/components/Core";
 import { IntegrationView, JiraIntegration } from "@/types/integrations";
 
 import JiraQueryList from "./JiraQueryList";

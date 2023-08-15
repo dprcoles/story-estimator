@@ -1,7 +1,7 @@
 import React from "react";
-import { Button } from "ui";
 
 import { ReactComponent as JiraLogo } from "@/assets/jira-logo.svg";
+import { Button } from "@/components/Core";
 import { IntegrationView } from "@/types/integrations";
 
 interface JiraPanelProps {

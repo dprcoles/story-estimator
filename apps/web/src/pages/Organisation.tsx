@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import OrganisationProvider from "providers/OrganisationProvider";
 import React, { useState } from "react";
-import { Button } from "ui";
 
+import { Button } from "@/components/Core";
 import CreateTeamModal from "@/components/Modals/CreateTeamModal";
 import TeamList from "@/components/Organisations/TeamList";
 import { useOrganisationStore } from "@/stores/organisationStore";
