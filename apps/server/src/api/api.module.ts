@@ -4,6 +4,8 @@ import { SessionModule } from "src/application/session/session.module";
 import { JiraModule } from "src/application/jira/jira.module";
 import { TeamModule } from "src/application/team/team.module";
 import { OrganisationModule } from "src/application/organisation/organisation.module";
+import { InfrastructureModule } from "src/infrastructure/infrastructure.module";
+import { SocketModule } from "src/socket/socket.module";
 import { JiraController } from "./controllers/jira.controller";
 import { PlayerController } from "./controllers/player.controller";
 import { SessionController } from "./controllers/session.controller";
@@ -12,6 +14,8 @@ import { OrganisationController } from "./controllers/organisation.controller";
 
 @Module({
   imports: [
+    InfrastructureModule,
+    SocketModule,
     JiraModule,
     PlayerModule,
     SessionModule,

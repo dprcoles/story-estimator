@@ -8,60 +8,56 @@ export class RoomRepository {
   constructor(private store: SocketStore) {}
 
   async createAsync(room: Room) {
-    this.store.rooms.push(room);
+    await this.store.addRoom(room);
   }
 
   async getAsync() {
-    return this.store.rooms;
+    return await this.store.getRooms();
   }
 
   async getByIdAsync(id: number) {
-    return this.store.rooms.find((r) => r.id === id);
+    return await this.store.getRoomById(id);
   }
 
   async updateAsync(room: Room) {
-    const index = this.getRoomIndexById(room.id);
+    await this.store.updateRoom(room);
+  }
 
-    this.store.rooms[index] = room;
+  async deleteAsync(id: number) {
+    await this.store.removeRoom(id);
   }
 
   async getStoryByIdAsync(roomId: number, id: number) {
-    const roomIndex = this.getRoomIndexById(roomId);
-
-    return this.store.rooms[roomIndex].stories.find((s) => s.id === id);
+    const rooms = await this.store.getRooms();
+    return rooms.find((r) => r.id === roomId).stories.find((s) => s.id === id);
   }
 
   async getStoriesByRoomIdAsync(roomId: number) {
-    const index = this.getRoomIndexById(roomId);
-
-    return this.store.rooms[index].stories;
+    const rooms = await this.store.getRooms();
+    return rooms.find((r) => r.id === roomId).stories;
   }
 
   async createStoryAsync(id: number, story: Story) {
-    const index = this.getRoomIndexById(id);
+    const current = await this.store.getRoomById(id);
+    current.stories.push(story);
 
-    this.store.rooms[index].stories.push(story);
+    await this.store.updateRoom(current);
   }
 
   async updateStoryAsync(story: Story) {
-    const roomIndex = this.getRoomIndexById(story.roomId);
-    const storyIndex = this.store.rooms[roomIndex].stories.findIndex(
-      (s) => s.id === story.id,
-    );
+    const currentRoom = await this.store.getRoomById(story.roomId);
+    const storyIndex = currentRoom.stories.findIndex((s) => s.id === story.id);
 
-    this.store.rooms[roomIndex].stories[storyIndex] = story;
+    currentRoom.stories[storyIndex] = story;
+
+    await this.store.updateRoom(currentRoom);
   }
 
   async deleteStoryAsync(roomId: number, id: number) {
-    const roomIndex = this.getRoomIndexById(roomId);
-    const roomStories = this.store.rooms[roomIndex].stories;
+    const currentRoom = await this.store.getRoomById(roomId);
 
-    this.store.rooms[roomIndex].stories = roomStories.filter(
-      (rs) => rs.id !== id,
-    );
-  }
+    currentRoom.stories = currentRoom.stories.filter((rs) => rs.id !== id);
 
-  private getRoomIndexById(id: number) {
-    return this.store.rooms.findIndex((r) => r.id === id);
+    await this.store.updateRoom(currentRoom);
   }
 }

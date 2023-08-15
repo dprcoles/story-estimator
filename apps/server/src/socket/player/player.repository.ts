@@ -10,29 +10,28 @@ export class PlayerRepository {
     const existing = await this.getByIdAsync(player.id);
 
     if (!existing) {
-      this.store.players.push(player);
+      await this.store.addPlayer(player);
     }
   }
 
   async getAsync() {
-    return this.store.players;
+    return await this.store.getPlayers();
   }
 
   async getByIdAsync(id: number) {
-    return this.store.players.find((p) => p.id === id);
+    return await this.store.getPlayerById(id);
   }
 
   async getByRoomIdAsync(roomId: number) {
-    return this.store.players.filter((p) => p.roomId === roomId);
+    const players = await this.getAsync();
+    return players.filter((p) => p.roomId === roomId);
   }
 
   async updateAsync(player: RoomPlayer) {
-    const index = this.store.players.findIndex((p) => p.id === player.id);
-
-    this.store.players[index] = player;
+    await this.store.updatePlayer(player);
   }
 
   async deleteAsync(id: number) {
-    this.store.players.filter((p) => p.id !== id);
+    await this.store.removePlayer(id);
   }
 }

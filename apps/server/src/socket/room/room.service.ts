@@ -120,6 +120,10 @@ export class RoomGatewayService {
     );
   }
 
+  async deleteAsync(id: number) {
+    await this.roomRepository.deleteAsync(id);
+  }
+
   async createStoryAsync(roomId: number, name: string) {
     const stories = await this.roomRepository.getStoriesByRoomIdAsync(roomId);
 

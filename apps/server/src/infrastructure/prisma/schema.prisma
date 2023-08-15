@@ -136,3 +136,11 @@ model JqlQueries {
 
   @@map("jql_queries")
 }
+
+model ApplicationState {
+  id        Int       @id @default(autoincrement())
+  payload   String
+  timestamp DateTime  @default(now())
+
+  @@map("application_state")
+}
