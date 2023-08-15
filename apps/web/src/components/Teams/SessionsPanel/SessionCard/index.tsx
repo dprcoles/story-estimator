@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "ui";
 
+import { Button } from "@/components/Core";
 import { TeamSession } from "@/types/team";
 import { ROUTE_ROOM, ROUTE_SUMMARY } from "@/utils/constants";
 

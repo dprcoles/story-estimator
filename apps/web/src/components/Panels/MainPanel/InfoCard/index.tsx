@@ -1,6 +1,6 @@
 import React from "react";
-import { Button } from "ui";
 
+import { Button } from "@/components/Core";
 import { usePlayerStore } from "@/stores/playerStore";
 import { useRoomStore } from "@/stores/roomStore";
 import { useSocketStore } from "@/stores/socketStore";

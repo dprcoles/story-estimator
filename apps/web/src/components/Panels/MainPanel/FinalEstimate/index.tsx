@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import React, { useState } from "react";
-import { Button } from "ui";
 
+import { Button } from "@/components/Core";
 import { useSocketStore } from "@/stores/socketStore";
 import { EmitEvent } from "@/types/server";
 import { FADE_IN, STAGGER } from "@/utils/variants";

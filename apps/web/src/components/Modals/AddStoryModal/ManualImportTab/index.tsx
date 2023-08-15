@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Button } from "ui";
 
+import { Button } from "@/components/Core";
 import { Story } from "@/types/story";
 import { DEFAULT_STORY } from "@/utils/constants";
 

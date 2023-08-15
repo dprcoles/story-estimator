@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Select, Switch } from "ui";
 
+import { Button, Modal, Select, Switch } from "@/components/Core";
 import { useRoomStore } from "@/stores/roomStore";
 import { useSocketStore } from "@/stores/socketStore";
 import { RoomSettings } from "@/types/room";

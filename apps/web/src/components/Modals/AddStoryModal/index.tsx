@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { useState } from "react";
-import { Button, Modal, Tabs } from "ui";
 
+import { Button, Modal, Tabs } from "@/components/Core";
 import { useRoomStore } from "@/stores/roomStore";
 import { useSocketStore } from "@/stores/socketStore";
 import { EmitEvent } from "@/types/server";

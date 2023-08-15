@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, Modal } from "ui";
 
+import { Button, Modal } from "@/components/Core";
 import { Story } from "@/types/story";
 
 interface DeleteStoryModalProps {

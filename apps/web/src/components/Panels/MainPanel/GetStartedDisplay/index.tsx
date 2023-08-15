@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { GiCardRandom } from "react-icons/gi";
-import { Button } from "ui";
 
+import { Button } from "@/components/Core";
 import { useSocketStore } from "@/stores/socketStore";
 import { EmitEvent } from "@/types/server";
 import { EXPAND_IN, FADE_DOWN, FADE_UP, STAGGER } from "@/utils/variants";

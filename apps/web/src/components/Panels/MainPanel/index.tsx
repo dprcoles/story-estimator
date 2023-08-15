@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FiSettings } from "react-icons/fi";
-import { Tabs, Tag } from "ui";
 
+import { Tabs, Tag } from "@/components/Core";
 import { usePlayerStore } from "@/stores/playerStore";
 import { useRoomStore } from "@/stores/roomStore";
 import { useSocketStore } from "@/stores/socketStore";

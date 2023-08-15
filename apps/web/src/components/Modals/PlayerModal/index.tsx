@@ -2,9 +2,9 @@ import "./index.css";
 
 import React, { useEffect, useState } from "react";
 import { MdOutlineEdit } from "react-icons/md";
-import { Button, Modal } from "ui";
 
 import { createPlayer, updatePlayer } from "@/api/player";
+import { Button, Modal } from "@/components/Core";
 import EmojiPicker from "@/components/EmojiPicker";
 import { PlayerInfo, PlayerType } from "@/types/player";
 

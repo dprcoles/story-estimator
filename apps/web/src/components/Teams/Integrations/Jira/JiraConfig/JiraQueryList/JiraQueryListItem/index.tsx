@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { AiOutlineReload } from "react-icons/ai";
-import { Button } from "ui";
 
 import { getJiraIssuesByQueryId } from "@/api/integrations";
+import { Button } from "@/components/Core";
 import Loader from "@/components/Loader";
 import { JqlQuery } from "@/types/integrations";
 import { JiraIssue } from "@/types/jira";

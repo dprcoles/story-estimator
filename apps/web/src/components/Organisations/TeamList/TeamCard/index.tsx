@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "ui";
 
+import { Button } from "@/components/Core";
 import { OrganisationTeam } from "@/types/organisation";
 import { ROUTE_TEAM } from "@/utils/constants";
 

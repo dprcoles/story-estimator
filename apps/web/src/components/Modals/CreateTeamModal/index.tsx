@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Modal } from "ui";
 
 import { createTeam } from "@/api/team";
+import { Button, Modal } from "@/components/Core";
 import { useOrganisationStore } from "@/stores/organisationStore";
 import { ROUTE_TEAM } from "@/utils/constants";
 
