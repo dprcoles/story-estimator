@@ -31,8 +31,18 @@ export class RoomEventsHandler {
     await this.updateAsync(id);
   }
 
-  async disconnectAsync(playerId: number) {
+  async disconnectAsync(playerId: number, roomId?: number) {
     await this.playerGatewayService.leaveRoomAsync(playerId);
+
+    if (!roomId) return;
+
+    const activePlayers = await this.playerGatewayService.getByRoomIdAsync(
+      roomId,
+    );
+
+    if (activePlayers.length === 0) {
+      await this.roomGatewayService.completeAsync(roomId);
+    }
   }
 
   async updateAsync(id: number, isComplete?: boolean) {

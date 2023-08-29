@@ -24,6 +24,5 @@ export interface TeamDetails {
 
 export enum TeamPageTab {
   Sessions = "session",
-  Definitions = "definitions",
   Integrations = "integrations",
 }

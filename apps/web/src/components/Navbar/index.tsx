@@ -19,6 +19,7 @@ const Navbar: React.FC = () => {
             href="https://www.danielcoles.dev"
             target="_blank"
             rel="noreferrer"
+            className="focus:shadow-none"
           >
             <AnimatedLogo theme={theme} />
           </a>

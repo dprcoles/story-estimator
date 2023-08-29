@@ -1,25 +1,34 @@
 @import "./_spinner.css";
+@import "../components/Core/button/button.css";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --backgroundColor: theme("colors.light.background");
-  --toggleColor: theme("colors.light.main");
-  --primaryColor: theme("colors.light.main");
-  --buttonColor: theme("colors.light.buttons");
+  --background-color: theme("colors.light.background");
+  --toggle-color: theme("colors.light.main");
+  --primary-color: theme("colors.light.main");
+  --button-color: theme("colors.light.buttons");
 }
 
 [class="dark"] {
-  --backgroundColor: theme("colors.dark.background");
-  --toggleColor: theme("colors.dark.main");
-  --primaryColor: theme("colors.dark.main");
-  --buttonColor: theme("colors.dark.buttons");
+  --background-color: theme("colors.dark.background");
+  --toggle-color: theme("colors.dark.main");
+  --primary-color: theme("colors.dark.main");
+  --button-color: theme("colors.dark.buttons");
 }
 
 html {
-  background-color: var(--backgroundColor);
+  background-color: var(--background-color);
+}
+
+h1 {
+  @apply font-heading text-5xl font-bold;
+}
+
+h2 {
+  @apply font-heading text-3xl font-bold;
 }
 
 .emoji-picker__backdrop {
@@ -42,7 +51,7 @@ html {
 
 .toggle-button > input:checked ~ .dot {
   transform: translateX(100%);
-  background-color: var(--toggleColor);
+  background-color: var(--toggle-color);
 }
 
 .main-panel__container {
@@ -73,4 +82,28 @@ html {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #888;
+}
+
+/**
+* Custom focus ring
+*/
+a:focus,
+button:focus,
+[tabindex]:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 0 !important;
+}
+
+a,
+button,
+[tabindex] {
+  &:focus {
+    box-shadow: 0 0 0 1px var(--primary-color);
+  }
+
+  &:focus:not(:focus-visible) {
+    box-shadow: none;
+  }
 }

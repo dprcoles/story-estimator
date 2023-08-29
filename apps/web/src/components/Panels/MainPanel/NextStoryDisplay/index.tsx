@@ -28,9 +28,7 @@ const NextStoryDisplay: React.FC<NextStoryDisplayProps> = ({
     <>
       <motion.div variants={STAGGER} className="text-center max-w-2xl mx-auto">
         <motion.div variants={FADE_IN} className="py-8">
-          <div className="font-bold text-3xl">
-            All stories have been estimated!
-          </div>
+          <h2>All stories have been estimated!</h2>
         </motion.div>
         {isAdmin ? (
           <motion.div variants={FADE_IN}>

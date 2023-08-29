@@ -12,6 +12,7 @@ export enum EmitEvent {
   UpdatePlayerSuccess = "player:update.success",
   Settings = "room:settings",
   Join = "room:join",
+  Disconnect = "room:disconnect",
   Vote = "room:vote",
   Show = "room:show",
   Reset = "room:reset",

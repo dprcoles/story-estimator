@@ -15,7 +15,7 @@ const AnimatedLogo: React.FC<AnimatedLogoProps> = ({ theme }) => {
   const rgbColour = theme === "dark" ? "255, 255, 255" : "18, 18, 18";
 
   return (
-    <div>
+    <>
       {mounted && (
         <svg
           width="50"
@@ -45,7 +45,7 @@ const AnimatedLogo: React.FC<AnimatedLogoProps> = ({ theme }) => {
           />
         </svg>
       )}
-    </div>
+    </>
   );
 };
 

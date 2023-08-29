@@ -41,7 +41,7 @@ const GetStartedDisplay: React.FC<GetStartedDisplayProps> = ({
           <GiCardRandom />
         </motion.div>
         <motion.div variants={FADE_UP} className="text-center mb-16">
-          <div className="font-bold text-5xl">Let's get started!</div>
+          <h1>Let's get started!</h1>
         </motion.div>
         <motion.div variants={FADE_UP}>
           <div className="grid grid-cols-1 md:grid-cols-2 md:space-x-4">

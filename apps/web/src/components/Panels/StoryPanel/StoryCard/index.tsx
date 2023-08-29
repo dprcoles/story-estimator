@@ -80,7 +80,8 @@ const StoryCard: React.FC<StoryCardProps> = memo(
           className={classnames(
             "md:w-60 p-4 bg-light-buttons dark:bg-dark-buttons rounded-md border-2 ease-linear transition-all duration-150",
             story.active && "border-light-main dark:border-dark-main",
-            !story.active && "border-transparent bg-transparent",
+            !story.active &&
+              "border-light-hover dark:border-dark-hover bg-transparent",
           )}
         >
           <StoryDescription

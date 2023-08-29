@@ -3,7 +3,6 @@ import TeamProvider from "providers/TeamProvider";
 import React, { useState } from "react";
 
 import { Tabs } from "@/components/Core";
-import Definitions from "@/components/Teams/Definitions";
 import Integrations from "@/components/Teams/Integrations";
 import SessionsPanel from "@/components/Teams/SessionsPanel";
 import { useTeamStore } from "@/stores/teamStore";
@@ -20,10 +19,6 @@ const Team: React.FC = () => {
       label: "Sessions",
     },
     {
-      id: TeamPageTab.Definitions,
-      label: "Definitions",
-    },
-    {
       id: TeamPageTab.Integrations,
       label: "Integrations",
     },
@@ -34,19 +29,15 @@ const Team: React.FC = () => {
         <div className="px-2">
           <div className="bg-light-panels dark:bg-dark-panels rounded-lg py-4 px-8 main-panel__container">
             <div className="p-8">
-              <motion.div
-                variants={FADE_FROM_LEFT}
-                className="font-bold text-5xl mb-8"
-              >
+              <motion.h1 variants={FADE_FROM_LEFT} className="mb-8">
                 {team.name}
-              </motion.div>
+              </motion.h1>
               <div className="pb-8">
                 <Tabs tabs={tabs} activeTab={tab} setActiveTab={setTab} />
               </div>
               {tab === TeamPageTab.Sessions && (
                 <SessionsPanel sessions={team.sessions} />
               )}
-              {tab === TeamPageTab.Definitions && <Definitions />}
               {tab === TeamPageTab.Integrations && (
                 <Integrations
                   integrations={{

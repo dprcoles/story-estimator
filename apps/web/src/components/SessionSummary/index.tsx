@@ -50,7 +50,7 @@ const SessionSummary: React.FC<SessionSummaryProps> = ({ session }) => {
             </Button>
           </div>
         </div>
-        <div className="text-5xl font-bold pb-4">{name}</div>
+        <h1 className="pb-4">{name}</h1>
         <div className="text-light-text dark:text-dark-text pb-4"></div>
         <div className="grid md:grid-cols-3 py-8">
           <div className="md:col-span-2">
