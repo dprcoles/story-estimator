@@ -27,6 +27,7 @@ const AddStoryModal: React.FC<AddStoryModalProps> = ({ isOpen, setIsOpen }) => {
     emit(EmitEvent.ImportStories, {
       stories: stories.map((x) => x.description),
     });
+    setStories([]);
     setIsOpen(false);
   };
 

@@ -33,6 +33,15 @@ const RoomProvider: React.FC<PropsWithChildren> = ({ children }) => {
         playerId: player.id,
       });
     }
+
+    return () => {
+      if (player.id && socket) {
+        socket.emit(EmitEvent.Disconnect, {
+          id: id ? parseInt(id, 10) : null,
+          playerId: player.id,
+        });
+      }
+    };
   }, [id, player.id, socket]);
 
   useEffect(() => {

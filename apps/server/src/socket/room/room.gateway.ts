@@ -47,9 +47,9 @@ export class RoomGateway implements OnGatewayInit {
 
   @SubscribeMessage(RoomMessage.Disconnect)
   disconnect(@ConnectedSocket() client: Socket) {
-    const { playerId } = getSocketInfo(client);
+    const { playerId, roomId } = getSocketInfo(client);
 
-    this.roomEventsHandler.disconnectAsync(playerId);
+    this.roomEventsHandler.disconnectAsync(playerId, roomId);
   }
 
   @SubscribeMessage(RoomMessage.Update)

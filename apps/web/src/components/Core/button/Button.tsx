@@ -1,5 +1,3 @@
-import "./button.css";
-
 import classNames from "classnames";
 import React from "react";
 
@@ -11,6 +9,7 @@ interface ButtonProps {
   disabled?: boolean;
   color?: ButtonStyle;
   fullWidth?: boolean;
+  className?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -19,6 +18,7 @@ const Button: React.FC<ButtonProps> = ({
   disabled,
   color = "default",
   fullWidth,
+  className,
 }) => {
   return (
     <button
@@ -27,6 +27,7 @@ const Button: React.FC<ButtonProps> = ({
         color === "primary" && "se-c-button--primary",
         color === "danger" && "se-c-button--danger",
         fullWidth && "w-full",
+        className,
       )}
       onClick={onClick}
       disabled={disabled}

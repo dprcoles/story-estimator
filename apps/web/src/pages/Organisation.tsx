@@ -19,12 +19,9 @@ const Organisation: React.FC = () => {
         <div className="px-2">
           <div className="bg-light-panels dark:bg-dark-panels rounded-lg py-4 px-8 main-panel__container">
             <div className="p-8">
-              <motion.div
-                variants={FADE_FROM_LEFT}
-                className="font-bold text-5xl mb-8"
-              >
+              <motion.h1 variants={FADE_FROM_LEFT} className="mb-8">
                 {organisation.name}
-              </motion.div>
+              </motion.h1>
               <div className="my-8">
                 <motion.div variants={FADE_FROM_LEFT} className="mb-4">
                   <Button color="primary" onClick={() => setIsModalOpen(true)}>

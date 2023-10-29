@@ -6,14 +6,16 @@
   rounded-full
   border
   disabled:opacity-50
-  border-light-border-color
-  dark:border-dark-border-color
-  bg-[var(--buttonColor)];
+  border-light-main
+  dark:border-dark-main
+  text-light-main
+  dark:text-dark-main
+  bg-[var(--button-color)];
 
   background-image: linear-gradient(
     -183deg,
-    var(--buttonColor) 49.5%,
-    var(--primaryColor) 50.5%
+    var(--button-color) 49.5%,
+    var(--primary-color) 50.5%
   );
   background-size: 100% 255%;
   background-position: 50% 0;
@@ -39,12 +41,12 @@
   dark:border-dark-main
   text-white 
   dark:text-black
-  bg-[var(--primaryColor)];
+  bg-[var(--primary-color)];
 
   background-image: linear-gradient(
     -183deg,
-    var(--primaryColor) 49.5%,
-    var(--buttonColor) 50.5%
+    var(--primary-color) 49.5%,
+    var(--button-color) 50.5%
   );
 }
 
@@ -64,12 +66,15 @@
 .se-c-button--danger {
   @apply border-danger-border
     text-white
-    bg-danger-base;
+    bg-danger-base
+    dark:border-danger-border
+    dark:text-white
+    dark:bg-danger-base;
 
   background-image: linear-gradient(
     -183deg,
     var(--dangerColor) 49.5%,
-    var(--buttonColor) 50.5%
+    var(--button-color) 50.5%
   );
 }
 
@@ -78,7 +83,10 @@
 .se-c-button--danger:active:not(:disabled) {
   @apply border-danger-border
   text-danger-base
-  bg-[var(--buttonColor)];
+  bg-[var(--button-color)]
+  dark:border-danger-border
+  dark:text-danger-base
+  dark:bg-[var(--button-color)];
 
   background-position: 0 100%;
   outline: 0;

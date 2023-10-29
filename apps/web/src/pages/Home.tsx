@@ -43,7 +43,7 @@ const Home: React.FC = () => {
             <motion.div
               whileHover={!isJoining ? { scale: 1.1 } : {}}
               whileTap={!isJoining ? { scale: 0.9 } : {}}
-              className="flex justify-center"
+              className="flex justify-end"
             >
               <button
                 className="p-4 px-16 bg-light-main dark:bg-dark-main text-white dark:text-black rounded-md text-2xl font-bold shadow-lg ease-linear transition-all duration-150"
