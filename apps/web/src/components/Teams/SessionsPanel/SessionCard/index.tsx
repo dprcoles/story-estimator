@@ -9,7 +9,7 @@ interface SessionCardProps {
   session: TeamSession;
 }
 
-const SessionCard: React.FC<SessionCardProps> = ({ session }) => {
+const SessionCard = ({ session }: SessionCardProps) => {
   const navigate = useNavigate();
   const { active, id, name, playerCount, storyCount } = session;
 

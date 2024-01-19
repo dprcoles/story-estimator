@@ -18,7 +18,7 @@ import { ROUTE_SUMMARY } from "@/utils/constants";
 
 import { useInterval } from "../hooks/index";
 
-const RoomProvider: React.FC<PropsWithChildren> = ({ children }) => {
+const RoomProvider = ({ children }: PropsWithChildren) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { socket, emit } = useSocketStore();

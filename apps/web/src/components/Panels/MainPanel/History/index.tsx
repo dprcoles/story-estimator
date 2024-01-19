@@ -11,7 +11,7 @@ interface HistoryProps {
   stories: Array<Story>;
 }
 
-const History: React.FC<HistoryProps> = ({ stories }) => {
+const History = ({ stories }: HistoryProps) => {
   const completeStories = stories.filter((x) => x.hasOwnProperty("endSeconds"));
 
   const totalEstimate = completeStories

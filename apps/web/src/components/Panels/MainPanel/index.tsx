@@ -21,10 +21,10 @@ interface MainPanelProps {
   setIsStoryModalOpen: (isStoryModalOpen: boolean) => void;
 }
 
-const MainPanel: React.FC<MainPanelProps> = ({
+const MainPanel = ({
   setIsSettingsModalOpen,
   setIsStoryModalOpen,
-}) => {
+}: MainPanelProps) => {
   const {
     isAdmin,
     room: { stories },

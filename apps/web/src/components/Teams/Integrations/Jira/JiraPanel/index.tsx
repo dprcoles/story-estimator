@@ -9,7 +9,7 @@ interface JiraPanelProps {
   setView: (view: IntegrationView) => void;
 }
 
-const JiraPanel: React.FC<JiraPanelProps> = ({ isEnabled, setView }) => {
+const JiraPanel = ({ isEnabled, setView }: JiraPanelProps) => {
   return (
     <>
       <div className="flex bg-light-buttons dark:bg-dark-buttons rounded-md p-4">

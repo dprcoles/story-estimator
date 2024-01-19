@@ -9,7 +9,7 @@ import { PlayerInfo } from "@/types/player";
 import { EmitEvent } from "@/types/server";
 import { REQUIRED_ROUTES } from "@/utils/constants";
 
-const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
+const PlayerProvider = ({ children }: PropsWithChildren) => {
   const [canRender, setCanRender] = useState<boolean>(false);
   const { player, setPlayer, isPlayerModalOpen, setIsPlayerModalOpen } =
     usePlayerStore((state) => state);

@@ -8,7 +8,7 @@ interface ThemeToggleProps {
   setTheme: (theme: string) => void;
 }
 
-const ThemeToggle: React.FC<ThemeToggleProps> = ({ theme, setTheme }) => {
+const ThemeToggle = ({ theme, setTheme }: ThemeToggleProps) => {
   const isDark = theme === DARK_THEME;
 
   return (

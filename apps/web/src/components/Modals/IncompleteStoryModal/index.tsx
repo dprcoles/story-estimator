@@ -8,11 +8,11 @@ interface IncompleteStoryModalProps {
   setIsOpen: (isOpen: boolean) => void;
 }
 
-const IncompleteStoryModal: React.FC<IncompleteStoryModalProps> = ({
+const IncompleteStoryModal = ({
   onSubmit,
   isOpen,
   setIsOpen,
-}) => {
+}: IncompleteStoryModalProps) => {
   return (
     <Modal
       open={isOpen}

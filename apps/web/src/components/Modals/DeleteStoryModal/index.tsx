@@ -10,12 +10,12 @@ interface DeleteStoryModalProps {
   setIsOpen: (isOpen: boolean) => void;
 }
 
-const DeleteStoryModal: React.FC<DeleteStoryModalProps> = ({
+const DeleteStoryModal = ({
   story,
   onDelete,
   isOpen,
   setIsOpen,
-}) => {
+}: DeleteStoryModalProps) => {
   return (
     <Modal
       open={isOpen}

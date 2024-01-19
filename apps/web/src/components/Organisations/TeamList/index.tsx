@@ -11,7 +11,7 @@ interface TeamListProps {
   teams: OrganisationTeam[];
 }
 
-const TeamList: React.FC<TeamListProps> = ({ title, teams }) => {
+const TeamList = ({ title, teams }: TeamListProps) => {
   return (
     <motion.div variants={STAGGER}>
       <div className="font-semibold text-2xl mb-4">{title}</div>

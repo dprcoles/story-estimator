@@ -6,7 +6,7 @@ interface InviteButtonProps {
   linkToCopy: string;
 }
 
-const InviteButton: React.FC<InviteButtonProps> = ({ linkToCopy }) => {
+const InviteButton = ({ linkToCopy }: InviteButtonProps) => {
   const [clicked, setClicked] = useState<boolean>(false);
 
   const handleClick = () => {

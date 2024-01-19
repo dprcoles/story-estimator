@@ -15,12 +15,12 @@ interface PlayerCardProps {
   isCurrentPlayer: boolean;
 }
 
-const PlayerCard: React.FC<PlayerCardProps> = ({
+const PlayerCard = ({
   player,
   showVote,
   countdownStatus,
   isCurrentPlayer,
-}) => {
+}: PlayerCardProps) => {
   const admin = useRoomStore((state) => state.admin);
   const { id, name, defaultType, vote } = player;
 

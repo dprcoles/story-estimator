@@ -12,7 +12,7 @@ import StoryPanel from "@/components/Panels/StoryPanel";
 import { useRoomStore } from "@/stores/roomStore";
 import { FADE_IN } from "@/utils/variants";
 
-const RoomPage: React.FC = () => {
+const RoomPage = () => {
   const [isSettingsModalOpen, setIsSettingsModalOpen] =
     useState<boolean>(false);
   const [isStoryModalOpen, setIsStoryModalOpen] = useState<boolean>(false);

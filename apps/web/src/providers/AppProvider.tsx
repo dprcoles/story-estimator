@@ -12,7 +12,7 @@ import { useTeamStore } from "@/stores/teamStore";
 import { StorageItem } from "@/types/storage";
 import { API_URL, ROUTE_ROOM } from "@/utils/constants";
 
-const AppProvider: React.FC<PropsWithChildren> = ({ children }) => {
+const AppProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
   const { socket, setSocket, setLoading } = useSocketStore();
   const { player, setPlayer } = usePlayerStore();

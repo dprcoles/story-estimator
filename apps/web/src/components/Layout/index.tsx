@@ -6,7 +6,7 @@ import { ROUTE_HOME } from "@/utils/constants";
 
 import Navbar from "../Navbar";
 
-const Layout: React.FC<PropsWithChildren> = ({ children }) => {
+const Layout = ({ children }: PropsWithChildren) => {
   const location = useLocation();
 
   const isLandingPage = location.pathname === ROUTE_HOME;

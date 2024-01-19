@@ -8,11 +8,11 @@ interface CreateSessionModalProps {
   handleCreateSession: (name: string) => void;
 }
 
-const CreateSessionModal: React.FC<CreateSessionModalProps> = ({
+const CreateSessionModal = ({
   isOpen,
   setIsOpen,
   handleCreateSession,
-}) => {
+}: CreateSessionModalProps) => {
   const [name, setName] = useState<string>("");
 
   const handleOnCreate = async () => {

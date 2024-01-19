@@ -13,13 +13,13 @@ interface SelectProps {
   value: string;
 }
 
-const Select: React.FC<SelectProps> = ({
+const Select = ({
   label,
   description,
   option,
   onChange,
   value,
-}) => {
+}: SelectProps) => {
   const handleOnChange = (event: React.ChangeEvent<HTMLSelectElement>) =>
     onChange(event.target.value);
 

@@ -7,7 +7,7 @@ import AnimatedLogo from "./AnimatedLogo";
 import ThemeToggle from "./ThemeToggle";
 import UserIcon from "./UserIcon";
 
-const Navbar: React.FC = () => {
+const Navbar = () => {
   const { player, setIsPlayerModalOpen } = usePlayerStore((state) => state);
   const { theme, setTheme } = useThemeStore();
 

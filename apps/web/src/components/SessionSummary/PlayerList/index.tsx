@@ -7,7 +7,7 @@ interface PlayerListProps {
   players: Array<PlayerInfo>;
 }
 
-const PlayerList: React.FC<PlayerListProps> = ({ players }) => {
+const PlayerList = ({ players }: PlayerListProps) => {
   return (
     <div className="md:w-72 h-full">
       <div className="pb-2">

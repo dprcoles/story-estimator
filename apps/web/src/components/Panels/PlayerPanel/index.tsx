@@ -6,7 +6,7 @@ import { PlayerType } from "@/types/player";
 
 import PlayerCard from "./PlayerCard";
 
-const PlayerPanel: React.FC = () => {
+const PlayerPanel = () => {
   const { players, showVotes, countdown } = useRoomStore();
   const player = usePlayerStore((state) => state.player);
 

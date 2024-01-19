@@ -16,10 +16,7 @@ interface RoomSettingsModalProps {
   setIsOpen: (isOpen: boolean) => void;
 }
 
-const RoomSettingsModal: React.FC<RoomSettingsModalProps> = ({
-  isOpen,
-  setIsOpen,
-}) => {
+const RoomSettingsModal = ({ isOpen, setIsOpen }: RoomSettingsModalProps) => {
   const {
     room: { settings },
     players,

@@ -11,9 +11,7 @@ interface NextStoryDisplayProps {
   setIsStoryModalOpen: (isStoryModalOpen: boolean) => void;
 }
 
-const NextStoryDisplay: React.FC<NextStoryDisplayProps> = ({
-  setIsStoryModalOpen,
-}) => {
+const NextStoryDisplay = ({ setIsStoryModalOpen }: NextStoryDisplayProps) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const isAdmin = useRoomStore((state) => state.isAdmin);

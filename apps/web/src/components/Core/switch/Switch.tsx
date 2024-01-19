@@ -8,13 +8,13 @@ interface SwitchProps {
   setChecked: (checked: boolean) => void;
 }
 
-const Switch: React.FC<SwitchProps> = ({
+const Switch = ({
   id,
   label,
   description,
   checked,
   setChecked,
-}) => {
+}: SwitchProps) => {
   return (
     <div className="my-8">
       <div className="flex items-center">

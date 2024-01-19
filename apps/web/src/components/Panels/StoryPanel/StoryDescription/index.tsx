@@ -10,11 +10,11 @@ interface StoryDescriptionProps {
   setDescription: (description: string) => void;
 }
 
-const StoryDescription: React.FC<StoryDescriptionProps> = ({
+const StoryDescription = ({
   active,
   description,
   setDescription,
-}) => {
+}: StoryDescriptionProps) => {
   const isAdmin = useRoomStore((state) => state.isAdmin);
   const [localDescription, setLocalDescription] = useState<string>("");
   const [showInput, setShowInput] = useState<boolean>(false);

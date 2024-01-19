@@ -9,7 +9,7 @@ interface UserIconProps {
   setTheme: (theme: string) => void;
 }
 
-const UserIcon: React.FC<UserIconProps> = ({ player, onEdit }) => {
+const UserIcon = ({ player, onEdit }: UserIconProps) => {
   return (
     <div className="flex items-baseline">
       <button

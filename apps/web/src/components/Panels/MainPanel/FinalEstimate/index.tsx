@@ -13,10 +13,7 @@ interface FinalEstimateProps {
   currentStoryId: number;
 }
 
-const FinalEstimate: React.FC<FinalEstimateProps> = ({
-  options,
-  currentStoryId,
-}) => {
+const FinalEstimate = ({ options, currentStoryId }: FinalEstimateProps) => {
   const [selected, setSelected] = useState<string>("");
 
   const { emit } = useSocketStore();

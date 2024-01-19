@@ -9,10 +9,7 @@ interface ManualImportTabProps {
   stories: Story[];
 }
 
-const ManualImportTab: React.FC<ManualImportTabProps> = ({
-  setStories,
-  stories,
-}) => {
+const ManualImportTab = ({ setStories, stories }: ManualImportTabProps) => {
   const [story, setStory] = useState<Story>(DEFAULT_STORY);
 
   const handleSetStory = (value: any, property: string) => {

@@ -9,7 +9,7 @@ import { useTeamStore } from "@/stores/teamStore";
 import { SessionDetails } from "@/types/session";
 import { FADE_IN } from "@/utils/variants";
 
-const SummaryPage: React.FC = () => {
+const SummaryPage = () => {
   const { id } = useParams();
   const [isLoadingData, setIsLoadingData] = useState<boolean>(false);
   const [sessionData, setSessionData] = useState<SessionDetails>();

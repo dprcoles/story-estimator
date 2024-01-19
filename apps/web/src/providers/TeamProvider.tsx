@@ -8,7 +8,7 @@ import { useTeamStore } from "@/stores/teamStore";
 import { EmitEvent } from "@/types/server";
 import { TeamDetails } from "@/types/team";
 
-const TeamProvider: React.FC<PropsWithChildren> = ({ children }) => {
+const TeamProvider = ({ children }: PropsWithChildren) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { alias } = useParams();
   const { socket } = useSocketStore();

@@ -6,7 +6,7 @@ interface PlayerIconProps {
   player: Player;
 }
 
-const PlayerIcon: React.FC<PlayerIconProps> = ({ player }) => {
+const PlayerIcon = ({ player }: PlayerIconProps) => {
   const { emoji } = player;
 
   return (

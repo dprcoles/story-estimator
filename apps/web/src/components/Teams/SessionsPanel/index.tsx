@@ -10,7 +10,7 @@ interface SessionsPanelProps {
   sessions: TeamSession[];
 }
 
-const SessionsPanel: React.FC<SessionsPanelProps> = ({ sessions }) => {
+const SessionsPanel = ({ sessions }: SessionsPanelProps) => {
   const setIsSessionModalOpen = useSessionStore(
     (state) => state.setIsSessionModalOpen,
   );

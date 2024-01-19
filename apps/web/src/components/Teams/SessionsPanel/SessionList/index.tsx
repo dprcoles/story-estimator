@@ -11,7 +11,7 @@ interface SessionListProps {
   sessions: TeamSession[];
 }
 
-const SessionList: React.FC<SessionListProps> = ({ title, sessions }) => {
+const SessionList = ({ title, sessions }: SessionListProps) => {
   return (
     <motion.div variants={STAGGER}>
       <div className="font-semibold text-2xl mb-4">{title}</div>

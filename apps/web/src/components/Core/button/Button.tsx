@@ -12,14 +12,14 @@ interface ButtonProps {
   className?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({
+const Button = ({
   children,
   onClick,
   disabled,
   color = "default",
   fullWidth,
   className,
-}) => {
+}: ButtonProps) => {
   return (
     <button
       className={classNames(

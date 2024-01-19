@@ -9,7 +9,7 @@ interface TeamCardProps {
   team: OrganisationTeam;
 }
 
-const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
+const TeamCard = ({ team }: TeamCardProps) => {
   const navigate = useNavigate();
   const { name, alias } = team;
 

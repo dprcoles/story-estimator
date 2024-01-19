@@ -5,7 +5,7 @@ interface CountdownProps {
   seconds: number;
 }
 
-const Countdown: React.FC<CountdownProps> = ({ seconds }) => {
+const Countdown = ({ seconds }: CountdownProps) => {
   return (
     <motion.div
       animate={{

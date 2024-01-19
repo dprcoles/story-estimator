@@ -9,11 +9,7 @@ interface TagProps {
   fullWidth?: boolean;
 }
 
-const Tag: React.FC<TagProps> = ({
-  children,
-  color = "default",
-  fullWidth,
-}) => {
+const Tag = ({ children, color = "default", fullWidth }: TagProps) => {
   return (
     <div className={fullWidth ? "w-full" : ""}>
       <div

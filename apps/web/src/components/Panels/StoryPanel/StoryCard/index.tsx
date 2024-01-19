@@ -18,8 +18,8 @@ interface StoryCardProps {
   find: (id: number) => { index: number };
 }
 
-const StoryCard: React.FC<StoryCardProps> = memo(
-  ({ story, onClick, onEdit, onDelete, move, find }) => {
+const StoryCard = memo(
+  ({ story, onClick, onEdit, onDelete, move, find }: StoryCardProps) => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
     const { id } = story;
 

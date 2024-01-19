@@ -7,10 +7,10 @@ interface TimeSpentDisplayProps {
   totalTimeSpent: number;
 }
 
-const TimeSpentDisplay: React.FC<TimeSpentDisplayProps> = ({
+const TimeSpentDisplay = ({
   startTime,
   totalTimeSpent,
-}) => {
+}: TimeSpentDisplayProps) => {
   const [timeSpent, setTimeSpent] = useState<string>("");
 
   useInterval(() => {

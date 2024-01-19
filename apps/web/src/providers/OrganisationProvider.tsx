@@ -7,7 +7,7 @@ import { useOrganisationStore } from "@/stores/organisationStore";
 import { useSocketStore } from "@/stores/socketStore";
 import { EmitEvent } from "@/types/server";
 
-const OrganisationProvider: React.FC<PropsWithChildren> = ({ children }) => {
+const OrganisationProvider = ({ children }: PropsWithChildren) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { alias } = useParams();
   const { socket } = useSocketStore();

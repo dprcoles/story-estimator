@@ -5,7 +5,7 @@ import { usePlayerStore } from "@/stores/playerStore";
 import { useSessionStore } from "@/stores/sessionStore";
 import { FADE_IN } from "@/utils/variants";
 
-const Home: React.FC = () => {
+const Home = () => {
   const [isJoining, setIsJoining] = useState<boolean>(false);
   const { player, setIsPlayerModalOpen } = usePlayerStore((state) => state);
   const setIsSessionModalOpen = useSessionStore(

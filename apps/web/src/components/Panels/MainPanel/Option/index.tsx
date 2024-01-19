@@ -8,12 +8,7 @@ interface OptionProps {
   disabled?: boolean;
 }
 
-const Option: React.FC<OptionProps> = ({
-  value,
-  onClick,
-  selected,
-  disabled,
-}) => {
+const Option = ({ value, onClick, selected, disabled }: OptionProps) => {
   return (
     <motion.div
       whileHover={!disabled ? { scale: 1.02 } : {}}

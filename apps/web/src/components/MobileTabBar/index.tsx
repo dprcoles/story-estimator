@@ -14,10 +14,7 @@ interface MobileTabBarProps {
   setActiveTab: (activeTab: MobileTabBarType) => void;
 }
 
-const MobileTabBar: React.FC<MobileTabBarProps> = ({
-  activeTab,
-  setActiveTab,
-}) => {
+const MobileTabBar = ({ activeTab, setActiveTab }: MobileTabBarProps) => {
   const tabs = [
     {
       title: "Estimate",

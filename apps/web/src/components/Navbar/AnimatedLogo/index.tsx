@@ -7,7 +7,7 @@ interface AnimatedLogoProps {
   theme: string;
 }
 
-const AnimatedLogo: React.FC<AnimatedLogoProps> = ({ theme }) => {
+const AnimatedLogo = ({ theme }: AnimatedLogoProps) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);

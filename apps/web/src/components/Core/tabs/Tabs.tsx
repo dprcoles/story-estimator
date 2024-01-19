@@ -13,12 +13,7 @@ interface TabsProps {
   fullWidth?: boolean;
 }
 
-const Tabs: React.FC<TabsProps> = ({
-  tabs,
-  activeTab,
-  setActiveTab,
-  fullWidth,
-}) => {
+const Tabs = ({ tabs, activeTab, setActiveTab, fullWidth }: TabsProps) => {
   return (
     <>
       {tabs.map((x) => (

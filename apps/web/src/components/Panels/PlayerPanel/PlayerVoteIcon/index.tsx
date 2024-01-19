@@ -11,11 +11,11 @@ interface PlayerIconProps {
   countdownStatus: CountdownStatus;
 }
 
-const PlayerVoteIcon: React.FC<PlayerIconProps> = ({
+const PlayerVoteIcon = ({
   player,
   showVote,
   countdownStatus,
-}) => {
+}: PlayerIconProps) => {
   const { defaultType: type, vote } = player;
 
   if (type === PlayerType.Spectator) return null;

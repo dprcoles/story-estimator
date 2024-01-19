@@ -15,7 +15,7 @@ interface IntegrationsProps {
   integrations: IntegrationIds;
 }
 
-const Integrations: React.FC<IntegrationsProps> = ({ integrations }) => {
+const Integrations = ({ integrations }: IntegrationsProps) => {
   const [data, setData] = useState<JiraIntegration | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [view, setView] = useState<IntegrationView>(IntegrationView.List);

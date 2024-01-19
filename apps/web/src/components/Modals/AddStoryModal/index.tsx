@@ -15,7 +15,7 @@ interface AddStoryModalProps {
   setIsOpen: (isOpen: boolean) => void;
 }
 
-const AddStoryModal: React.FC<AddStoryModalProps> = ({ isOpen, setIsOpen }) => {
+const AddStoryModal = ({ isOpen, setIsOpen }: AddStoryModalProps) => {
   const [stories, setStories] = useState<Story[]>([]);
   const [tab, setTab] = useState<string>(AddStoryTab.Manual);
   const {

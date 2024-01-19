@@ -11,11 +11,7 @@ interface EmojiPickerProps {
   setIsOpen: (isOpen: boolean) => void;
 }
 
-const EmojiPicker: React.FC<EmojiPickerProps> = ({
-  onSelect,
-  isOpen,
-  setIsOpen,
-}) => {
+const EmojiPicker = ({ onSelect, isOpen, setIsOpen }: EmojiPickerProps) => {
   const { theme } = useThemeStore();
 
   const handleOnSelect = (emoji: any) => {

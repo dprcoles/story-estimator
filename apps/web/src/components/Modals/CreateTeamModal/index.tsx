@@ -11,10 +11,7 @@ interface CreateTeamModalProps {
   setIsOpen: (isOpen: boolean) => void;
 }
 
-const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
-  isOpen,
-  setIsOpen,
-}) => {
+const CreateTeamModal = ({ isOpen, setIsOpen }: CreateTeamModalProps) => {
   const [name, setName] = useState<string>("");
   const [alias, setAlias] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);

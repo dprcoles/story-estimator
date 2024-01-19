@@ -19,12 +19,7 @@ interface InfoCardProps {
   options: Array<string>;
 }
 
-const InfoCard: React.FC<InfoCardProps> = ({
-  vote,
-  showVotes,
-  players,
-  options,
-}) => {
+const InfoCard = ({ vote, showVotes, players, options }: InfoCardProps) => {
   const { stories, countdown } = useRoomStore((state) => ({
     stories: state.room.stories,
     countdown: state.countdown,

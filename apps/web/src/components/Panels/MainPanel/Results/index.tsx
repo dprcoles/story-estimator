@@ -13,11 +13,7 @@ interface ResultsProps {
   currentStoryId: number;
 }
 
-const Results: React.FC<ResultsProps> = ({
-  players,
-  options,
-  currentStoryId,
-}) => {
+const Results = ({ players, options, currentStoryId }: ResultsProps) => {
   const getVotes = () =>
     options
       .map((option) => ({

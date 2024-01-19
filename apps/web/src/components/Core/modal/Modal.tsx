@@ -13,7 +13,7 @@ interface ModalProps extends PropsWithChildren {
   footer?: React.ReactNode;
 }
 
-const Modal: React.FC<ModalProps> = ({
+const Modal = ({
   open,
   handleClose,
   showClose,
@@ -21,7 +21,7 @@ const Modal: React.FC<ModalProps> = ({
   heading,
   footer,
   children,
-}) => {
+}: ModalProps) => {
   return (
     <>
       {open ? (

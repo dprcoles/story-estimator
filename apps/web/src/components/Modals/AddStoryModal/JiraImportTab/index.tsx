@@ -18,11 +18,11 @@ interface JiraImportTabProps {
   isOpen: boolean;
 }
 
-const JiraImportTab: React.FC<JiraImportTabProps> = ({
+const JiraImportTab = ({
   integrationId,
   setStories,
   isOpen,
-}) => {
+}: JiraImportTabProps) => {
   const [isLoadingQueries, setIsLoadingQueries] = useState<boolean>(false);
   const [isLoadingIssues, setIsLoadingIssues] = useState<boolean>(false);
   const [queries, setQueries] = useState<JqlQuery[]>([]);

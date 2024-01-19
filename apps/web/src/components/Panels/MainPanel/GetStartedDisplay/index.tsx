@@ -13,11 +13,11 @@ interface GetStartedDisplayProps {
   firstStoryId: number;
 }
 
-const GetStartedDisplay: React.FC<GetStartedDisplayProps> = ({
+const GetStartedDisplay = ({
   setIsStoryModalOpen,
   hasStories,
   firstStoryId,
-}) => {
+}: GetStartedDisplayProps) => {
   const { emit } = useSocketStore();
   const [clicked, setClicked] = useState<boolean>(false);
 

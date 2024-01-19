@@ -14,10 +14,7 @@ interface JiraQueryListProps {
   query: JqlQuery;
 }
 
-const JiraQueryListItem: React.FC<JiraQueryListProps> = ({
-  integrationId,
-  query,
-}) => {
+const JiraQueryListItem = ({ integrationId, query }: JiraQueryListProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showResults, setShowResults] = useState<boolean>(false);
   const [results, setResults] = useState<JiraIssue[]>([]);

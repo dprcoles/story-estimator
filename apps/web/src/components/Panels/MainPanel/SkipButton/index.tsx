@@ -9,7 +9,7 @@ interface SkipButtonProps {
   currentStoryId: number;
 }
 
-const SkipButton: React.FC<SkipButtonProps> = ({ currentStoryId }) => {
+const SkipButton = ({ currentStoryId }: SkipButtonProps) => {
   const emit = useSocketStore((state) => state.emit);
 
   const handleSkip = () => {

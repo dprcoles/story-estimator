@@ -15,7 +15,7 @@ interface SessionSummaryProps {
   session: SessionDetails;
 }
 
-const SessionSummary: React.FC<SessionSummaryProps> = ({ session }) => {
+const SessionSummary = ({ session }: SessionSummaryProps) => {
   const setIsSessionModalOpen = useSessionStore(
     (state) => state.setIsSessionModalOpen,
   );

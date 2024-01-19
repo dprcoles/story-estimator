@@ -11,7 +11,7 @@ interface StoryPanelProps {
   setIsStoryModalOpen: (isStoryModalOpen: boolean) => void;
 }
 
-const StoryPanel: React.FC<StoryPanelProps> = ({ setIsStoryModalOpen }) => {
+const StoryPanel = ({ setIsStoryModalOpen }: StoryPanelProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedStoryId, setSelectedStoryId] = useState<number | null>(null);
   const {

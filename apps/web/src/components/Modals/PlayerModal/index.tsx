@@ -15,12 +15,12 @@ interface PlayerModalProps {
   setPlayer: (player: PlayerInfo) => void;
 }
 
-const PlayerModal: React.FC<PlayerModalProps> = ({
+const PlayerModal = ({
   isOpen,
   setIsOpen,
   player,
   setPlayer,
-}) => {
+}: PlayerModalProps) => {
   const [nameValue, setNameValue] = useState<string>(player.name);
   const [emojiValue, setEmojiValue] = useState<string>(player.emoji);
   const [typeValue, setTypeValue] = useState<PlayerType>(player.defaultType);

@@ -7,7 +7,7 @@ interface JiraIssueCardProps {
   selected?: boolean;
 }
 
-const JiraIssueCard: React.FC<JiraIssueCardProps> = ({ issue, selected }) => {
+const JiraIssueCard = ({ issue, selected }: JiraIssueCardProps) => {
   const { key, priority, summary, type } = issue;
   return (
     <div

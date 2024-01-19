@@ -10,7 +10,7 @@ interface JiraConfigProps {
   setView: (view: IntegrationView) => void;
 }
 
-const JiraConfig: React.FC<JiraConfigProps> = ({ data, setView }) => {
+const JiraConfig = ({ data, setView }: JiraConfigProps) => {
   const { domain, jqlQueries } = data;
   return (
     <div>

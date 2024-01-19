@@ -8,7 +8,7 @@ import TeamList from "@/components/Organisations/TeamList";
 import { useOrganisationStore } from "@/stores/organisationStore";
 import { FADE_FROM_LEFT, FADE_IN } from "@/utils/variants";
 
-const Organisation: React.FC = () => {
+const Organisation = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { organisation } = useOrganisationStore();
 

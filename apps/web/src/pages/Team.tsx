@@ -9,7 +9,7 @@ import { useTeamStore } from "@/stores/teamStore";
 import { TeamPageTab } from "@/types/team";
 import { FADE_FROM_LEFT, FADE_IN } from "@/utils/variants";
 
-const Team: React.FC = () => {
+const Team = () => {
   const { team } = useTeamStore();
   const [tab, setTab] = useState<string>(TeamPageTab.Sessions);
 

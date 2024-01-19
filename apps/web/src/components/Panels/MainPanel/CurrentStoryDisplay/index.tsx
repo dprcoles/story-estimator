@@ -21,13 +21,13 @@ interface CurrentStoryDisplayProps {
   players: Array<Player>;
 }
 
-const CurrentStoryDisplay: React.FC<CurrentStoryDisplayProps> = ({
+const CurrentStoryDisplay = ({
   currentStory,
   vote,
   setVote,
   showVotes,
   players,
-}) => {
+}: CurrentStoryDisplayProps) => {
   const defaultType = usePlayerStore((state) => state.player.defaultType);
   const isAdmin = useRoomStore((state) => state.isAdmin);
 

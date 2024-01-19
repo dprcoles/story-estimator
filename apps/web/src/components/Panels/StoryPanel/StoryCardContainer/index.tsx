@@ -14,13 +14,13 @@ interface StoryCardContainerProps {
   handleUpdateStories: (stories: Story[]) => void;
 }
 
-const StoryCardContainer: React.FC<StoryCardContainerProps> = memo(
+const StoryCardContainer = memo(
   ({
     handleSaveStory,
     handleDeleteStory,
     handleSetActive,
     handleUpdateStories,
-  }) => {
+  }: StoryCardContainerProps) => {
     const {
       isAdmin,
       room: { stories },
