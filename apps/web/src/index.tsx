@@ -7,7 +7,7 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 );
 root.render(
-  <AnimatePresence exitBeforeEnter>
+  <AnimatePresence mode="wait">
     <App />
   </AnimatePresence>,
 );

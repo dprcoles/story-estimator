@@ -12,5 +12,5 @@ export enum CountdownType {
 export enum CountdownTimer {
   Standard = 3,
   FastMode = 10,
-  HurryMode = 10,
+  HurryMode = 5,
 }

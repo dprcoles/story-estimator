@@ -6,7 +6,7 @@ type SessionStore = {
 };
 
 export const useSessionStore = create<SessionStore>(
-  (set, get): SessionStore => ({
+  (set): SessionStore => ({
     isSessionModalOpen: false,
     setIsSessionModalOpen: (isSessionModalOpen: boolean) =>
       set((state) => ({ ...state, isSessionModalOpen })),

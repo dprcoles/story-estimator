@@ -34,9 +34,6 @@ const InfoCard: React.FC<InfoCardProps> = ({
 
   const currentStory = stories.find((s) => s.active);
 
-  const playersToVote = players.filter(
-    (x) => !x.vote && x.defaultType === PlayerType.Voter,
-  );
   const playersVoted = players.filter(
     (x) => x.vote && x.defaultType === PlayerType.Voter,
   );
@@ -82,10 +79,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
                     {currentStory?.description}
                   </div>
                 ) : (
-                  <Countdown
-                    seconds={countdown.timer}
-                    playersToVote={playersToVote}
-                  />
+                  <Countdown seconds={countdown.timer} />
                 )}
                 <div className="md:ml-auto text-4xl font-bold">
                   {playersVotedNumber} / {voters} Voted

@@ -47,7 +47,7 @@ type RoomStore = {
 };
 
 export const useRoomStore = create<RoomStore>(
-  (set, get): RoomStore => ({
+  (set): RoomStore => ({
     room: DEFAULT_ROOM,
     setRoom: (room: Room) =>
       set((state) => ({

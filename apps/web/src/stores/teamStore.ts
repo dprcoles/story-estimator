@@ -9,7 +9,7 @@ type TeamStore = {
 };
 
 export const useTeamStore = create<TeamStore>(
-  (set, get): TeamStore => ({
+  (set): TeamStore => ({
     team: {
       id: DEFAULT_TEAM_ID,
       name: "Default Team",

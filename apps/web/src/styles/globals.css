@@ -96,14 +96,14 @@ textarea:focus {
   outline: 0 !important;
 }
 
-a,
-button,
-[tabindex] {
-  &:focus {
-    box-shadow: 0 0 0 1px var(--primary-color);
-  }
+a:focus,
+button:focus,
+[tabindex]:focus {
+  box-shadow: 0 0 0 1px var(--primary-color);
+}
 
-  &:focus:not(:focus-visible) {
-    box-shadow: none;
-  }
+a:focus:not(:focus-visible),
+button:focus:not(:focus-visible),
+[tabindex]:focus:not(:focus-visible) {
+  box-shadow: none;
 }

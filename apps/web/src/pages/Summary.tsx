@@ -30,8 +30,6 @@ const SummaryPage: React.FC = () => {
 
       fetchSessionData();
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   if (isLoadingData || !sessionData)
