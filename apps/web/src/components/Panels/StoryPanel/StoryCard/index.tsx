@@ -79,7 +79,7 @@ const StoryCard = memo(
         >
           <div
             className={classnames(
-              "md:w-60 p-4 bg-light-buttons dark:bg-dark-buttons rounded-md border-2 ease-linear transition-all duration-150",
+              "bg-light-buttons dark:bg-dark-buttons rounded-md border-2 p-4 transition-all duration-150 ease-linear md:w-60",
               story.active && "border-light-main dark:border-dark-main",
               !story.active &&
                 "border-light-hover dark:border-dark-hover bg-transparent",
@@ -92,24 +92,24 @@ const StoryCard = memo(
               setDescription={handleUpdateDescription}
             />
             {!story.active && isClickable && (
-              <div className="flex justify-between mt-4 gap-4">
+              <div className="mt-4 flex justify-between gap-4">
                 <button
                   onClick={() => onClick(story.id)}
-                  className="text-sm border border-light-border-color dark:border-dark-border-color p-1 w-full rounded-full hover:bg-light-hover dark:hover:bg-dark-hover flex items-center justify-center"
+                  className="border-light-border-color dark:border-dark-border-color hover:bg-light-hover dark:hover:bg-dark-hover flex w-full items-center justify-center rounded-full border p-1 text-sm"
                 >
                   Estimate
                 </button>
                 <button
                   onClick={() => setIsDeleteModalOpen(true)}
-                  className="text-sm border border-danger-base p-1 w-full rounded-full hover:bg-light-hover dark:hover:bg-dark-hover flex items-center justify-center"
+                  className="border-danger-base hover:bg-light-hover dark:hover:bg-dark-hover flex w-full items-center justify-center rounded-full border p-1 text-sm"
                 >
                   <span className="text-danger-base">Delete</span>
                 </button>
               </div>
             )}
-            <div className="grid grid-cols-2 mt-4 py-1">
+            <div className="mt-4 grid grid-cols-2 py-1">
               <div>
-                <div className="text-xs pb-1 text-light-text dark:text-dark-text">
+                <div className="text-light-text dark:text-dark-text pb-1 text-xs">
                   Time Spent
                 </div>
                 <span className="py-1">
@@ -117,7 +117,7 @@ const StoryCard = memo(
                 </span>
               </div>
               <div className="ml-auto text-right">
-                <div className="text-xs pb-1 text-light-text dark:text-dark-text">
+                <div className="text-light-text dark:text-dark-text pb-1 text-xs">
                   Estimate
                 </div>
                 <span className="py-1">{story.estimate ?? "-"}</span>

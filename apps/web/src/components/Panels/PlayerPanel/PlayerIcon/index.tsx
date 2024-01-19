@@ -10,7 +10,7 @@ const PlayerIcon = ({ player }: PlayerIconProps) => {
   const { emoji } = player;
 
   return (
-    <div className="rounded-full w-10 h-10 flex justify-center items-center">
+    <div className="flex h-10 w-10 items-center justify-center rounded-full">
       <span className="text-xl">{emoji}</span>
     </div>
   );

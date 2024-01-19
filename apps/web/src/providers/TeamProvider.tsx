@@ -37,7 +37,7 @@ const TeamProvider = ({ children }: PropsWithChildren) => {
 
   if (!socket || isLoading)
     return (
-      <div className="min-h-[90vh] flex items-center justify-center">
+      <div className="flex min-h-[90vh] items-center justify-center">
         <Loader />
       </div>
     );

@@ -33,7 +33,7 @@ const CurrentStoryDisplay = ({
 
   return (
     <div>
-      <div className="grid grid-cols-2 mb-4 items-center">
+      <div className="mb-4 grid grid-cols-2 items-center">
         <div className="mr-auto">
           <TimeSpentDisplay
             startTime={currentStory.startSeconds as number}
@@ -59,10 +59,10 @@ const CurrentStoryDisplay = ({
       <div className="mx-auto py-8">
         {!showVotes && defaultType === PlayerType.Voter && (
           <motion.div variants={STAGGER}>
-            <div className="m-2 text-light-text dark:text-dark-text">
+            <div className="text-light-text dark:text-dark-text m-2">
               Select an Estimate:
             </div>
-            <div className="m-2 gap-2 grid justify-center xl:grid-cols-6 md:grid-cols-4 grid-cols-3">
+            <div className="m-2 grid grid-cols-3 justify-center gap-2 md:grid-cols-4 xl:grid-cols-6">
               {OPTIONS.map((option: string) => (
                 <motion.div
                   variants={FADE_IN}

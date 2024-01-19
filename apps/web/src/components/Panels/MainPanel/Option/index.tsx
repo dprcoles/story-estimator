@@ -16,7 +16,7 @@ const Option = ({ value, onClick, selected, disabled }: OptionProps) => {
       className="flex justify-center"
     >
       <button
-        className={`p-4 border-2 rounded-md bg-light-buttons dark:bg-dark-buttons hover:bg-light-hover dark:hover:bg-dark-hover shadow-sm h-24 w-full text-2xl font-bold ease-linear transition-all duration-150 ${
+        className={`bg-light-buttons dark:bg-dark-buttons hover:bg-light-hover dark:hover:bg-dark-hover h-24 w-full rounded-md border-2 p-4 text-2xl font-bold shadow-sm transition-all duration-150 ease-linear ${
           selected
             ? "border-light-main dark:border-dark-main"
             : "border-transparent"

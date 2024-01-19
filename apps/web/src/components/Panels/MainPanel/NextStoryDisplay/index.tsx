@@ -24,7 +24,7 @@ const NextStoryDisplay = ({ setIsStoryModalOpen }: NextStoryDisplayProps) => {
 
   return (
     <>
-      <motion.div variants={STAGGER} className="text-center max-w-2xl mx-auto">
+      <motion.div variants={STAGGER} className="mx-auto max-w-2xl text-center">
         <motion.div variants={FADE_IN} className="py-8">
           <h2>All stories have been estimated!</h2>
         </motion.div>

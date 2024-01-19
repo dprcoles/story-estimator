@@ -28,13 +28,13 @@ const Switch = ({
               checked={checked}
               onChange={() => setChecked(!checked)}
             />
-            <div className="block bg-light-hover dark:bg-dark-hover w-14 h-8 rounded-full"></div>
-            <div className="dot absolute left-1 top-1 bg-light-text dark:bg-dark-text w-6 h-6 rounded-full transition"></div>
+            <div className="bg-light-hover dark:bg-dark-hover block h-8 w-14 rounded-full"></div>
+            <div className="dot bg-light-text dark:bg-dark-text absolute left-1 top-1 h-6 w-6 rounded-full transition"></div>
           </div>
         </label>
       </div>
       {description && (
-        <div className="text-light-text dark:text-dark-text text-sm w-10/12">
+        <div className="text-light-text dark:text-dark-text w-10/12 text-sm">
           {description}
         </div>
       )}

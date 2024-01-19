@@ -19,20 +19,20 @@ const SessionCard = ({ session }: SessionCardProps) => {
 
   return (
     <div
-      className={`md:w-150 p-4 bg-light-buttons dark:bg-dark-buttons rounded-md border-2 ease-linear transition-all duration-150 ${
+      className={`md:w-150 bg-light-buttons dark:bg-dark-buttons rounded-md border-2 p-4 transition-all duration-150 ease-linear ${
         active
           ? "border-light-main dark:border-dark-main"
           : "border-transparent"
       }`}
     >
-      <div className="text-lg font-bold mb-4">{name}</div>
+      <div className="mb-4 text-lg font-bold">{name}</div>
       <div className="flex">
         <div>
-          <div className="text-sm text-light-text dark:text-dark-text font-semibold">
+          <div className="text-light-text dark:text-dark-text text-sm font-semibold">
             Players: {playerCount}
           </div>
           {!active && (
-            <div className="text-sm text-light-text dark:text-dark-text font-semibold">
+            <div className="text-light-text dark:text-dark-text text-sm font-semibold">
               Stories: {storyCount}
             </div>
           )}

@@ -25,7 +25,7 @@ const Navbar = () => {
           </a>
           <div className="hidden md:flex">
             <span className="px-2">|</span>
-            <div className="font-bold pb-2">STORY ESTIMATOR</div>
+            <div className="pb-2 font-bold">STORY ESTIMATOR</div>
           </div>
         </div>
         <div className="ml-auto flex space-x-4">

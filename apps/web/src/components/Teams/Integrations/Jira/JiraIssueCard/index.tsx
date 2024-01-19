@@ -11,14 +11,14 @@ const JiraIssueCard = ({ issue, selected }: JiraIssueCardProps) => {
   const { key, priority, summary, type } = issue;
   return (
     <div
-      className={`p-2 w-full rounded-md border bg-light-panels dark:bg-dark-panels ${
+      className={`bg-light-panels dark:bg-dark-panels w-full rounded-md border p-2 ${
         selected
           ? "border-light-border-color dark:border-dark-border-color"
           : "border-light-buttons dark:border-dark-buttons"
       }`}
     >
-      <div className="grid grid-cols-1 w-full">
-        <div className="flex space-x-0 md:space-x-2 items-center">
+      <div className="grid w-full grid-cols-1">
+        <div className="flex items-center space-x-0 md:space-x-2">
           <img
             height={24}
             width={24}
@@ -26,7 +26,7 @@ const JiraIssueCard = ({ issue, selected }: JiraIssueCardProps) => {
             alt="Issue type icon"
             className="hidden md:block"
           />
-          <div className="hidden md:flex ml-auto">
+          <div className="ml-auto hidden md:flex">
             <img
               height={24}
               width={24}
@@ -34,7 +34,7 @@ const JiraIssueCard = ({ issue, selected }: JiraIssueCardProps) => {
               alt="Issue priority icon"
             />
           </div>
-          <div className="hidden md:block font-semibold text-light-text dark:text-dark-text">
+          <div className="text-light-text dark:text-dark-text hidden font-semibold md:block">
             {key}
           </div>
           <div className="font-semibold">{summary}</div>
@@ -47,10 +47,10 @@ const JiraIssueCard = ({ issue, selected }: JiraIssueCardProps) => {
             alt="Issue type icon"
             className="block md:hidden"
           />
-          <div className="block md:hidden mx-2 font-bold text-light-text dark:text-dark-text">
+          <div className="text-light-text dark:text-dark-text mx-2 block font-bold md:hidden">
             {key}
           </div>
-          <div className="flex md:hidden ml-auto">
+          <div className="ml-auto flex md:hidden">
             <img
               height={24}
               width={24}

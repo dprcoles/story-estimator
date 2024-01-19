@@ -22,7 +22,7 @@ const PlayerVoteIcon = ({
 
   return (
     <div
-      className={`rounded-full w-10 h-10 border-2 border-transparent flex justify-center items-center bg-light-hover dark:bg-dark-hover ${
+      className={`bg-light-hover dark:bg-dark-hover flex h-10 w-10 items-center justify-center rounded-full border-2 border-transparent ${
         vote ? "border-light-main dark:border-dark-main" : ""
       }`}
     >

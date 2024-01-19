@@ -28,20 +28,20 @@ const Modal = ({
         <>
           <div
             className={classNames(
-              "justify-center max-h-screen mx-auto items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none",
+              "fixed inset-0 z-50 mx-auto flex max-h-screen items-center justify-center overflow-y-auto overflow-x-hidden outline-none focus:outline-none",
               size === "sm" && "max-w-xl",
               size === "md" && "max-w-3xl",
               size === "lg" && "max-w-5xl",
             )}
           >
             <div className="my-6 min-w-full">
-              <div className="min-h-full border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-light-panels dark:bg-dark-panels outline-none focus:outline-none">
-                <div className="flex items-baseline justify-between p-5 border-b border-solid border-light-buttons dark:border-dark-buttons rounded-t">
+              <div className="bg-light-panels dark:bg-dark-panels relative flex min-h-full w-full flex-col rounded-lg border-0 shadow-lg outline-none focus:outline-none">
+                <div className="border-light-buttons dark:border-dark-buttons flex items-baseline justify-between rounded-t border-b border-solid p-5">
                   <div className="text-lg font-medium">{heading}</div>
                   {showClose ? (
                     <button
                       onClick={handleClose}
-                      className="ml-auto rounded-full hover:bg-light-hover dark:hover:bg-dark-hover w-10 h-10 flex items-center justify-center"
+                      className="hover:bg-light-hover dark:hover:bg-dark-hover ml-auto flex h-10 w-10 items-center justify-center rounded-full"
                     >
                       <span className="text-light-text dark:text-dark-text text-2xl">
                         <IoMdClose />
@@ -50,13 +50,13 @@ const Modal = ({
                   ) : null}
                 </div>
                 <div>{children}</div>
-                <div className="flex items-center justify-end p-6 border-t border-solid border-light-buttons dark:border-dark-buttons rounded-b">
+                <div className="border-light-buttons dark:border-dark-buttons flex items-center justify-end rounded-b border-t border-solid p-6">
                   {footer}
                 </div>
               </div>
             </div>
           </div>
-          <div className="opacity-50 fixed inset-0 z-40 bg-black"></div>
+          <div className="fixed inset-0 z-40 bg-black opacity-50"></div>
         </>
       ) : null}
     </>

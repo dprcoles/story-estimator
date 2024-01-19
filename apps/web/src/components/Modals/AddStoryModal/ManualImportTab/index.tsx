@@ -33,7 +33,7 @@ const ManualImportTab = ({ setStories, stories }: ManualImportTabProps) => {
     <>
       <div className="flex">
         <input
-          className="p-2 mr-4 border w-full md:w-96 bg-light-hover dark:bg-dark-hover border-transparent hover:border-light-border-color dark:hover:border-dark-border-color focus:border-black dark:focus:border-white focus:outline-none rounded-md"
+          className="bg-light-hover dark:bg-dark-hover hover:border-light-border-color dark:hover:border-dark-border-color mr-4 w-full rounded-md border border-transparent p-2 focus:border-black focus:outline-none md:w-96 dark:focus:border-white"
           value={story.description}
           onChange={(e) => handleSetStory(e.target.value, "description")}
           onKeyDown={(e) => e.key === "Enter" && handleAddStory(story)}
@@ -53,7 +53,7 @@ const ManualImportTab = ({ setStories, stories }: ManualImportTabProps) => {
         {stories.map((s) => (
           <div key={s.description} className="flex pb-4">
             <input
-              className="p-2 mr-4 border w-full md:w-96 bg-light-hover dark:bg-dark-hover border-transparent rounded-md"
+              className="bg-light-hover dark:bg-dark-hover mr-4 w-full rounded-md border border-transparent p-2 md:w-96"
               value={s.description}
               disabled
             />

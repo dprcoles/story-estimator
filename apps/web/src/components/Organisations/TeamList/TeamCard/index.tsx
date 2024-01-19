@@ -18,8 +18,8 @@ const TeamCard = ({ team }: TeamCardProps) => {
   };
 
   return (
-    <div className="md:w-150 p-4 bg-light-buttons dark:bg-dark-buttons rounded-md border-2 ease-linear transition-all duration-150 border-transparent">
-      <div className="text-lg font-bold mb-4">{name}</div>
+    <div className="md:w-150 bg-light-buttons dark:bg-dark-buttons rounded-md border-2 border-transparent p-4 transition-all duration-150 ease-linear">
+      <div className="mb-4 text-lg font-bold">{name}</div>
       <div className="flex">
         <div className="ml-auto flex">
           <Button color={"primary"} onClick={handleOnClick}>

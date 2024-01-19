@@ -35,14 +35,14 @@ const SessionSummary = ({ session }: SessionSummaryProps) => {
   return (
     <>
       <div className="p-4 md:p-8">
-        <div className="md:flex mb-8">
+        <div className="mb-8 md:flex">
           <Button onClick={handleGoBack}>
             <div className="flex items-center">
               <FaChevronLeft className="mr-2" />{" "}
               {team.id !== DEFAULT_TEAM_ID ? "Team" : "Home"} Page
             </div>
           </Button>
-          <div className="mt-4 md:mt-0 md:ml-4">
+          <div className="mt-4 md:ml-4 md:mt-0">
             <Button onClick={() => setIsSessionModalOpen(true)} color="primary">
               <div className="flex items-center">
                 <FaPlus className="mr-2" /> Create New Session
@@ -52,7 +52,7 @@ const SessionSummary = ({ session }: SessionSummaryProps) => {
         </div>
         <h1 className="pb-4">{name}</h1>
         <div className="text-light-text dark:text-dark-text pb-4"></div>
-        <div className="grid md:grid-cols-3 py-8">
+        <div className="grid py-8 md:grid-cols-3">
           <div className="md:col-span-2">
             <History
               stories={stories.map((x) => ({

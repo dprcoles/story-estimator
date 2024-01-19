@@ -61,7 +61,7 @@ const MainPanel = ({
   };
 
   return (
-    <div className="bg-light-panels dark:bg-dark-panels rounded-lg py-4 px-8 main-panel__container">
+    <div className="bg-light-panels dark:bg-dark-panels main-panel__container rounded-lg px-8 py-4">
       <div className="flex pb-2">
         <div className="ml-auto pb-2">
           {isAdmin && (
@@ -69,12 +69,12 @@ const MainPanel = ({
               <Tag color="primary">{ADMIN_ICON} Room Admin</Tag>
               <button
                 onClick={() => setIsSettingsModalOpen(true)}
-                className="rounded-full hover:bg-light-hover dark:hover:bg-dark-hover w-10 h-10 flex justify-center items-center"
+                className="hover:bg-light-hover dark:hover:bg-dark-hover flex h-10 w-10 items-center justify-center rounded-full"
                 disabled={
                   countdown.status === CountdownStatus.STARTED || showVotes
                 }
               >
-                <FiSettings className="text-light-text dark:text-dark-text text-xl m-0" />
+                <FiSettings className="text-light-text dark:text-dark-text m-0 text-xl" />
               </button>
             </div>
           )}
@@ -90,7 +90,7 @@ const MainPanel = ({
       {hasStories && !noActiveStories && (
         <>
           <div className="flex">
-            <div className="space-x-4 mb-8">
+            <div className="mb-8 space-x-4">
               <Tabs tabs={tabs} activeTab={tab} setActiveTab={setTab} />
             </div>
             <div className="ml-auto">

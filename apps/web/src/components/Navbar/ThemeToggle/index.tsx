@@ -12,12 +12,12 @@ const ThemeToggle = ({ theme, setTheme }: ThemeToggleProps) => {
   const isDark = theme === DARK_THEME;
 
   return (
-    <div className="flex space-x-2 bg-light-hover dark:bg-dark-hover rounded-full p-1">
+    <div className="bg-light-hover dark:bg-dark-hover flex space-x-2 rounded-full p-1">
       <button
-        className={`text-sm font-medium px-4 py-2 rounded-full border ease-linear transition-all duration-150 ${
+        className={`rounded-full border px-4 py-2 text-sm font-medium transition-all duration-150 ease-linear ${
           !isDark
             ? "border-light-border-color dark:border-dark-border-color bg-light-buttons dark:bg-dark-buttons"
-            : "border-transparent hover:bg-light-buttons dark:hover:bg-dark-buttons"
+            : "hover:bg-light-buttons dark:hover:bg-dark-buttons border-transparent"
         }`}
         disabled={!isDark}
         onClick={() => setTheme(LIGHT_THEME)}
@@ -25,10 +25,10 @@ const ThemeToggle = ({ theme, setTheme }: ThemeToggleProps) => {
         <FaSun />
       </button>
       <button
-        className={`text-sm font-medium px-4 py-2 rounded-full border ease-linear transition-all duration-150 ${
+        className={`rounded-full border px-4 py-2 text-sm font-medium transition-all duration-150 ease-linear ${
           isDark
             ? "border-light-border-color dark:border-dark-border-color bg-light-buttons dark:bg-dark-buttons"
-            : "border-transparent hover:bg-light-buttons dark:hover:bg-dark-buttons"
+            : "hover:bg-light-buttons dark:hover:bg-dark-buttons border-transparent"
         }`}
         disabled={isDark}
         onClick={() => setTheme(DARK_THEME)}

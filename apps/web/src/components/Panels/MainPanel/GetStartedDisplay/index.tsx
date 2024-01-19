@@ -33,14 +33,14 @@ const GetStartedDisplay = ({
 
   return (
     <motion.div className="p-8" variants={STAGGER}>
-      <div className="max-w-xl mx-auto">
+      <div className="mx-auto max-w-xl">
         <motion.div
           variants={FADE_DOWN}
-          className="flex justify-center items-center mb-8 text-8xl"
+          className="mb-8 flex items-center justify-center text-8xl"
         >
           <GiCardRandom />
         </motion.div>
-        <motion.div variants={FADE_UP} className="text-center mb-16">
+        <motion.div variants={FADE_UP} className="mb-16 text-center">
           <h1>Let's get started!</h1>
         </motion.div>
         <motion.div variants={FADE_UP}>

@@ -34,12 +34,12 @@ const StoryDescription = ({
         {showInput ? (
           <>
             <input
-              className="text-black dark:text-white p-2 bg-light-panels dark:bg-dark-panels focus:outline-none rounded-xl border-2 border-light-border-hover dark:border-dark-border-hover"
+              className="bg-light-panels dark:bg-dark-panels border-light-border-hover dark:border-dark-border-hover rounded-xl border-2 p-2 text-black focus:outline-none dark:text-white"
               value={localDescription}
               onChange={(e) => setLocalDescription(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSetDescription()}
             />
-            <div className="pt-2 space-x-2">
+            <div className="space-x-2 pt-2">
               <IconButton icon={<FaCheck />} onClick={handleSetDescription} />
               <IconButton
                 icon={<FaTimes />}
@@ -49,7 +49,7 @@ const StoryDescription = ({
           </>
         ) : (
           <span
-            className={`font-bold rounded-md hover:bg-light-hover dark:hover:bg-dark-hover p-1 ${
+            className={`hover:bg-light-hover dark:hover:bg-dark-hover rounded-md p-1 font-bold ${
               active
                 ? "text-black dark:text-white"
                 : "text-light-text dark:text-dark-text"

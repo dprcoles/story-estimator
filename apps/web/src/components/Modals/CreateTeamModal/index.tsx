@@ -57,10 +57,10 @@ const CreateTeamModal = ({ isOpen, setIsOpen }: CreateTeamModalProps) => {
         </Button>
       }
     >
-      <div className="py-4 px-6 flex-auto">
+      <div className="flex-auto px-6 py-4">
         <div className="py-1">Team Name</div>
         <input
-          className="p-4 mb-4 border bg-light-hover dark:bg-dark-hover border-transparent hover:border-dark-border-color dark:hover:border-dark-border-color focus:border-black dark:focus:border-white focus:outline-none w-full md:w-96 rounded-md"
+          className="bg-light-hover dark:bg-dark-hover hover:border-dark-border-color dark:hover:border-dark-border-color mb-4 w-full rounded-md border border-transparent p-4 focus:border-black focus:outline-none md:w-96 dark:focus:border-white"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Enter a name for your team"

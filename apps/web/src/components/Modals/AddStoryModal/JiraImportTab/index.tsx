@@ -86,7 +86,7 @@ const JiraImportTab = ({
         <div className="flex-auto">
           <div className="flex">
             <select
-              className="p-2 mr-4 w-full md:w-96 rounded-md border border-light-border-color dark:border-dark-border-color bg-light-panels dark:bg-dark-panels"
+              className="border-light-border-color dark:border-dark-border-color bg-light-panels dark:bg-dark-panels mr-4 w-full rounded-md border p-2 md:w-96"
               value={selectedQueryId.toString()}
               onChange={(e) => setSelectedQueryId(parseInt(e.target.value, 10))}
             >
@@ -106,7 +106,7 @@ const JiraImportTab = ({
           </div>
         </div>
       )}
-      <div className="p-4 overflow-y-auto max-h-96">
+      <div className="max-h-96 overflow-y-auto p-4">
         {isLoadingIssues && <Loader />}
         {!isLoadingIssues &&
           issues.length > 0 &&

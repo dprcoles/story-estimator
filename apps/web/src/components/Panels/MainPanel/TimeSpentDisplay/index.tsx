@@ -23,9 +23,9 @@ const TimeSpentDisplay = ({
   }, 1000);
 
   return (
-    <div className="align-middle items-center py-2 text-light-text dark:text-dark-text">
+    <div className="text-light-text dark:text-dark-text items-center py-2 align-middle">
       Time Spent:
-      <div className="font-bold text-2xl text-black dark:text-white">
+      <div className="text-2xl font-bold text-black dark:text-white">
         {timeSpent}
       </div>
     </div>

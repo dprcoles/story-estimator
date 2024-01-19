@@ -43,7 +43,7 @@ const InfoCard = ({ vote, showVotes, players, options }: InfoCardProps) => {
         {(vote || defaultType === PlayerType.Spectator) &&
         countdown.status === CountdownStatus.STOPPED &&
         !showVotes ? (
-          <div className="flex space-x-4 ml-auto">
+          <div className="ml-auto flex space-x-4">
             <Button
               onClick={() => emit(EmitEvent.Show, { type: ShowType.Hurry })}
             >
@@ -68,7 +68,7 @@ const InfoCard = ({ vote, showVotes, players, options }: InfoCardProps) => {
                   ? "Story Title:"
                   : "Revealing votes in:"}
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 space-y-4 items-baseline">
+              <div className="grid grid-cols-1 items-baseline space-y-4 md:grid-cols-2">
                 {countdown.status === CountdownStatus.STOPPED ? (
                   <div className="text-4xl font-bold">
                     {currentStory?.description}
@@ -76,7 +76,7 @@ const InfoCard = ({ vote, showVotes, players, options }: InfoCardProps) => {
                 ) : (
                   <Countdown seconds={countdown.timer} />
                 )}
-                <div className="md:ml-auto text-4xl font-bold">
+                <div className="text-4xl font-bold md:ml-auto">
                   {playersVotedNumber} / {voters} Voted
                 </div>
               </div>

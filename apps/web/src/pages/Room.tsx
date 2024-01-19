@@ -23,7 +23,7 @@ const RoomPage = () => {
 
   return (
     <RoomProvider>
-      <motion.div variants={FADE_IN} className="max-h-full h-[90vh]">
+      <motion.div variants={FADE_IN} className="h-[90vh] max-h-full">
         <RoomSettingsModal
           isOpen={isSettingsModalOpen}
           setIsOpen={setIsSettingsModalOpen}
@@ -32,7 +32,7 @@ const RoomPage = () => {
           isOpen={isStoryModalOpen}
           setIsOpen={setIsStoryModalOpen}
         />
-        <div className="lg:flex md:space-x-2 min-h-full">
+        <div className="min-h-full md:space-x-2 lg:flex">
           {room.stories.length > 0 && (
             <div
               className={classNames("lg:max-w-1xl lg:block", {
@@ -44,7 +44,7 @@ const RoomPage = () => {
             </div>
           )}
           <div
-            className={classNames("lg:w-full lg:block", {
+            className={classNames("lg:block lg:w-full", {
               block: activeMobileTab === MobileTabBarType.Estimate,
               hidden: activeMobileTab !== MobileTabBarType.Estimate,
             })}

@@ -7,8 +7,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["IBM Plex Sans", ...defaultTheme.fontFamily.sans],
-        heading: ["Poppins", ...defaultTheme.fontFamily.sans],
+        sans: ["Inter", ...defaultTheme.fontFamily.sans],
+        heading: ["Inter", ...defaultTheme.fontFamily.sans],
       },
       colors: {
         dark: {

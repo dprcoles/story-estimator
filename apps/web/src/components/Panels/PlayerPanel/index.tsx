@@ -13,14 +13,14 @@ const PlayerPanel = () => {
   const currentPlayer = players.find((p) => p.id === player.id);
 
   return (
-    <div className="bg-light-panels dark:bg-dark-panels min-h-full h-96 rounded-lg p-4">
-      <div className="md:w-72 h-full">
+    <div className="bg-light-panels dark:bg-dark-panels h-96 min-h-full rounded-lg p-4">
+      <div className="h-full md:w-72">
         <div className="pb-2">
-          <div className="text-md font-medium text-light-text dark:text-dark-text">
+          <div className="text-md text-light-text dark:text-dark-text font-medium">
             Players
           </div>
         </div>
-        <div className="pr-2 space-y-2 overflow-y-scroll overflow-x-hidden panel__card-container">
+        <div className="panel__card-container space-y-2 overflow-x-hidden overflow-y-scroll pr-2">
           {players
             .sort((a, b) => a.name.localeCompare(b.name))
             .sort((a) => (a.defaultType === PlayerType.Voter ? -1 : 1))

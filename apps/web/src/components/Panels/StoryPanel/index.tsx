@@ -64,15 +64,15 @@ const StoryPanel = ({ setIsStoryModalOpen }: StoryPanelProps) => {
         setIsOpen={setIsModalOpen}
         onSubmit={handleOnIncompleteStorySubmit}
       />
-      <div className="bg-light-panels dark:bg-dark-panels min-h-full h-96 rounded-lg p-4">
+      <div className="bg-light-panels dark:bg-dark-panels h-96 min-h-full rounded-lg p-4">
         <div className="flex items-baseline pb-2">
-          <div className="text-md font-medium text-light-text dark:text-dark-text">
+          <div className="text-md text-light-text dark:text-dark-text font-medium">
             Stories
           </div>
           {isAdmin && (
             <button
               onClick={() => setIsStoryModalOpen(true)}
-              className="ml-auto rounded-full hover:bg-light-hover dark:hover:bg-dark-hover w-10 h-10 items-center"
+              className="hover:bg-light-hover dark:hover:bg-dark-hover ml-auto h-10 w-10 items-center rounded-full"
             >
               <span className="text-light-text dark:text-dark-text text-2xl">
                 +
@@ -80,7 +80,7 @@ const StoryPanel = ({ setIsStoryModalOpen }: StoryPanelProps) => {
             </button>
           )}
         </div>
-        <div className="pr-2 space-y-2 overflow-y-scroll overflow-x-hidden panel__card-container">
+        <div className="panel__card-container space-y-2 overflow-x-hidden overflow-y-scroll pr-2">
           <StoryCardContainer
             handleDeleteStory={handleDeleteStory}
             handleSaveStory={handleSaveStory}

@@ -15,9 +15,9 @@ const Organisation = () => {
   return (
     <OrganisationProvider>
       <CreateTeamModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
-      <motion.div variants={FADE_IN} className="max-h-full h-screen">
+      <motion.div variants={FADE_IN} className="h-screen max-h-full">
         <div className="px-2">
-          <div className="bg-light-panels dark:bg-dark-panels rounded-lg py-4 px-8 main-panel__container">
+          <div className="bg-light-panels dark:bg-dark-panels main-panel__container rounded-lg px-8 py-4">
             <div className="p-8">
               <motion.h1 variants={FADE_FROM_LEFT} className="mb-8">
                 {organisation.name}

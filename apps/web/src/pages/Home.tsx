@@ -31,7 +31,7 @@ const Home = () => {
   return (
     <>
       <motion.div variants={FADE_IN}>
-        <div className="flex max-w-2xl mx-auto py-8 h-[90vh]">
+        <div className="mx-auto flex h-[90vh] max-w-2xl py-8">
           <div className="m-auto grid grid-flow-row grid-cols-2">
             <div className="text-4xl">
               A{" "}
@@ -46,7 +46,7 @@ const Home = () => {
               className="flex justify-end"
             >
               <button
-                className="p-4 px-16 bg-light-main dark:bg-dark-main text-white dark:text-black rounded-md text-2xl font-bold shadow-lg ease-linear transition-all duration-150"
+                className="bg-light-main dark:bg-dark-main rounded-md p-4 px-16 text-2xl font-bold text-white shadow-lg transition-all duration-150 ease-linear dark:text-black"
                 onClick={start}
                 disabled={isJoining}
               >

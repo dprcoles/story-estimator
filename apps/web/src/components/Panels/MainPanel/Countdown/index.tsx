@@ -13,7 +13,7 @@ const Countdown = ({ seconds }: CountdownProps) => {
       }}
       transition={{ repeat: Infinity, duration: 1, type: "spring" }}
     >
-      <div className="text-black dark:text-white text-center text-7xl font-bold">
+      <div className="text-center text-7xl font-bold text-black dark:text-white">
         {seconds}
       </div>
     </motion.div>

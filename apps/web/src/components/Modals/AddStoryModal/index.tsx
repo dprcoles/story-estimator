@@ -62,13 +62,13 @@ const AddStoryModal = ({ isOpen, setIsOpen }: AddStoryModalProps) => {
       }
     >
       <div
-        className={classNames("grid m-2 grid-cols-2", {
+        className={classNames("m-2 grid grid-cols-2", {
           hidden: !Boolean(integrations?.jira),
         })}
       >
         <Tabs tabs={tabs} activeTab={tab} setActiveTab={setTab} fullWidth />
       </div>
-      <div className="p-4 h-72 overflow-y-scroll">
+      <div className="h-72 overflow-y-scroll p-4">
         <div className={tab !== AddStoryTab.Manual ? "hidden" : ""}>
           <ManualImportTab stories={stories} setStories={setStories} />
         </div>

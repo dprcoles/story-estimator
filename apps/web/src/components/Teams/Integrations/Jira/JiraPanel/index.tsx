@@ -12,12 +12,12 @@ interface JiraPanelProps {
 const JiraPanel = ({ isEnabled, setView }: JiraPanelProps) => {
   return (
     <>
-      <div className="flex bg-light-buttons dark:bg-dark-buttons rounded-md p-4">
+      <div className="bg-light-buttons dark:bg-dark-buttons flex rounded-md p-4">
         <div className="p-2">
           <JiraLogo />
         </div>
         <div>
-          <div className="text-2xl font-bold mb-1">Jira</div>
+          <div className="mb-1 text-2xl font-bold">Jira</div>
           <div className="flex">
             <Button
               disabled={!isEnabled}

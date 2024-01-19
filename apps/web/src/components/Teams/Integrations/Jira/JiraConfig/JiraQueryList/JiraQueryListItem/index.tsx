@@ -42,9 +42,9 @@ const JiraQueryListItem = ({ integrationId, query }: JiraQueryListProps) => {
   const { name, query: jql } = query;
   return (
     <div className="bg-light-buttons dark:bg-dark-buttons rounded-md p-4">
-      <div className="flex mb-4">
+      <div className="mb-4 flex">
         <div className="text-xl font-bold">{name}</div>
-        <div className="flex ml-auto">
+        <div className="ml-auto flex">
           <Button
             onClick={() => {
               showResults ? handleOnHide() : handleOnTest();
@@ -55,23 +55,23 @@ const JiraQueryListItem = ({ integrationId, query }: JiraQueryListProps) => {
           </Button>
         </div>
       </div>
-      <div className="overflow-x-auto rounded-md p-2 border border-light-border-color dark:border-dark-border-color bg-light-hover dark:bg-dark-hover">
+      <div className="border-light-border-color dark:border-dark-border-color bg-light-hover dark:bg-dark-hover overflow-x-auto rounded-md border p-2">
         <pre>{jql}</pre>
       </div>
       {showResults ? (
-        <div className="mt-4 py-2 border-t border-light-border-color dark:border-dark-border-color">
+        <div className="border-light-border-color dark:border-dark-border-color mt-4 border-t py-2">
           <div className="flex items-baseline">
             <div className="text-lg font-bold">Results</div>
             <button
               onClick={fetchResults}
-              className="ml-auto rounded-full hover:bg-light-hover dark:hover:bg-dark-hover w-10 h-10 items-center"
+              className="hover:bg-light-hover dark:hover:bg-dark-hover ml-auto h-10 w-10 items-center rounded-full"
             >
               <span className="text-light-text dark:text-dark-text text-2xl">
                 <AiOutlineReload className="mx-auto" />
               </span>
             </button>
           </div>
-          <div className="py-2 overflow-y-auto max-h-96">
+          <div className="max-h-96 overflow-y-auto py-2">
             {isLoading ? (
               <Loader />
             ) : (

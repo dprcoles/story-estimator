@@ -35,7 +35,7 @@ const History = ({ stories }: HistoryProps) => {
 
   if (completeStories.length === 0)
     return (
-      <div className="text-center text-light-text dark:text-dark-text">
+      <div className="text-light-text dark:text-dark-text text-center">
         <div className="flex justify-center align-middle">
           <MdOutlineHistory size={150} className="opacity-5" />
         </div>
@@ -45,19 +45,19 @@ const History = ({ stories }: HistoryProps) => {
 
   return (
     <div>
-      <div className="text-2xl font-medium pb-2">
+      <div className="pb-2 text-2xl font-medium">
         {completeStories.length} / {stories.length} Stories Estimated
       </div>
-      <table className="table-auto w-full">
+      <table className="w-full table-auto">
         <thead className="text-light-text dark:text-dark-text font-medium">
           <tr>
-            <th className="text-left border-b border-light-border-color dark:border-dark-border-color py-2">
+            <th className="border-light-border-color dark:border-dark-border-color border-b py-2 text-left">
               Description
             </th>
-            <th className="text-left border-b border-light-border-color dark:border-dark-border-color py-2">
+            <th className="border-light-border-color dark:border-dark-border-color border-b py-2 text-left">
               Estimate
             </th>
-            <th className="text-left border-b border-light-border-color dark:border-dark-border-color py-2">
+            <th className="border-light-border-color dark:border-dark-border-color border-b py-2 text-left">
               Time spent (mm:ss)
             </th>
           </tr>
@@ -79,13 +79,13 @@ const History = ({ stories }: HistoryProps) => {
             variants={FADE_IN}
             className="font-bold text-black dark:text-white"
           >
-            <td className="py-2 border-t-2 border-light-border-color dark:border-dark-border-color">
+            <td className="border-light-border-color dark:border-dark-border-color border-t-2 py-2">
               Total
             </td>
-            <td className="py-2 border-t-2 border-light-border-color dark:border-dark-border-color">
+            <td className="border-light-border-color dark:border-dark-border-color border-t-2 py-2">
               {totalEstimate}
             </td>
-            <td className="py-2 border-t-2 border-light-border-color dark:border-dark-border-color">
+            <td className="border-light-border-color dark:border-dark-border-color border-t-2 py-2">
               {getTotalTimeSpent()}
             </td>
           </motion.tr>

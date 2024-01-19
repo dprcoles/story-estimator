@@ -94,30 +94,30 @@ const PlayerModal = ({
       >
         <div className="pt-4">
           <button
-            className="mx-auto user-modal__emoji-button rounded-full w-16 h-16 flex justify-center items-center bg-light-hover dark:bg-dark-hover hover:bg-opacity-25"
+            className="user-modal__emoji-button bg-light-hover dark:bg-dark-hover mx-auto flex h-16 w-16 items-center justify-center rounded-full hover:bg-opacity-25"
             onClick={() => setIsEmojiPickerOpen(true)}
           >
             <span className="emoji text-3xl font-bold">{emojiValue}</span>
-            <span className="opacity-0 edit-icon absolute">
+            <span className="edit-icon absolute opacity-0">
               <MdOutlineEdit size={25} />
             </span>
           </button>
         </div>
-        <div className="flex py-4 px-6 items-center">
+        <div className="flex items-center px-6 py-4">
           <input
-            className="mx-auto p-4 border bg-light-hover dark:bg-dark-hover border-transparent hover:border-dark-border-color dark:hover:border-dark-border-color focus:border-black dark:focus:border-white focus:outline-none w-full md:w-96 rounded-md"
+            className="bg-light-hover dark:bg-dark-hover hover:border-dark-border-color dark:hover:border-dark-border-color mx-auto w-full rounded-md border border-transparent p-4 focus:border-black focus:outline-none md:w-96 dark:focus:border-white"
             value={nameValue}
             onChange={(e) => setNameValue(e.target.value)}
             placeholder="Enter your name"
           />
         </div>
-        <div className="flex justify-center pb-4 mx-auto">
-          <div className="flex space-x-2 bg-light-hover dark:bg-dark-hover rounded-full p-1">
+        <div className="mx-auto flex justify-center pb-4">
+          <div className="bg-light-hover dark:bg-dark-hover flex space-x-2 rounded-full p-1">
             <button
-              className={`text-sm font-medium px-4 py-2 rounded-full border ease-linear transition-all duration-150 ${
+              className={`rounded-full border px-4 py-2 text-sm font-medium transition-all duration-150 ease-linear ${
                 typeValue === PlayerType.Voter
                   ? "border-light-border-color dark:border-dark-border-color bg-light-buttons dark:bg-dark-buttons"
-                  : "border-transparent hover:bg-light-buttons dark:hover:bg-dark-buttons"
+                  : "hover:bg-light-buttons dark:hover:bg-dark-buttons border-transparent"
               }`}
               disabled={typeValue === PlayerType.Voter}
               onClick={() => setTypeValue(PlayerType.Voter)}
@@ -125,10 +125,10 @@ const PlayerModal = ({
               Voter
             </button>
             <button
-              className={`text-sm font-medium px-4 py-2 rounded-full border ease-linear transition-all duration-150 ${
+              className={`rounded-full border px-4 py-2 text-sm font-medium transition-all duration-150 ease-linear ${
                 typeValue === PlayerType.Spectator
                   ? "border-light-border-color dark:border-dark-border-color bg-light-buttons dark:bg-dark-buttons"
-                  : "border-transparent hover:bg-light-buttons dark:hover:bg-dark-buttons"
+                  : "hover:bg-light-buttons dark:hover:bg-dark-buttons border-transparent"
               }`}
               disabled={typeValue === PlayerType.Spectator}
               onClick={() => setTypeValue(PlayerType.Spectator)}

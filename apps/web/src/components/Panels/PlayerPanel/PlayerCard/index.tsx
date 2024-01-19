@@ -25,7 +25,7 @@ const PlayerCard = ({
   const { id, name, defaultType, vote } = player;
 
   return (
-    <div className="p-2 flex">
+    <div className="flex p-2">
       <PlayerIcon player={player} />
       <div className="ml-3">
         <div
@@ -37,7 +37,7 @@ const PlayerCard = ({
         >
           {`${name}${admin === id ? ` ${ADMIN_ICON}` : ""}`}
         </div>
-        <div className="text-sm text-light-text dark:text-dark-text">
+        <div className="text-light-text dark:text-dark-text text-sm">
           {defaultType === PlayerType.Voter && vote && <span>Voted</span>}
           {defaultType === PlayerType.Voter && !vote && <span>Voting</span>}
           {defaultType === PlayerType.Spectator && <span>Spectating</span>}

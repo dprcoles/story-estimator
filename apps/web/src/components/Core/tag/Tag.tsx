@@ -14,12 +14,12 @@ const Tag = ({ children, color = "default", fullWidth }: TagProps) => {
     <div className={fullWidth ? "w-full" : ""}>
       <div
         className={classNames(
-          "text-sm font-medium px-4 py-2 rounded-full disabled:opacity-50 ease-linear transition-all duration-150",
+          "rounded-full px-4 py-2 text-sm font-medium transition-all duration-150 ease-linear disabled:opacity-50",
           color === "primary" &&
-            "bg-light-main text-white dark:bg-dark-main dark:text-black",
+            "bg-light-main dark:bg-dark-main text-white dark:text-black",
           color === "danger" && "bg-danger-border text-white",
           color === "default" &&
-            "border border-light-border-color dark:border-dark-border-color",
+            "border-light-border-color dark:border-dark-border-color border",
           fullWidth && "w-full",
         )}
       >

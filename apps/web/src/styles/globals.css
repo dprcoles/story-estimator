@@ -21,14 +21,16 @@
 
 html {
   background-color: var(--background-color);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: "grayscale";
 }
 
 h1 {
-  @apply font-heading text-5xl font-bold;
+  @apply font-heading text-5xl font-black;
 }
 
 h2 {
-  @apply font-heading text-3xl font-bold;
+  @apply font-heading text-3xl font-extrabold;
 }
 
 .emoji-picker__backdrop {
