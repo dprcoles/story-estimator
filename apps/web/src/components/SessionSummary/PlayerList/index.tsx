@@ -21,9 +21,7 @@ const PlayerList = ({ players }: PlayerListProps) => {
               <div className="flex items-center p-2">
                 <PlayerIcon player={p as Player} />
                 <div className="ml-3">
-                  <div className="font-semibold text-black dark:text-white">
-                    {p.name}
-                  </div>
+                  <div className="font-semibold text-black dark:text-white">{p.name}</div>
                 </div>
               </div>
             </div>

@@ -7,9 +7,7 @@ export class GetPlayerQuery {
 }
 
 @QueryHandler(GetPlayerQuery)
-export class GetPlayerHandler
-  implements IQueryHandler<GetPlayerQuery, PlayerDto>
-{
+export class GetPlayerHandler implements IQueryHandler<GetPlayerQuery, PlayerDto> {
   constructor(private repository: PlayerRepository) {}
 
   async execute(query: GetPlayerQuery) {

@@ -36,9 +36,7 @@ export class RoomEventsHandler {
 
     if (!roomId) return;
 
-    const activePlayers = await this.playerGatewayService.getByRoomIdAsync(
-      roomId,
-    );
+    const activePlayers = await this.playerGatewayService.getByRoomIdAsync(roomId);
 
     if (activePlayers.length === 0) {
       await this.roomGatewayService.completeAsync(roomId);
@@ -48,9 +46,7 @@ export class RoomEventsHandler {
   async updateAsync(id: number, isComplete?: boolean) {
     const data = await this.roomGatewayService.getStateAsync(id);
 
-    this.server
-      .to(`${SocketRoomPrefix.Room}${id.toString()}`)
-      .emit(RoomServerEvent.Update, data);
+    this.server.to(`${SocketRoomPrefix.Room}${id.toString()}`).emit(RoomServerEvent.Update, data);
 
     if (isComplete) {
       await this.roomGatewayService.deleteAsync(id);
@@ -60,16 +56,12 @@ export class RoomEventsHandler {
   async resetAsync(id: number) {
     await this.roomGatewayService.resetAsync(id);
 
-    this.server
-      .to(`${SocketRoomPrefix.Room}${id.toString()}`)
-      .emit(RoomServerEvent.Reset);
+    this.server.to(`${SocketRoomPrefix.Room}${id.toString()}`).emit(RoomServerEvent.Reset);
     await this.updateAsync(id);
   }
 
   async showAsync(id: number, type?: ShowType) {
-    this.server
-      .to(`${SocketRoomPrefix.Room}${id.toString()}`)
-      .emit(RoomServerEvent.Show, type);
+    this.server.to(`${SocketRoomPrefix.Room}${id.toString()}`).emit(RoomServerEvent.Show, type);
   }
 
   async voteAsync(id: number, playerId: number, vote: string) {

@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  ParseIntPipe,
-  Patch,
-  Post,
-} from "@nestjs/common";
+import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post } from "@nestjs/common";
 import { PlayerMap } from "src/application/player/mappings/player.mapping";
 import { PlayerService } from "src/application/player/player.service";
 import { PlayerResponse } from "src/application/player/responses/player.response";

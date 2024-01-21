@@ -13,12 +13,10 @@ const PlayerPanel = () => {
   const currentPlayer = players.find((p) => p.id === player.id);
 
   return (
-    <div className="bg-light-panels dark:bg-dark-panels h-96 min-h-full rounded-lg p-4">
+    <div className="h-96 min-h-full rounded-lg bg-slate-100 p-4 dark:bg-zinc-900">
       <div className="h-full md:w-72">
         <div className="pb-2">
-          <div className="text-md text-light-text dark:text-dark-text font-medium">
-            Players
-          </div>
+          <div className="text-md font-medium text-black dark:text-white">Players</div>
         </div>
         <div className="panel__card-container space-y-2 overflow-x-hidden overflow-y-scroll pr-2">
           {players

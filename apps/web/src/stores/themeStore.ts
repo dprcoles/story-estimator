@@ -5,9 +5,7 @@ import { DARK_THEME, LIGHT_THEME } from "@/utils/constants";
 
 export const useThemeStore = () => {
   const getSystemTheme = () =>
-    window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? DARK_THEME
-      : LIGHT_THEME;
+    window.matchMedia("(prefers-color-scheme: dark)").matches ? DARK_THEME : LIGHT_THEME;
 
   const [theme, setThemeState] = useState(
     window.localStorage.getItem(StorageItem.Theme) ?? getSystemTheme(),

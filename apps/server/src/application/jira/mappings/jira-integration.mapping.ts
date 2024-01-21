@@ -22,9 +22,7 @@ export class JiraIntegrationMap extends Mapper<JiraIntegration> {
     };
   }
 
-  public static toIntegrationResponse(
-    domain: JiraIntegration,
-  ): GetJiraIntegrationResponse {
+  public static toIntegrationResponse(domain: JiraIntegration): GetJiraIntegrationResponse {
     return {
       id: domain.id,
       configuredById: domain.configuredById,

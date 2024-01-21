@@ -1,6 +1,5 @@
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import React from "react";
 
 import { useThemeStore } from "@/stores/themeStore";
 
@@ -21,14 +20,8 @@ const EmojiPicker = ({ onSelect, isOpen, setIsOpen }: EmojiPickerProps) => {
   return (
     <>
       {isOpen ? (
-        <div
-          className="emoji-picker__backdrop"
-          onClick={() => setIsOpen(false)}
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="emoji-picker__content"
-          >
+        <div className="emoji-picker__backdrop" onClick={() => setIsOpen(false)}>
+          <div onClick={(e) => e.stopPropagation()} className="emoji-picker__content">
             <Picker
               data={data}
               theme={theme as EmojiPickerTheme}

@@ -20,9 +20,7 @@ export class JiraController {
   }
 
   @Get("query")
-  async getIssuesByQuery(
-    @Query() request: GetJiraIssuesRequest,
-  ): Promise<GetJiraIssuesResponse> {
+  async getIssuesByQuery(@Query() request: GetJiraIssuesRequest): Promise<GetJiraIssuesResponse> {
     const response = await this.jiraService.getIssuesByQueryAsync(
       request.integrationId,
       request.queryId,

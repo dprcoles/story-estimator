@@ -7,9 +7,7 @@ export class GetTeamByAliasQuery {
 }
 
 @QueryHandler(GetTeamByAliasQuery)
-export class GetTeamByAliasHandler
-  implements IQueryHandler<GetTeamByAliasQuery, TeamDto>
-{
+export class GetTeamByAliasHandler implements IQueryHandler<GetTeamByAliasQuery, TeamDto> {
   constructor(private repository: TeamRepository) {}
 
   async execute(query: GetTeamByAliasQuery) {

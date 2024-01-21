@@ -17,14 +17,21 @@ const Organisation = () => {
       <CreateTeamModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
       <motion.div variants={FADE_IN} className="h-screen max-h-full">
         <div className="px-2">
-          <div className="bg-light-panels dark:bg-dark-panels main-panel__container rounded-lg px-8 py-4">
+          <div className="main-panel__container rounded-lg bg-slate-100 px-8 py-4 dark:bg-zinc-900">
             <div className="p-8">
               <motion.h1 variants={FADE_FROM_LEFT} className="mb-8">
-                {organisation.name}
+                {organisation.name.split(" ").map((word, i) => (
+                  <span
+                    key={`${word}-${i}`}
+                    className="bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent dark:from-red-600 dark:to-pink-500"
+                  >
+                    {word}{" "}
+                  </span>
+                ))}
               </motion.h1>
               <div className="my-8">
                 <motion.div variants={FADE_FROM_LEFT} className="mb-4">
-                  <Button color="primary" onClick={() => setIsModalOpen(true)}>
+                  <Button variant="default" onClick={() => setIsModalOpen(true)}>
                     Create Team
                   </Button>
                 </motion.div>

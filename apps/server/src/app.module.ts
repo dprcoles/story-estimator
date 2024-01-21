@@ -5,12 +5,7 @@ import { TeamGatewayModule } from "src/socket/team/team.module";
 import { ApiModule } from "./api/api.module";
 
 @Module({
-  imports: [
-    ApiModule,
-    PlayerGatewayModule,
-    RoomGatewayModule,
-    TeamGatewayModule,
-  ],
+  imports: [ApiModule, PlayerGatewayModule, RoomGatewayModule, TeamGatewayModule],
   providers: [],
 })
 export class AppModule {}

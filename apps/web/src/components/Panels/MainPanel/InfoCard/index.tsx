@@ -29,13 +29,9 @@ const InfoCard = ({ vote, showVotes, players, options }: InfoCardProps) => {
 
   const currentStory = stories.find((s) => s.active);
 
-  const playersVoted = players.filter(
-    (x) => x.vote && x.defaultType === PlayerType.Voter,
-  );
+  const playersVoted = players.filter((x) => x.vote && x.defaultType === PlayerType.Voter);
   const playersVotedNumber = playersVoted.length;
-  const voters = players.filter(
-    (x) => x.defaultType === PlayerType.Voter,
-  ).length;
+  const voters = players.filter((x) => x.defaultType === PlayerType.Voter).length;
 
   return (
     <div className="mx-auto">
@@ -44,14 +40,10 @@ const InfoCard = ({ vote, showVotes, players, options }: InfoCardProps) => {
         countdown.status === CountdownStatus.STOPPED &&
         !showVotes ? (
           <div className="ml-auto flex space-x-4">
-            <Button
-              onClick={() => emit(EmitEvent.Show, { type: ShowType.Hurry })}
-            >
+            <Button onClick={() => emit(EmitEvent.Show, { type: ShowType.Hurry })}>
               Hurry other voters
             </Button>
-            <Button
-              onClick={() => emit(EmitEvent.Show, { type: ShowType.Force })}
-            >
+            <Button onClick={() => emit(EmitEvent.Show, { type: ShowType.Force })}>
               Force show votes
             </Button>
           </div>
@@ -63,16 +55,14 @@ const InfoCard = ({ vote, showVotes, players, options }: InfoCardProps) => {
         {!showVotes ? (
           <>
             <div className="w-full">
-              <div className="text-light-text dark:text-dark-text">
+              <div className="text-black dark:text-white">
                 {countdown.status === CountdownStatus.STOPPED
                   ? "Story Title:"
                   : "Revealing votes in:"}
               </div>
               <div className="grid grid-cols-1 items-baseline space-y-4 md:grid-cols-2">
                 {countdown.status === CountdownStatus.STOPPED ? (
-                  <div className="text-4xl font-bold">
-                    {currentStory?.description}
-                  </div>
+                  <div className="text-4xl font-bold">{currentStory?.description}</div>
                 ) : (
                   <Countdown seconds={countdown.timer} />
                 )}

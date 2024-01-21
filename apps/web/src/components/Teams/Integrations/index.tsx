@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { getJiraIntegrationById } from "@/api/integrations";
 import Loader from "@/components/Loader";
-import {
-  IntegrationIds,
-  IntegrationView,
-  JiraIntegration,
-} from "@/types/integrations";
+import { IntegrationIds, IntegrationView, JiraIntegration } from "@/types/integrations";
 
 import JiraConfig from "./Jira/JiraConfig";
 import JiraPanel from "./Jira/JiraPanel";
@@ -40,10 +36,7 @@ const Integrations = ({ integrations }: IntegrationsProps) => {
       {view === IntegrationView.List && (
         <div className="grid grid-cols-1 md:grid-cols-3">
           <div>
-            <JiraPanel
-              isEnabled={Boolean(integrations.jira)}
-              setView={setView}
-            />
+            <JiraPanel isEnabled={Boolean(integrations.jira)} setView={setView} />
           </div>
         </div>
       )}

@@ -6,8 +6,5 @@ export const getTotalTimeSpent = (
   end: number | undefined,
 ) => {
   if (typeof start === "undefined" || typeof end === "undefined") return 0;
-  return (
-    (typeof current === "undefined" ? 0 : current) +
-    Math.floor(end - start) * 1000
-  );
+  return (typeof current === "undefined" ? 0 : current) + Math.floor(end - start) * 1000;
 };

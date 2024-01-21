@@ -34,21 +34,19 @@ const MobileTabBar = ({ activeTab, setActiveTab }: MobileTabBarProps) => {
   ];
 
   return (
-    <div className="border-light-border-color dark:border-dark-border-color fixed bottom-0 z-20 mx-auto w-full min-w-full justify-between border-t">
-      <div className="bg-light-hover dark:bg-dark-hover m-0 flex p-2 py-4">
+    <div className="fixed bottom-0 z-20 mx-auto w-full min-w-full justify-between border-t border-blue-400 dark:border-pink-500">
+      <div className="m-0 flex bg-neutral-200 p-2 py-4 dark:bg-zinc-800">
         {tabs.map((t) => (
           <button
             className={`w-full text-center ${
               t.enum === activeTab
-                ? "text-light-main dark:text-dark-main"
-                : "text-light-text dark:text-dark-text"
+                ? "text-blue-400 dark:text-pink-500"
+                : "text-black dark:text-white"
             }`}
             onClick={() => setActiveTab(t.enum)}
             key={t.enum}
           >
-            <div className="flex items-center justify-center pb-1 text-2xl">
-              {t.icon}
-            </div>
+            <div className="flex items-center justify-center pb-1 text-2xl">{t.icon}</div>
             <div className="text-xs font-medium">{t.title}</div>
           </button>
         ))}

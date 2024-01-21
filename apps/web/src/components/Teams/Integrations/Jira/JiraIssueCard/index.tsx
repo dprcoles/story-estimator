@@ -11,10 +11,8 @@ const JiraIssueCard = ({ issue, selected }: JiraIssueCardProps) => {
   const { key, priority, summary, type } = issue;
   return (
     <div
-      className={`bg-light-panels dark:bg-dark-panels w-full rounded-md border p-2 ${
-        selected
-          ? "border-light-border-color dark:border-dark-border-color"
-          : "border-light-buttons dark:border-dark-buttons"
+      className={`w-full rounded-md border bg-slate-100 p-2 dark:bg-zinc-900 ${
+        selected ? "border-blue-400 dark:border-pink-400" : "border-neutral-100 dark:border-black"
       }`}
     >
       <div className="grid w-full grid-cols-1">
@@ -27,16 +25,9 @@ const JiraIssueCard = ({ issue, selected }: JiraIssueCardProps) => {
             className="hidden md:block"
           />
           <div className="ml-auto hidden md:flex">
-            <img
-              height={24}
-              width={24}
-              src={priority.iconUrl}
-              alt="Issue priority icon"
-            />
+            <img height={24} width={24} src={priority.iconUrl} alt="Issue priority icon" />
           </div>
-          <div className="text-light-text dark:text-dark-text hidden font-semibold md:block">
-            {key}
-          </div>
+          <div className="hidden font-semibold text-black md:block dark:text-white">{key}</div>
           <div className="font-semibold">{summary}</div>
         </div>
         <div className="flex items-center">
@@ -47,16 +38,9 @@ const JiraIssueCard = ({ issue, selected }: JiraIssueCardProps) => {
             alt="Issue type icon"
             className="block md:hidden"
           />
-          <div className="text-light-text dark:text-dark-text mx-2 block font-bold md:hidden">
-            {key}
-          </div>
+          <div className="mx-2 block font-bold text-black md:hidden dark:text-white">{key}</div>
           <div className="ml-auto flex md:hidden">
-            <img
-              height={24}
-              width={24}
-              src={priority.iconUrl}
-              alt="Issue priority icon"
-            />
+            <img height={24} width={24} src={priority.iconUrl} alt="Issue priority icon" />
           </div>
         </div>
       </div>

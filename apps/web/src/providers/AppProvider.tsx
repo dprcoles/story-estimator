@@ -4,7 +4,7 @@ import { io } from "socket.io-client";
 
 import { getPlayer } from "@/api/player";
 import { createSession } from "@/api/session";
-import CreateSessionModal from "@/components/Modals/CreateSessionModal";
+import CreateSessionModal from "@/components/CreateSessionModal";
 import { usePlayerStore } from "@/stores/playerStore";
 import { useSessionStore } from "@/stores/sessionStore";
 import { useSocketStore } from "@/stores/socketStore";
@@ -31,10 +31,7 @@ const AppProvider = ({ children }: PropsWithChildren) => {
       setLoading(false);
     };
 
-    const storedPlayerId = parseInt(
-      localStorage.getItem(StorageItem.PlayerId) || "0",
-      10,
-    );
+    const storedPlayerId = parseInt(localStorage.getItem(StorageItem.PlayerId) || "0", 10);
 
     if (storedPlayerId) {
       fetchPlayer(storedPlayerId);

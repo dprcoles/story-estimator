@@ -6,9 +6,7 @@ export class CompleteSessionCommand {
 }
 
 @CommandHandler(CompleteSessionCommand)
-export class CompleteSessionHandler
-  implements ICommandHandler<CompleteSessionCommand, number>
-{
+export class CompleteSessionHandler implements ICommandHandler<CompleteSessionCommand, number> {
   constructor(private repository: SessionRepository) {}
 
   async execute(command: CompleteSessionCommand) {

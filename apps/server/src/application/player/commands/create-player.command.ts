@@ -12,9 +12,7 @@ export class CreatePlayerCommand {
 }
 
 @CommandHandler(CreatePlayerCommand)
-export class CreatePlayerHandler
-  implements ICommandHandler<CreatePlayerCommand, PlayerDto>
-{
+export class CreatePlayerHandler implements ICommandHandler<CreatePlayerCommand, PlayerDto> {
   constructor(private repository: PlayerRepository) {}
 
   async execute(command: CreatePlayerCommand) {

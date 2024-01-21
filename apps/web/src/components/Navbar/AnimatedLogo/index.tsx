@@ -17,12 +17,7 @@ const AnimatedLogo = ({ theme }: AnimatedLogoProps) => {
   return (
     <>
       {mounted && (
-        <svg
-          width="50"
-          height="24"
-          viewBox="0 0 400 200"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg width="50" height="24" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
           <motion.path
             d="M221 0.5H220.5V1V61V61.5V140.5V141V201V201.5H221H281H281.5H421H421.5V201V141V140.5H421H281.5V61.5H421H421.5V61V1V0.5H421H281.5H281H221Z"
             strokeWidth="5"

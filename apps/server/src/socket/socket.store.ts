@@ -1,16 +1,10 @@
-import {
-  Injectable,
-  OnApplicationBootstrap,
-  OnApplicationShutdown,
-} from "@nestjs/common";
+import { Injectable, OnApplicationBootstrap, OnApplicationShutdown } from "@nestjs/common";
 import { PrismaService } from "src/infrastructure/prisma/prisma.service";
 import { RoomPlayer } from "./player/interfaces/room-player.interface";
 import { Room } from "./room/interfaces/room.interface";
 
 @Injectable()
-export class SocketStore
-  implements OnApplicationShutdown, OnApplicationBootstrap
-{
+export class SocketStore implements OnApplicationShutdown, OnApplicationBootstrap {
   constructor(private prisma: PrismaService) {}
 
   public rooms: Room[] = [];
@@ -43,9 +37,7 @@ export class SocketStore
     console.log("💾 Saving state...");
 
     const rooms = this.rooms.filter((r) => r.active);
-    const players = this.players.filter((p) =>
-      rooms.map((r) => r.id).includes(p.roomId),
-    );
+    const players = this.players.filter((p) => rooms.map((r) => r.id).includes(p.roomId));
 
     const payload = JSON.stringify({
       rooms,

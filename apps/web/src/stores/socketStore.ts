@@ -12,8 +12,7 @@ type SocketStore = {
 export const useSocketStore = create<SocketStore>(
   (set, get): SocketStore => ({
     socket: null,
-    setSocket: (socket: Socket) =>
-      set((state) => ({ ...state, socket, loading: false })),
+    setSocket: (socket: Socket) => set((state) => ({ ...state, socket, loading: false })),
     loading: true,
     setLoading: (loading: boolean) => set((state) => ({ ...state, loading })),
     emit: (event: string, args: any) => get().socket?.emit(event, args),

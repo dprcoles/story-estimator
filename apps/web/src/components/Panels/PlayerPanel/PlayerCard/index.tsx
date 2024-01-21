@@ -15,12 +15,7 @@ interface PlayerCardProps {
   isCurrentPlayer: boolean;
 }
 
-const PlayerCard = ({
-  player,
-  showVote,
-  countdownStatus,
-  isCurrentPlayer,
-}: PlayerCardProps) => {
+const PlayerCard = ({ player, showVote, countdownStatus, isCurrentPlayer }: PlayerCardProps) => {
   const admin = useRoomStore((state) => state.admin);
   const { id, name, defaultType, vote } = player;
 
@@ -30,25 +25,21 @@ const PlayerCard = ({
       <div className="ml-3">
         <div
           className={`font-semibold ${
-            isCurrentPlayer
-              ? "text-light-main dark:text-dark-main"
-              : "text-black dark:text-white"
+            isCurrentPlayer ? "text-blue-400 dark:text-pink-500" : "text-black dark:text-white"
           }`}
         >
           {`${name}${admin === id ? ` ${ADMIN_ICON}` : ""}`}
         </div>
-        <div className="text-light-text dark:text-dark-text text-sm">
+        <div className="text-sm text-black dark:text-white">
           {defaultType === PlayerType.Voter && vote && <span>Voted</span>}
-          {defaultType === PlayerType.Voter && !vote && <span>Voting</span>}
+          {defaultType === PlayerType.Voter && !vote && (
+            <span className="animate-pulse">Voting</span>
+          )}
           {defaultType === PlayerType.Spectator && <span>Spectating</span>}
         </div>
       </div>
       <div className="ml-auto">
-        <PlayerVoteIcon
-          player={player}
-          showVote={showVote}
-          countdownStatus={countdownStatus}
-        />
+        <PlayerVoteIcon player={player} showVote={showVote} countdownStatus={countdownStatus} />
       </div>
     </div>
   );

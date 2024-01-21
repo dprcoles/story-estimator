@@ -41,7 +41,7 @@ const JiraQueryListItem = ({ integrationId, query }: JiraQueryListProps) => {
 
   const { name, query: jql } = query;
   return (
-    <div className="bg-light-buttons dark:bg-dark-buttons rounded-md p-4">
+    <div className="rounded-md bg-neutral-100 p-4 dark:bg-white">
       <div className="mb-4 flex">
         <div className="text-xl font-bold">{name}</div>
         <div className="ml-auto flex">
@@ -49,24 +49,24 @@ const JiraQueryListItem = ({ integrationId, query }: JiraQueryListProps) => {
             onClick={() => {
               showResults ? handleOnHide() : handleOnTest();
             }}
-            color="primary"
+            variant="default"
           >
             {showResults ? "Hide" : "Test"}
           </Button>
         </div>
       </div>
-      <div className="border-light-border-color dark:border-dark-border-color bg-light-hover dark:bg-dark-hover overflow-x-auto rounded-md border p-2">
+      <div className="overflow-x-auto rounded-md border border-blue-400 bg-neutral-200 p-2 dark:border-pink-500 dark:bg-zinc-800">
         <pre>{jql}</pre>
       </div>
       {showResults ? (
-        <div className="border-light-border-color dark:border-dark-border-color mt-4 border-t py-2">
+        <div className="mt-4 border-t border-blue-400 py-2 dark:border-pink-500">
           <div className="flex items-baseline">
             <div className="text-lg font-bold">Results</div>
             <button
               onClick={fetchResults}
-              className="hover:bg-light-hover dark:hover:bg-dark-hover ml-auto h-10 w-10 items-center rounded-full"
+              className="ml-auto h-10 w-10 items-center rounded-full hover:bg-neutral-200 dark:hover:bg-zinc-800"
             >
-              <span className="text-light-text dark:text-dark-text text-2xl">
+              <span className="text-2xl text-black dark:text-white">
                 <AiOutlineReload className="mx-auto" />
               </span>
             </button>

@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 
+import { getJiraIntegrationById, getJiraIssuesByQueryId } from "@/api/integrations";
 import {
-  getJiraIntegrationById,
-  getJiraIssuesByQueryId,
-} from "@/api/integrations";
-import { Button } from "@/components/Core";
+  Button,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/Core";
 import Loader from "@/components/Loader";
 import JiraIssueCard from "@/components/Teams/Integrations/Jira/JiraIssueCard";
 import { JqlQuery } from "@/types/integrations";
@@ -13,16 +17,12 @@ import { Story } from "@/types/story";
 import { DEFAULT_STORY } from "@/utils/constants";
 
 interface JiraImportTabProps {
-  integrationId: number;
+  integrationId?: number;
   setStories: (stories: Story[]) => void;
   isOpen: boolean;
 }
 
-const JiraImportTab = ({
-  integrationId,
-  setStories,
-  isOpen,
-}: JiraImportTabProps) => {
+const JiraImportTab = ({ integrationId, setStories, isOpen }: JiraImportTabProps) => {
   const [isLoadingQueries, setIsLoadingQueries] = useState<boolean>(false);
   const [isLoadingIssues, setIsLoadingIssues] = useState<boolean>(false);
   const [queries, setQueries] = useState<JqlQuery[]>([]);
@@ -31,6 +31,10 @@ const JiraImportTab = ({
   const [selectedIssueKeys, setSelectedIssueKeys] = useState<string[]>([]);
 
   const fetchIssues = async () => {
+    if (!integrationId || !selectedQueryId) {
+      return;
+    }
+
     setIsLoadingIssues(true);
     const res: JiraIssue[] = await getJiraIssuesByQueryId({
       integrationId,
@@ -57,6 +61,10 @@ const JiraImportTab = ({
   };
 
   useEffect(() => {
+    if (!integrationId) {
+      return;
+    }
+
     const fetchQueries = async () => {
       const res = await getJiraIntegrationById({ id: integrationId });
       setQueries(res.jqlQueries);
@@ -71,9 +79,7 @@ const JiraImportTab = ({
 
   useEffect(() => {
     if (isOpen && selectedIssueKeys.length > 0) {
-      setStories([
-        ...selectedIssueKeys.map((x) => ({ ...DEFAULT_STORY, description: x })),
-      ]);
+      setStories([...selectedIssueKeys.map((x) => ({ ...DEFAULT_STORY, description: x }))]);
       return;
     }
 
@@ -83,30 +89,29 @@ const JiraImportTab = ({
   return (
     <>
       {!isLoadingQueries && (
-        <div className="flex-auto">
-          <div className="flex">
-            <select
-              className="border-light-border-color dark:border-dark-border-color bg-light-panels dark:bg-dark-panels mr-4 w-full rounded-md border p-2 md:w-96"
-              value={selectedQueryId.toString()}
-              onChange={(e) => setSelectedQueryId(parseInt(e.target.value, 10))}
-            >
-              <option value="">Select a query to fetch issues...</option>
+        <div className="flex gap-2 px-2">
+          <Select
+            onValueChange={(value) => setSelectedQueryId(parseInt(value, 10))}
+            value={selectedQueryId.toString()}
+            defaultValue={selectedQueryId.toString()}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select a query to fetch issues..." />
+            </SelectTrigger>
+            <SelectContent>
               {queries.map((q) => (
-                <option key={q.id} value={q.id}>
+                <SelectItem key={q.id} value={q.id.toString()}>
                   {q.name}
-                </option>
+                </SelectItem>
               ))}
-            </select>
-            <Button
-              disabled={selectedQueryId === 0}
-              onClick={handleFetchIssues}
-            >
-              Run
-            </Button>
-          </div>
+            </SelectContent>
+          </Select>
+          <Button disabled={selectedQueryId === 0} onClick={handleFetchIssues} variant="default">
+            Run
+          </Button>
         </div>
       )}
-      <div className="max-h-96 overflow-y-auto p-4">
+      <div className="max-h-96 overflow-y-auto px-2 pt-4">
         {isLoadingIssues && <Loader />}
         {!isLoadingIssues &&
           issues.length > 0 &&
@@ -119,10 +124,7 @@ const JiraImportTab = ({
                   onChange={(e) => handleOnSelect(x.key, e.target.checked)}
                 />
               </div>
-              <JiraIssueCard
-                issue={x}
-                selected={selectedIssueKeys.includes(x.key)}
-              />
+              <JiraIssueCard issue={x} selected={selectedIssueKeys.includes(x.key)} />
             </div>
           ))}
       </div>

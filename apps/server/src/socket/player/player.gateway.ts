@@ -21,9 +21,7 @@ import { PlayerEventsHandler } from "./player.events";
     origin: __prod__ ? process.env.WEB_URL : "*",
   },
 })
-export class PlayerGateway
-  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
-{
+export class PlayerGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   constructor(private playerEventsHandler: PlayerEventsHandler) {}
 
   @WebSocketServer()
@@ -46,10 +44,7 @@ export class PlayerGateway
   }
 
   @SubscribeMessage(PlayerMessage.Update)
-  async complete(
-    @ConnectedSocket() client: Socket,
-    @MessageBody() data: { player: RoomPlayer },
-  ) {
+  async complete(@ConnectedSocket() client: Socket, @MessageBody() data: { player: RoomPlayer }) {
     await this.playerEventsHandler.updateAsync(data.player);
     client.emit(PlayerClientEvent.UpdateSuccess);
   }

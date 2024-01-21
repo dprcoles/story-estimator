@@ -23,9 +23,7 @@ const TeamList = ({ title, teams }: TeamListProps) => {
             </motion.div>
           ))
         ) : (
-          <div className="text-light-text dark:text-dark-text">
-            There are currently no teams to display
-          </div>
+          <div className="text-black dark:text-white">There are currently no teams to display</div>
         )}
       </div>
     </motion.div>

@@ -14,7 +14,7 @@ interface SessionListProps {
 const SessionList = ({ title, sessions }: SessionListProps) => {
   return (
     <motion.div variants={STAGGER}>
-      <div className="mb-4 text-2xl font-semibold">{title}</div>
+      <h2 className="mb-4">{title}</h2>
       <div className="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-4">
         {sessions.length > 0 ? (
           sessions.map((s) => (
@@ -23,7 +23,7 @@ const SessionList = ({ title, sessions }: SessionListProps) => {
             </motion.div>
           ))
         ) : (
-          <div className="text-light-text dark:text-dark-text">
+          <div className="text-black dark:text-white">
             There are currently no sessions to display
           </div>
         )}

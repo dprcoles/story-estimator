@@ -22,13 +22,9 @@ const InviteButton = ({ linkToCopy }: InviteButtonProps) => {
         <span>
           <Button onClick={handleClick}>
             {!clicked ? (
-              <span className="flex items-center align-middle">
-                Invite Players
-              </span>
+              <span className="flex items-center align-middle">Invite Players</span>
             ) : (
-              <span className="flex items-center align-middle">
-                Copied Link
-              </span>
+              <span className="flex items-center align-middle">Copied Link</span>
             )}
           </Button>
         </span>

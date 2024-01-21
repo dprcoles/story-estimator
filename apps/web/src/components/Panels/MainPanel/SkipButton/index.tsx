@@ -20,7 +20,7 @@ const SkipButton = ({ currentStoryId }: SkipButtonProps) => {
   };
 
   return (
-    <Button color="default" onClick={handleSkip}>
+    <Button variant="outline" onClick={handleSkip}>
       Skip Story
     </Button>
   );

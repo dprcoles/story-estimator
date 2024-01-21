@@ -38,9 +38,7 @@ const CurrentStoryDisplay = ({
           <TimeSpentDisplay
             startTime={currentStory.startSeconds as number}
             totalTimeSpent={
-              typeof currentStory.totalTimeSpent !== "undefined"
-                ? currentStory.totalTimeSpent
-                : 0
+              typeof currentStory.totalTimeSpent !== "undefined" ? currentStory.totalTimeSpent : 0
             }
           />
         </div>
@@ -50,25 +48,14 @@ const CurrentStoryDisplay = ({
           </div>
         )}
       </div>
-      <InfoCard
-        vote={vote}
-        showVotes={showVotes}
-        players={players}
-        options={OPTIONS}
-      />
+      <InfoCard vote={vote} showVotes={showVotes} players={players} options={OPTIONS} />
       <div className="mx-auto py-8">
         {!showVotes && defaultType === PlayerType.Voter && (
           <motion.div variants={STAGGER}>
-            <div className="text-light-text dark:text-dark-text m-2">
-              Select an Estimate:
-            </div>
+            <div className="m-2 text-black dark:text-white">Select an Estimate:</div>
             <div className="m-2 grid grid-cols-3 justify-center gap-2 md:grid-cols-4 xl:grid-cols-6">
               {OPTIONS.map((option: string) => (
-                <motion.div
-                  variants={FADE_IN}
-                  className="text-center"
-                  key={`${option}-component`}
-                >
+                <motion.div variants={FADE_IN} className="text-center" key={`${option}-component`}>
                   <Option
                     value={option}
                     onClick={() => setVote(option)}

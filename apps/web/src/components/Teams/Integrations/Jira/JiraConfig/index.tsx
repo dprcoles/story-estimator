@@ -15,16 +15,12 @@ const JiraConfig = ({ data, setView }: JiraConfigProps) => {
   return (
     <div>
       <div className="mb-4 flex">
-        <Button onClick={() => setView(IntegrationView.List)}>
-          {"<"} Go Back
-        </Button>
+        <Button onClick={() => setView(IntegrationView.List)}>{"<"} Go Back</Button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2">
         <div className="mb-8">
           <div className="mb-2 text-2xl font-bold">Team Jira Configuration</div>
-          <div className="text-light-text dark:text-dark-text">
-            Domain: {domain}
-          </div>
+          <div className="text-black dark:text-white">Domain: {domain}</div>
         </div>
         <div>
           <div className="mb-2 text-2xl font-bold">Saved JQL Queries</div>

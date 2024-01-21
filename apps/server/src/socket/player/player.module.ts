@@ -9,12 +9,7 @@ import { PlayerGatewayService } from "./player.service";
 
 @Module({
   imports: [PlayerModule, SocketModule, InfrastructureModule],
-  providers: [
-    PlayerGatewayService,
-    PlayerGateway,
-    PlayerRepository,
-    PlayerEventsHandler,
-  ],
+  providers: [PlayerGatewayService, PlayerGateway, PlayerRepository, PlayerEventsHandler],
   exports: [PlayerGatewayService, PlayerGateway],
 })
 export class PlayerGatewayModule {}

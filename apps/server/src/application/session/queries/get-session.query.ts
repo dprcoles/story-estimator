@@ -7,9 +7,7 @@ export class GetSessionQuery {
 }
 
 @QueryHandler(GetSessionQuery)
-export class GetSessionHandler
-  implements IQueryHandler<GetSessionQuery, SessionDto>
-{
+export class GetSessionHandler implements IQueryHandler<GetSessionQuery, SessionDto> {
   constructor(private repository: SessionRepository) {}
 
   async execute(query: GetSessionQuery) {

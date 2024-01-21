@@ -1,6 +1,3 @@
-import React from "react";
-
-import JiraLogo from "@/assets/jira-logo.svg";
 import { Button } from "@/components/Core";
 import { IntegrationView } from "@/types/integrations";
 
@@ -12,17 +9,14 @@ interface JiraPanelProps {
 const JiraPanel = ({ isEnabled, setView }: JiraPanelProps) => {
   return (
     <>
-      <div className="bg-light-buttons dark:bg-dark-buttons flex rounded-md p-4">
-        <div className="p-2">
-          <JiraLogo />
+      <div className="flex rounded-md bg-neutral-200 p-4 dark:bg-black">
+        <div className="mr-4 py-2">
+          <img src="/assets/jira-logo.svg" alt="Jira Logo" />
         </div>
         <div>
           <div className="mb-1 text-2xl font-bold">Jira</div>
           <div className="flex">
-            <Button
-              disabled={!isEnabled}
-              onClick={() => setView(IntegrationView.Config)}
-            >
+            <Button disabled={!isEnabled} onClick={() => setView(IntegrationView.Config)}>
               {!isEnabled ? "Not Configured" : "View Configuration"}
             </Button>
           </div>

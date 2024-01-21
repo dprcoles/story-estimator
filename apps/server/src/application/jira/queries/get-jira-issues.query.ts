@@ -11,19 +11,13 @@ export class GetJiraIssuesQuery {
 }
 
 @QueryHandler(GetJiraIssuesQuery)
-export class GetJiraIssuesHandler
-  implements IQueryHandler<GetJiraIssuesQuery, JiraIssueDto[]>
-{
+export class GetJiraIssuesHandler implements IQueryHandler<GetJiraIssuesQuery, JiraIssueDto[]> {
   constructor(private repository: JiraRepository) {}
 
   async execute(query: GetJiraIssuesQuery) {
-    const integration = await this.repository.getJiraIntegrationAsync(
-      query.integrationId,
-    );
+    const integration = await this.repository.getJiraIntegrationAsync(query.integrationId);
 
-    const jqlQuery = integration.jql_queries.find(
-      (q: any) => q.id === query.queryId,
-    );
+    const jqlQuery = integration.jql_queries.find((q: any) => q.id === query.queryId);
 
     if (!jqlQuery) return null;
 

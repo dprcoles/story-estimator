@@ -129,8 +129,7 @@ export class RoomGatewayService {
 
     const story: Story = {
       id: generateId(roomId),
-      order:
-        stories.length === 0 ? 0 : Math.max(...stories.map((s) => s.order)) + 1,
+      order: stories.length === 0 ? 0 : Math.max(...stories.map((s) => s.order)) + 1,
       description: name,
       roomId: roomId,
       active: false,
@@ -158,9 +157,7 @@ export class RoomGatewayService {
     const story = await this.roomRepository.getStoryByIdAsync(roomId, id);
     const players = await this.playerGatewayService.getByRoomIdAsync(roomId);
     const voters = players.filter((p) => p.defaultType === PlayerType.Voter);
-    const spectators = players.filter(
-      (p) => p.defaultType === PlayerType.Spectator,
-    );
+    const spectators = players.filter((p) => p.defaultType === PlayerType.Spectator);
 
     const seconds = getTimeInSeconds();
 
@@ -173,11 +170,7 @@ export class RoomGatewayService {
     story.estimate = vote;
     story.active = false;
     story.endSeconds = seconds;
-    story.totalTimeSpent = getTotalTimeSpent(
-      story.totalTimeSpent,
-      story.startSeconds,
-      seconds,
-    );
+    story.totalTimeSpent = getTotalTimeSpent(story.totalTimeSpent, story.startSeconds, seconds);
 
     await this.roomRepository.updateStoryAsync(story);
 
@@ -185,9 +178,7 @@ export class RoomGatewayService {
 
     if (!stories.find((s) => !s.estimate)) return;
 
-    const nextActiveStory = stories
-      .filter((s) => !s.estimate)
-      .sort((a, b) => a.order - b.order)[0];
+    const nextActiveStory = stories.filter((s) => !s.estimate).sort((a, b) => a.order - b.order)[0];
 
     nextActiveStory.active = true;
     nextActiveStory.startSeconds = seconds;

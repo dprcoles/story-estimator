@@ -9,27 +9,14 @@ module.exports = {
       modules: true,
     },
   },
-  plugins: [
-    "@typescript-eslint/eslint-plugin",
-    "prettier",
-    "simple-import-sort",
-    "import",
-  ],
-  extends: [
-    "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended",
-  ],
+  plugins: ["@typescript-eslint/eslint-plugin", "simple-import-sort", "import", "prettier"],
+  extends: ["plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
   root: true,
   env: {
     node: true,
     jest: true,
   },
-  ignorePatterns: [
-    ".eslintrc.js",
-    "vite.config.ts",
-    "tailwind.config.js",
-    "postcss.config.js",
-  ],
+  ignorePatterns: [".eslintrc.js", "vite.config.ts", "tailwind.config.js", "postcss.config.js"],
   rules: {
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
@@ -51,6 +38,7 @@ module.exports = {
         allowTernary: true,
       },
     ],
+    "prettier/prettier": ["error", { endOfLine: "auto" }, { usePrettierrc: true }],
   },
   settings: {
     "import/resolver": {

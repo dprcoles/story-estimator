@@ -42,7 +42,7 @@ const SummaryPage = () => {
   return (
     <motion.div variants={FADE_IN} className="h-full max-h-[90vh]">
       <div className="px-2">
-        <div className="bg-light-panels dark:bg-dark-panels main-panel__container rounded-lg px-8 py-4">
+        <div className="main-panel__container rounded-lg bg-neutral-100 px-8 py-4 dark:bg-zinc-900">
           <SessionSummary session={sessionData} />
         </div>
       </div>

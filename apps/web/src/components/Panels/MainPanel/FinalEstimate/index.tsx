@@ -21,16 +21,10 @@ const FinalEstimate = ({ options, currentStoryId }: FinalEstimateProps) => {
   return (
     <div>
       <motion.div variants={STAGGER}>
-        <div className="text-light-text dark:text-dark-text m-2">
-          Select Agreed Estimate:
-        </div>
+        <div className="m-2 text-black dark:text-white">Select Agreed Estimate:</div>
         <div className="m-2 grid grid-cols-3 justify-center gap-1 lg:grid-cols-6">
           {options.map((option: string) => (
-            <motion.div
-              variants={FADE_IN}
-              className="text-center"
-              key={`${option}-component`}
-            >
+            <motion.div variants={FADE_IN} className="text-center" key={`${option}-component`}>
               <Option
                 value={option}
                 onClick={() => setSelected(option)}
@@ -41,7 +35,9 @@ const FinalEstimate = ({ options, currentStoryId }: FinalEstimateProps) => {
         </div>
       </motion.div>
       <div className="mt-8 flex w-auto items-center space-x-2 align-middle md:float-right">
-        <Button onClick={() => emit(EmitEvent.Reset)}>Reset Votes</Button>
+        <Button variant="outline" onClick={() => emit(EmitEvent.Reset)}>
+          Reset Votes
+        </Button>
         <Button
           onClick={() =>
             emit(EmitEvent.Complete, {
@@ -50,7 +46,7 @@ const FinalEstimate = ({ options, currentStoryId }: FinalEstimateProps) => {
             })
           }
           disabled={selected === ""}
-          color="primary"
+          variant="default"
         >
           Complete Estimate
         </Button>

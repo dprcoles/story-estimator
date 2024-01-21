@@ -9,14 +9,15 @@ import { CreateTeamCommand } from "./commands/create-team.command";
 
 @Injectable()
 export class TeamService {
-  constructor(private queryBus: QueryBus, private commandBus: CommandBus) {}
+  constructor(
+    private queryBus: QueryBus,
+    private commandBus: CommandBus,
+  ) {}
 
   async getAsync(alias: string): Promise<Team> {
     const query = new GetTeamByAliasQuery(alias);
 
-    const response = await this.queryBus.execute<GetTeamByAliasQuery, TeamDto>(
-      query,
-    );
+    const response = await this.queryBus.execute<GetTeamByAliasQuery, TeamDto>(query);
 
     return TeamMap.toDomain(response);
   }
@@ -24,23 +25,15 @@ export class TeamService {
   async getByIdAsync(id: number): Promise<Team> {
     const query = new GetTeamByIdQuery(id);
 
-    const response = await this.queryBus.execute<GetTeamByIdQuery, TeamDto>(
-      query,
-    );
+    const response = await this.queryBus.execute<GetTeamByIdQuery, TeamDto>(query);
 
     return TeamMap.toDomain(response);
   }
 
   async createAsync(data: CreateTeamCommand): Promise<string> {
-    const command = new CreateTeamCommand(
-      data.organisationId,
-      data.name,
-      data.alias,
-    );
+    const command = new CreateTeamCommand(data.organisationId, data.name, data.alias);
 
-    const result = await this.commandBus.execute<CreateTeamCommand, string>(
-      command,
-    );
+    const result = await this.commandBus.execute<CreateTeamCommand, string>(command);
 
     return result;
   }

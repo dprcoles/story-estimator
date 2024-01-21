@@ -19,7 +19,15 @@ export const FADE_IN = {
     y: 0,
     opacity: 1,
     transition: {
-      duration: 0.5,
+      duration: 1,
+      ease: EASE,
+    },
+  },
+  exit: {
+    y: 0,
+    opacity: 0,
+    transition: {
+      duration: 1,
       ease: EASE,
     },
   },
@@ -49,7 +57,7 @@ export const FADE_FROM_LEFT: Variants = {
     x: 0,
     opacity: 1,
     transition: {
-      duration: 0.5,
+      duration: 1,
       ease: EASE,
     },
   },

@@ -13,10 +13,9 @@ export class OrganisationService {
   async getAsync(alias: string): Promise<Organisation> {
     const query = new GetOrganisationByAliasQuery(alias);
 
-    const response = await this.queryBus.execute<
-      GetOrganisationByAliasQuery,
-      OrganisationDto
-    >(query);
+    const response = await this.queryBus.execute<GetOrganisationByAliasQuery, OrganisationDto>(
+      query,
+    );
 
     return OrganisationMap.toDomain(response);
   }
@@ -24,10 +23,7 @@ export class OrganisationService {
   async getByIdAsync(id: number): Promise<Organisation> {
     const query = new GetOrganisationByIdQuery(id);
 
-    const response = await this.queryBus.execute<
-      GetOrganisationByIdQuery,
-      OrganisationDto
-    >(query);
+    const response = await this.queryBus.execute<GetOrganisationByIdQuery, OrganisationDto>(query);
 
     return OrganisationMap.toDomain(response);
   }

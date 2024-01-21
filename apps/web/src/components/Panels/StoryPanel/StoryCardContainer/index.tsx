@@ -47,9 +47,7 @@ const StoryCardContainer = memo(
           ],
         });
 
-        handleUpdateStories(
-          newStories.map((x) => ({ ...x, order: newStories.indexOf(x) })),
-        );
+        handleUpdateStories(newStories.map((x) => ({ ...x, order: newStories.indexOf(x) })));
       },
       [findStory, stories, handleUpdateStories],
     );

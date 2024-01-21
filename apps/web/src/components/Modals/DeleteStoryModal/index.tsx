@@ -1,6 +1,13 @@
 import React from "react";
 
-import { Button, Modal } from "@/components/Core";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/Core";
 import { Story } from "@/types/story";
 
 interface DeleteStoryModalProps {
@@ -10,32 +17,29 @@ interface DeleteStoryModalProps {
   setIsOpen: (isOpen: boolean) => void;
 }
 
-const DeleteStoryModal = ({
-  story,
-  onDelete,
-  isOpen,
-  setIsOpen,
-}: DeleteStoryModalProps) => {
+const DeleteStoryModal = ({ story, onDelete, isOpen, setIsOpen }: DeleteStoryModalProps) => {
   return (
-    <Modal
-      open={isOpen}
-      handleClose={() => setIsOpen(false)}
-      showClose
-      size="sm"
-      heading={<div className="text-lg font-medium">Delete Story</div>}
-      footer={
-        <div className="ml-auto">
-          <Button onClick={() => onDelete(story.id)} color="danger">
-            Delete story
-          </Button>
+    <Dialog open={isOpen} onOpenChange={(isOpen) => setIsOpen(isOpen)} modal>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Delete Story</DialogTitle>
+        </DialogHeader>
+        <div className="my-4">
+          Are you sure you want to delete story{" "}
+          <span className="font-bold">{story.description}</span>?
         </div>
-      }
-    >
-      <div className="p-8">
-        Are you sure you want to delete story{" "}
-        <span className="font-bold">{story.description}</span>?
-      </div>
-    </Modal>
+        <DialogFooter>
+          <div className="ml-auto flex gap-2">
+            <Button onClick={() => setIsOpen(false)} variant="ghost">
+              Cancel
+            </Button>
+            <Button onClick={() => onDelete(story.id)} variant="destructive">
+              Delete story
+            </Button>
+          </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
 

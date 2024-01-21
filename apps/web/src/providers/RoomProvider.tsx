@@ -7,11 +7,7 @@ import Loader from "@/components/Loader";
 import { usePlayerStore } from "@/stores/playerStore";
 import { useRoomStore } from "@/stores/roomStore";
 import { useSocketStore } from "@/stores/socketStore";
-import {
-  CountdownStatus,
-  CountdownTimer,
-  CountdownType,
-} from "@/types/countdown";
+import { CountdownStatus, CountdownTimer, CountdownType } from "@/types/countdown";
 import { EmitEvent, UpdateResponse } from "@/types/server";
 import { ShowType } from "@/types/show";
 import { ROUTE_SUMMARY } from "@/utils/constants";
@@ -23,8 +19,7 @@ const RoomProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
   const { socket, emit } = useSocketStore();
   const { player, setVote } = usePlayerStore();
-  const { room, setRoom, setPlayers, setShowVotes, countdown, setCountdown } =
-    useRoomStore();
+  const { room, setRoom, setPlayers, setShowVotes, countdown, setCountdown } = useRoomStore();
 
   useEffect(() => {
     if (player.id && socket) {

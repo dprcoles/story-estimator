@@ -16,9 +16,7 @@ export class CreateStoryCommand {
 }
 
 @CommandHandler(CreateStoryCommand)
-export class CreateStoryHandler
-  implements ICommandHandler<CreateStoryCommand, void>
-{
+export class CreateStoryHandler implements ICommandHandler<CreateStoryCommand, void> {
   constructor(private repository: StoryRepository) {}
 
   async execute(command: CreateStoryCommand) {

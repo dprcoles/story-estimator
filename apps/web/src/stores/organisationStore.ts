@@ -16,7 +16,6 @@ export const useOrganisationStore = create<OrganisationStore>(
       alias: "default",
       teams: [],
     },
-    setOrganisation: (organisation: Organisation) =>
-      set((state) => ({ ...state, organisation })),
+    setOrganisation: (organisation: Organisation) => set((state) => ({ ...state, organisation })),
   }),
 );

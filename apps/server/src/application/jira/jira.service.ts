@@ -16,24 +16,15 @@ export class JiraService {
   async getIntegrationByIdAsync(id: number): Promise<JiraIntegration> {
     const query = new GetJiraIntegrationQuery(id);
 
-    const result = await this.queryBus.execute<
-      GetJiraIntegrationQuery,
-      JiraIntegrationDto
-    >(query);
+    const result = await this.queryBus.execute<GetJiraIntegrationQuery, JiraIntegrationDto>(query);
 
     return JiraIntegrationMap.toDomain(result);
   }
 
-  async getIssuesByQueryAsync(
-    integrationId: number,
-    queryId: number,
-  ): Promise<JiraIssue[] | null> {
+  async getIssuesByQueryAsync(integrationId: number, queryId: number): Promise<JiraIssue[] | null> {
     const query = new GetJiraIssuesQuery(integrationId, queryId);
 
-    const results = await this.queryBus.execute<
-      GetJiraIssuesQuery,
-      JiraIssueDto[]
-    >(query);
+    const results = await this.queryBus.execute<GetJiraIssuesQuery, JiraIssueDto[]>(query);
 
     return results.map((x) => JiraIssueMap.toDomain(x));
   }
