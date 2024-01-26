@@ -105,7 +105,7 @@ const StoryCard = memo(({ story, onClick, onEdit, onDelete, move, find }: StoryC
                 className="flex w-full items-center justify-center rounded-full border border-red-500 p-1 text-sm hover:bg-neutral-200 dark:hover:bg-zinc-800"
                 size="small"
               >
-                <span className="text-red-500">Delete</span>
+                Delete
               </Button>
             </div>
           )}

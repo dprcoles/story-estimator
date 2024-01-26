@@ -4,12 +4,12 @@ import classNames from "classnames";
 import * as React from "react";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-full font-button font-bold ring-offset-neutral-100 dark:ring-offset-black transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 dark:focus-visible:ring-pink-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-full font-button font-bold ring-offset-neutral-100 dark:ring-offset-black transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         default:
-          "border-2 border-blue-400 dark:border-pink-500 text-black dark:text-white hocus:bg-blue-400/10 dark:hocus:bg-pink-500/10 hocus:shadow-sm hocus:shadow-blue-400/50 dark:hocus:shadow-pink-500/50",
+          "border-2 border-blue-400 dark:border-pink-500 text-black dark:text-white hocus:bg-blue-400/10 dark:hocus:bg-pink-500/10 hocus:shadow-sm hocus:shadow-blue-400/50 dark:hocus:shadow-pink-500/50 focus-visible:ring-blue-400 dark:focus-visible:ring-pink-500",
         destructive:
           "bg-red-500 text-white dark:text-white hocus:bg-red-500/90 focus-visible:ring-red-500 dark:focus-visible:ring-red-500",
         outline:
