@@ -21,7 +21,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/Core/sheet";
+} from "@/components/Core";
 import { useRoomStore } from "@/stores/roomStore";
 import { useSocketStore } from "@/stores/socketStore";
 import { CountdownStatus } from "@/types/countdown";
