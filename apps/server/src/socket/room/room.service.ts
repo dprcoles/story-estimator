@@ -107,11 +107,11 @@ export class RoomGatewayService {
     await this.roomRepository.updateAsync({ ...room, active: false });
 
     await retry(
-      async (bail) => {
+      async () => {
         const session = await this.sessionService.getAsync(id);
 
         if (session.stories.length === 0) {
-          bail(new Error("Stories not yet created, retrying..."));
+          new Error("Stories not yet created, retrying...");
         }
 
         return;

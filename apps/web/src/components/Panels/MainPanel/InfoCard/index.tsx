@@ -8,9 +8,11 @@ import { CountdownStatus } from "@/types/countdown";
 import { Player, PlayerType } from "@/types/player";
 import { EmitEvent } from "@/types/server";
 import { ShowType } from "@/types/show";
+import { SKIP_VOTE_OPTION, TEA_BREAK_OPTION } from "@/utils/constants";
 
 import Countdown from "../Countdown";
 import Results from "../Results";
+import TipsCard from "./TipsCard";
 
 interface InfoCardProps {
   vote: string;
@@ -51,7 +53,7 @@ const InfoCard = ({ vote, showVotes, players, options }: InfoCardProps) => {
           <div />
         )}
       </div>
-      <div className="p-2 md:my-6">
+      <div className="p-2 md:mb-6 md:mt-2">
         {!showVotes ? (
           <>
             <div className="w-full">
@@ -70,14 +72,51 @@ const InfoCard = ({ vote, showVotes, players, options }: InfoCardProps) => {
                   {playersVotedNumber} / {voters} Voted
                 </div>
               </div>
+              {countdown.status === CountdownStatus.STOPPED && (
+                <TipsCard>
+                  <div className="p-4 text-sm">
+                    <p className="pb-2">
+                      Estimation for this story has now started. Use this time to discuss the
+                      details of the story with your team, ask any questions you may have, and
+                      ensure that it meets your Definition of Ready (DoR).
+                    </p>
+                    <p className="pb-2">
+                      Once you are ready to estimate, select from the options below an estimate that
+                      you think best represents the effort required to complete this story. If you
+                      are unsure on what to estimate, you can select <b>{SKIP_VOTE_OPTION}</b> to
+                      not affect the final estimate.
+                    </p>
+                    <p>
+                      You can also select <b>{TEA_BREAK_OPTION}</b> if you would like to propose
+                      your team takes a quick tea break!
+                    </p>
+                  </div>
+                </TipsCard>
+              )}
             </div>
           </>
         ) : (
-          <Results
-            players={players}
-            options={options}
-            currentStoryId={stories.find((s) => s.active)?.id as number}
-          />
+          <>
+            <TipsCard>
+              <div className="p-4 text-sm">
+                <p className="pb-2">
+                  All votes have now been confirmed for this story. Use this time to discuss the
+                  estimates that each player has submitted, and agree upon a final estimate as a
+                  collective.
+                </p>
+                <p>
+                  You may want to <b>Reset Votes</b> if you need to re-estimate, select{" "}
+                  <b>Skip Story</b> if you want to skip or come back to this story, or select{" "}
+                  <b>{TEA_BREAK_OPTION}</b> if your team needs a quick tea break!
+                </p>
+              </div>
+            </TipsCard>
+            <Results
+              players={players}
+              options={options}
+              currentStoryId={stories.find((s) => s.active)?.id as number}
+            />
+          </>
         )}
       </div>
     </div>

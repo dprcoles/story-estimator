@@ -2,8 +2,10 @@ import { motion } from "framer-motion";
 import React from "react";
 
 import { Badge } from "@/components/Core";
+import { useRoomStore } from "@/stores/roomStore";
 import { Player } from "@/types/player";
 import { NON_NUMERIC_OPTIONS, OPTIONS } from "@/utils/constants";
+import { getClosestValidEstimate } from "@/utils/functions";
 import { FADE_IN, STAGGER } from "@/utils/variants";
 
 import FinalEstimate from "../FinalEstimate";
@@ -15,6 +17,8 @@ interface ResultsProps {
 }
 
 const Results = ({ players, options, currentStoryId }: ResultsProps) => {
+  const isAdmin = useRoomStore((state) => state.isAdmin);
+
   const getVotes = () =>
     options
       .map((option) => ({
@@ -29,18 +33,28 @@ const Results = ({ players, options, currentStoryId }: ResultsProps) => {
     let total = 0;
     for (const player of players) {
       if (player.vote && !NON_NUMERIC_OPTIONS.includes(player.vote)) {
-        total += parseInt(player.vote);
+        total += parseFloat(player.vote);
         count++;
       }
     }
-    return (total / count).toFixed(1).replace(/\.0+$/, "");
+    return total / count;
   };
+
+  const average = getAverage();
+
+  const formattedAverage = (average: number) => average.toFixed(1).replace(/\.0+$/, "");
 
   return (
     <motion.div variants={FADE_IN}>
       <div className="mb-4 border-b-2 border-b-black dark:border-b-white">
         <div className="mb-2 text-lg text-black dark:text-white">Average:</div>
-        <div className="mb-2 text-8xl font-bold">{getAverage()}</div>
+        <div className="flex items-center gap-4">
+          <span className="mb-2 text-8xl font-bold">{formattedAverage(average)}</span>
+          <span className="mb-2 text-5xl font-thin">{"->"}</span>
+          <span className="mb-2 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-8xl font-bold text-transparent dark:from-red-600 dark:to-pink-500">
+            {formattedAverage(getClosestValidEstimate(average))}
+          </span>
+        </div>
         <motion.div variants={STAGGER}>
           <div className="mb-2 flex gap-x-2">
             {getVotes()
@@ -59,7 +73,13 @@ const Results = ({ players, options, currentStoryId }: ResultsProps) => {
           </div>
         </motion.div>
       </div>
-      <FinalEstimate options={OPTIONS} currentStoryId={currentStoryId} />
+      {isAdmin ? (
+        <FinalEstimate options={OPTIONS} currentStoryId={currentStoryId} />
+      ) : (
+        <div className="w-100 m-8 animate-pulse text-center text-lg text-black dark:text-white">
+          Waiting for the room admin to select the final estimate for this story...
+        </div>
+      )}
     </motion.div>
   );
 };

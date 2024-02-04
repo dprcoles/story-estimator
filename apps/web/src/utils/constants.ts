@@ -14,21 +14,13 @@ export const DEFAULT_ORGANISATION_ID = parseInt(import.meta.env.VITE_DEFAULT_ORG
 export const REQUIRED_ROUTES = [ROUTE_ROOM, ROUTE_TEAM, ROUTE_ORGANISATION];
 
 export const SKIP_VOTE_OPTION = "?";
+export const TEA_BREAK_OPTION = "☕️";
 
-export const NON_NUMERIC_OPTIONS = ["?", "☕️"];
-export const OPTIONS: Array<string> = [
-  "0.5",
-  "1",
-  "2",
-  "3",
-  "5",
-  "8",
-  "13",
-  "20",
-  "40",
-  "100",
-  ...NON_NUMERIC_OPTIONS,
-];
+export const NUMERIC_OPTIONS = ["0.5", "1", "2", "3", "5", "8", "13", "20", "40", "100"];
+export const NUMERIC_OPTIONS_NUMERIC = NUMERIC_OPTIONS.map((option) => parseInt(option, 10));
+export const NON_NUMERIC_OPTIONS = [SKIP_VOTE_OPTION, TEA_BREAK_OPTION];
+
+export const OPTIONS: Array<string> = [...NUMERIC_OPTIONS, ...NON_NUMERIC_OPTIONS];
 
 export const THEME_STORAGE_KEY = "theme";
 export const DARK_THEME = "dark";

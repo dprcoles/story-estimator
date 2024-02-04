@@ -6,10 +6,7 @@ export class AzureSocketIoAdapter extends IoAdapter {
   server: Server;
 
   async createAzureSocketIOServer(port: number, options?: any): Promise<any> {
-    const io = new Server(
-      this.httpServer && port === 0 ? this.httpServer : port,
-      options,
-    );
+    const io = new Server(this.httpServer && port === 0 ? this.httpServer : port, options);
 
     const server = await useAzureSocketIO(io, {
       hub: process.env.HUB_NAME || "story_estimator_hub",

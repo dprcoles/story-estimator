@@ -49,10 +49,10 @@ const CurrentStoryDisplay = ({
         )}
       </div>
       <InfoCard vote={vote} showVotes={showVotes} players={players} options={OPTIONS} />
-      <div className="mx-auto py-8">
-        {!showVotes && defaultType === PlayerType.Voter && (
+      {!showVotes && defaultType === PlayerType.Voter && (
+        <div className="mx-auto mb-8 mt-4">
           <motion.div variants={STAGGER}>
-            <div className="m-2 text-black dark:text-white">Select an Estimate:</div>
+            <div className="m-2 text-black dark:text-white">Select an estimate:</div>
             <div className="m-2 grid grid-cols-3 justify-center gap-2 md:grid-cols-4 xl:grid-cols-6">
               {OPTIONS.map((option: string) => (
                 <motion.div variants={FADE_IN} className="text-center" key={`${option}-component`}>
@@ -65,8 +65,8 @@ const CurrentStoryDisplay = ({
               ))}
             </div>
           </motion.div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
