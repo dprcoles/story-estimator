@@ -42,7 +42,6 @@ export class RoomEventsHandler {
     const activePlayers = await this.playerGatewayService.getByRoomIdAsync(roomId);
 
     if (activePlayers.length === 0) {
-      await this.roomGatewayService.completeAsync(roomId);
       return;
     }
 
@@ -110,7 +109,7 @@ export class RoomEventsHandler {
   async completeAsync(id: number) {
     await this.roomGatewayService.completeAsync(id);
 
-    this.updateAsync(id);
+    await this.updateAsync(id);
   }
 
   async createStoriesAsync(roomId: number, stories: string[]) {
