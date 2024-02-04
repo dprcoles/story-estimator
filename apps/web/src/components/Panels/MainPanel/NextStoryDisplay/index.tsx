@@ -11,9 +11,7 @@ interface NextStoryDisplayProps {
   setIsStoryModalOpen: (isStoryModalOpen: boolean) => void;
 }
 
-const NextStoryDisplay: React.FC<NextStoryDisplayProps> = ({
-  setIsStoryModalOpen,
-}) => {
+const NextStoryDisplay = ({ setIsStoryModalOpen }: NextStoryDisplayProps) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const isAdmin = useRoomStore((state) => state.isAdmin);
@@ -26,27 +24,22 @@ const NextStoryDisplay: React.FC<NextStoryDisplayProps> = ({
 
   return (
     <>
-      <motion.div variants={STAGGER} className="text-center max-w-2xl mx-auto">
+      <motion.div variants={STAGGER} className="mx-auto max-w-2xl text-center">
         <motion.div variants={FADE_IN} className="py-8">
           <h2>All stories have been estimated!</h2>
         </motion.div>
         {isAdmin ? (
           <motion.div variants={FADE_IN}>
-            <div className="text-md text-light-text dark:text-dark-text pb-8">
-              You can either continue this session by adding another story, or
-              end the session.
+            <div className="text-md pb-8 text-black dark:text-white">
+              You can either continue this session by adding another story, or end the session.
               <div className="mt-2">
-                When you've added a new story, you can select it from the
-                stories panel to start estimating.
+                When you've added a new story, you can select it from the stories panel to start
+                estimating.
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 md:space-x-4">
               <div className="pb-4">
-                <Button
-                  fullWidth
-                  onClick={() => setIsStoryModalOpen(true)}
-                  disabled={isSubmitting}
-                >
+                <Button fullWidth onClick={() => setIsStoryModalOpen(true)} disabled={isSubmitting}>
                   Add Story
                 </Button>
               </div>
@@ -54,7 +47,7 @@ const NextStoryDisplay: React.FC<NextStoryDisplayProps> = ({
                 <Button
                   fullWidth
                   onClick={handleCompleteSession}
-                  color="primary"
+                  variant="default"
                   disabled={isSubmitting}
                 >
                   End Session

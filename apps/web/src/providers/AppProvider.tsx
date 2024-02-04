@@ -4,15 +4,15 @@ import { io } from "socket.io-client";
 
 import { getPlayer } from "@/api/player";
 import { createSession } from "@/api/session";
-import CreateSessionModal from "@/components/Modals/CreateSessionModal";
+import CreateSessionModal from "@/components/CreateSessionModal";
 import { usePlayerStore } from "@/stores/playerStore";
 import { useSessionStore } from "@/stores/sessionStore";
 import { useSocketStore } from "@/stores/socketStore";
 import { useTeamStore } from "@/stores/teamStore";
 import { StorageItem } from "@/types/storage";
-import { API_URL, ROUTE_ROOM } from "@/utils/constants";
+import { API_URL, ROUTE_ROOM, SOCKET_HUB_NAME, SOCKET_URL } from "@/utils/constants";
 
-const AppProvider: React.FC<PropsWithChildren> = ({ children }) => {
+const AppProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
   const { socket, setSocket, setLoading } = useSocketStore();
   const { player, setPlayer } = usePlayerStore();
@@ -31,10 +31,7 @@ const AppProvider: React.FC<PropsWithChildren> = ({ children }) => {
       setLoading(false);
     };
 
-    const storedPlayerId = parseInt(
-      localStorage.getItem(StorageItem.PlayerId) || "0",
-      10,
-    );
+    const storedPlayerId = parseInt(localStorage.getItem(StorageItem.PlayerId) || "0", 10);
 
     if (storedPlayerId) {
       fetchPlayer(storedPlayerId);
@@ -46,9 +43,15 @@ const AppProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (!socket && player.id) {
-      const socket = io(API_URL, {
+      const options: any = {
         query: { playerId: player.id },
-      });
+      };
+
+      if (SOCKET_URL !== API_URL) {
+        options.path = `/clients/socketio/hubs/${SOCKET_HUB_NAME}`;
+      }
+
+      const socket = io(SOCKET_URL, options);
       setSocket(socket);
     }
   }, [player, setSocket, socket]);

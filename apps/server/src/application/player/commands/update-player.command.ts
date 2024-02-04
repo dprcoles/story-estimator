@@ -13,9 +13,7 @@ export class UpdatePlayerCommand {
 }
 
 @CommandHandler(UpdatePlayerCommand)
-export class UpdatePlayerHandler
-  implements ICommandHandler<UpdatePlayerCommand, PlayerDto>
-{
+export class UpdatePlayerHandler implements ICommandHandler<UpdatePlayerCommand, PlayerDto> {
   constructor(private repository: PlayerRepository) {}
 
   async execute(command: UpdatePlayerCommand) {

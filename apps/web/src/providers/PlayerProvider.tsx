@@ -1,7 +1,7 @@
 import { PropsWithChildren, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import PlayerModal from "@/components/Modals/PlayerModal";
+import PlayerModal from "@/components/PlayerModal";
 import { usePlayerStore } from "@/stores/playerStore";
 import { useRoomStore } from "@/stores/roomStore";
 import { useSocketStore } from "@/stores/socketStore";
@@ -9,17 +9,16 @@ import { PlayerInfo } from "@/types/player";
 import { EmitEvent } from "@/types/server";
 import { REQUIRED_ROUTES } from "@/utils/constants";
 
-const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
+const PlayerProvider = ({ children }: PropsWithChildren) => {
   const [canRender, setCanRender] = useState<boolean>(false);
-  const { player, setPlayer, isPlayerModalOpen, setIsPlayerModalOpen } =
-    usePlayerStore((state) => state);
+  const { player, setPlayer, isPlayerModalOpen, setIsPlayerModalOpen } = usePlayerStore(
+    (state) => state,
+  );
   const { room } = useRoomStore((state) => state);
   const { socket, loading, emit } = useSocketStore((state) => state);
   const location = useLocation();
 
-  const isRequiredRoute = REQUIRED_ROUTES.includes(
-    `/${location.pathname.split("/")[1]}`,
-  );
+  const isRequiredRoute = REQUIRED_ROUTES.includes(`/${location.pathname.split("/")[1]}`);
 
   useEffect(() => {
     if (!socket && !loading && isRequiredRoute) {

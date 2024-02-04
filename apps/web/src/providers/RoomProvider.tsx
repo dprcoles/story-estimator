@@ -2,28 +2,27 @@ import React, { PropsWithChildren, useEffect } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 import Loader from "@/components/Loader";
 import { usePlayerStore } from "@/stores/playerStore";
 import { useRoomStore } from "@/stores/roomStore";
 import { useSocketStore } from "@/stores/socketStore";
-import {
-  CountdownStatus,
-  CountdownTimer,
-  CountdownType,
-} from "@/types/countdown";
+import { CountdownStatus, CountdownTimer, CountdownType } from "@/types/countdown";
 import { EmitEvent, UpdateResponse } from "@/types/server";
 import { ShowType } from "@/types/show";
+import { RoomToasterEvent } from "@/types/toaster";
 import { ROUTE_SUMMARY } from "@/utils/constants";
+import { getToasterData } from "@/utils/toaster";
 
 import { useInterval } from "../hooks/index";
 
-const RoomProvider: React.FC<PropsWithChildren> = ({ children }) => {
+const RoomProvider = ({ children }: PropsWithChildren) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { socket, emit } = useSocketStore();
+  const { socket } = useSocketStore();
   const { player, setVote } = usePlayerStore();
-  const { room, setRoom, setPlayers, setShowVotes, countdown, setCountdown } =
+  const { room, players, setRoom, setPlayers, setShowVotes, countdown, setCountdown } =
     useRoomStore();
 
   useEffect(() => {
@@ -62,76 +61,120 @@ const RoomProvider: React.FC<PropsWithChildren> = ({ children }) => {
     countdown.status === CountdownStatus.STARTED ? 1000 : null,
   );
 
-  socket?.on(EmitEvent.Update, (data: UpdateResponse) => {
-    setPlayers(data.players);
-    setRoom(data.room);
-  });
+  useEffect(() => {
+    socket?.on(EmitEvent.Update, (data: UpdateResponse) => {
+      setPlayers(data.players);
+      setRoom(data.room);
 
-  if (!socket || !room.id)
-    return (
-      <div className="min-h-[90vh] flex items-center justify-center">
-        <Loader />
-      </div>
-    );
+      if (data.event) {
+        const toastData = getToasterData(data.event.type, data.event.data, {
+          room: data.room,
+          players: data.players,
+        });
 
-  socket.on("room:error", () => {
-    navigate("/");
-  });
+        if (!toastData) return;
 
-  socket.on(EmitEvent.Vote, () => {
-    if (room.settings.fastMode) {
-      setCountdown({
-        timer: CountdownTimer.FastMode,
-        status: CountdownStatus.STARTED,
-        type: CountdownType.FastMode,
-      });
-    } else {
-      setCountdown({
-        timer: CountdownTimer.Standard,
-        status: CountdownStatus.STOPPED,
-        type: CountdownType.Standard,
-      });
-    }
-  });
+        toast(toastData.title, {
+          description: toastData.description,
+          dismissible: true,
+          action: {
+            label: "Clear",
+            onClick: () => {
+              toast.dismiss();
+            },
+          },
+        });
+      }
+    });
 
-  socket.on(EmitEvent.Show, (type: ShowType) => {
-    if (type === ShowType.Hurry) {
-      setCountdown({
-        ...countdown,
-        timer: CountdownTimer.HurryMode,
-        status: CountdownStatus.STARTED,
-      });
-      return;
-    }
+    socket?.on("room:error", () => {
+      navigate("/");
+    });
 
-    if (room.settings.countdown) {
+    socket?.on(EmitEvent.Vote, () => {
+      if (room.settings.fastMode) {
+        setCountdown({
+          timer: CountdownTimer.FastMode,
+          status: CountdownStatus.STARTED,
+          type: CountdownType.FastMode,
+        });
+      } else {
+        setCountdown({
+          timer: CountdownTimer.Standard,
+          status: CountdownStatus.STOPPED,
+          type: CountdownType.Standard,
+        });
+      }
+    });
+
+    socket?.on(EmitEvent.Show, (type: ShowType) => {
+      const showEventToastData = getToasterData(
+        RoomToasterEvent.VoteShow,
+        {},
+        {
+          room,
+          players,
+        },
+      );
+
+      if (showEventToastData) {
+        toast(showEventToastData.title, {
+          description: showEventToastData.description,
+          dismissible: true,
+          action: {
+            label: "Clear",
+            onClick: () => {
+              toast.dismiss();
+            },
+          },
+        });
+      }
+
+      if (type === ShowType.Hurry) {
+        setCountdown({
+          ...countdown,
+          timer: CountdownTimer.HurryMode,
+          status: CountdownStatus.STARTED,
+        });
+        return;
+      }
+
+      if (room.settings.countdown) {
+        setShowVotes(false);
+        setCountdown({
+          ...countdown,
+          timer: CountdownTimer.Standard,
+          status: CountdownStatus.STARTED,
+        });
+        return;
+      }
+
+      setShowVotes(true);
+      setCountdown({ ...countdown, status: CountdownStatus.STOPPED });
+    });
+
+    socket?.on(EmitEvent.Reset, () => {
       setShowVotes(false);
       setCountdown({
         ...countdown,
-        timer: CountdownTimer.Standard,
-        status: CountdownStatus.STARTED,
+        timer:
+          countdown.type === CountdownType.Standard
+            ? CountdownTimer.Standard
+            : CountdownTimer.FastMode,
+        status: CountdownStatus.STOPPED,
       });
-      return;
-    }
-
-    setShowVotes(true);
-    setCountdown({ ...countdown, status: CountdownStatus.STOPPED });
-  });
-
-  socket.on(EmitEvent.Reset, () => {
-    setShowVotes(false);
-    setCountdown({
-      ...countdown,
-      timer:
-        countdown.type === CountdownType.Standard
-          ? CountdownTimer.Standard
-          : CountdownTimer.FastMode,
-      status: CountdownStatus.STOPPED,
+      setVote("");
     });
-    setVote("");
-  });
 
-  socket.on(EmitEvent.Ping, () => emit(EmitEvent.Pong));
+    socket?.on(EmitEvent.Ping, () => socket.emit(EmitEvent.Pong));
+  }, [socket]);
+
+  if (!socket || !room.id)
+    return (
+      <div className="flex min-h-[90vh] items-center justify-center">
+        <Loader />
+      </div>
+    );
 
   return <DndProvider backend={HTML5Backend}>{children}</DndProvider>;
 };

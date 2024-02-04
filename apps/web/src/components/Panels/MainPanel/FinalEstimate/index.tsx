@@ -13,10 +13,7 @@ interface FinalEstimateProps {
   currentStoryId: number;
 }
 
-const FinalEstimate: React.FC<FinalEstimateProps> = ({
-  options,
-  currentStoryId,
-}) => {
+const FinalEstimate = ({ options, currentStoryId }: FinalEstimateProps) => {
   const [selected, setSelected] = useState<string>("");
 
   const { emit } = useSocketStore();
@@ -24,16 +21,10 @@ const FinalEstimate: React.FC<FinalEstimateProps> = ({
   return (
     <div>
       <motion.div variants={STAGGER}>
-        <div className="m-2 text-light-text dark:text-dark-text">
-          Select Agreed Estimate:
-        </div>
-        <div className="m-2 gap-1 grid justify-center lg:grid-cols-6 grid-cols-3">
+        <div className="m-2 text-black dark:text-white">Select Agreed Estimate:</div>
+        <div className="m-2 grid grid-cols-3 justify-center gap-1 lg:grid-cols-6">
           {options.map((option: string) => (
-            <motion.div
-              variants={FADE_IN}
-              className="text-center"
-              key={`${option}-component`}
-            >
+            <motion.div variants={FADE_IN} className="text-center" key={`${option}-component`}>
               <Option
                 value={option}
                 onClick={() => setSelected(option)}
@@ -43,8 +34,10 @@ const FinalEstimate: React.FC<FinalEstimateProps> = ({
           ))}
         </div>
       </motion.div>
-      <div className="w-auto flex mt-8 align-middle items-center md:float-right space-x-2">
-        <Button onClick={() => emit(EmitEvent.Reset)}>Reset Votes</Button>
+      <div className="mt-8 flex w-auto items-center space-x-2 align-middle md:float-right">
+        <Button variant="outline" onClick={() => emit(EmitEvent.Reset)}>
+          Reset Votes
+        </Button>
         <Button
           onClick={() =>
             emit(EmitEvent.Complete, {
@@ -53,7 +46,7 @@ const FinalEstimate: React.FC<FinalEstimateProps> = ({
             })
           }
           disabled={selected === ""}
-          color="primary"
+          variant="default"
         >
           Complete Estimate
         </Button>

@@ -11,19 +11,15 @@ interface PlayerIconProps {
   countdownStatus: CountdownStatus;
 }
 
-const PlayerVoteIcon: React.FC<PlayerIconProps> = ({
-  player,
-  showVote,
-  countdownStatus,
-}) => {
+const PlayerVoteIcon = ({ player, showVote, countdownStatus }: PlayerIconProps) => {
   const { defaultType: type, vote } = player;
 
   if (type === PlayerType.Spectator) return null;
 
   return (
     <div
-      className={`rounded-full w-10 h-10 border-2 border-transparent flex justify-center items-center bg-light-hover dark:bg-dark-hover ${
-        vote ? "border-light-main dark:border-dark-main" : ""
+      className={`flex h-10 w-10 items-center justify-center rounded-full border-2 border-transparent bg-neutral-200 dark:bg-zinc-800 ${
+        vote ? "border-blue-400 dark:border-pink-500" : ""
       }`}
     >
       <span className="text-xl font-bold">

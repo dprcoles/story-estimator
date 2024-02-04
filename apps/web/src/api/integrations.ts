@@ -5,9 +5,7 @@ export interface IGetJiraIntegrationByIdParams {
   id: number;
 }
 
-export const getJiraIntegrationById = async (
-  params: IGetJiraIntegrationByIdParams,
-) => {
+export const getJiraIntegrationById = async (params: IGetJiraIntegrationByIdParams) => {
   const { id } = params;
   const response = await fetch(`${API_URL}/jira/integration/${id}`, {
     headers: {
@@ -27,9 +25,7 @@ export interface IGetJiraIssuesByQueryIdParams {
   id: number;
 }
 
-export const getJiraIssuesByQueryId = async (
-  params: IGetJiraIssuesByQueryIdParams,
-) => {
+export const getJiraIssuesByQueryId = async (params: IGetJiraIssuesByQueryIdParams) => {
   const { integrationId, id } = params;
   const response = await fetch(
     `${API_URL}/jira/query?integrationId=${integrationId}&queryId=${id}`,

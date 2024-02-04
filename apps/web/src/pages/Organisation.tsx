@@ -8,23 +8,30 @@ import TeamList from "@/components/Organisations/TeamList";
 import { useOrganisationStore } from "@/stores/organisationStore";
 import { FADE_FROM_LEFT, FADE_IN } from "@/utils/variants";
 
-const Organisation: React.FC = () => {
+const Organisation = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { organisation } = useOrganisationStore();
 
   return (
     <OrganisationProvider>
       <CreateTeamModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
-      <motion.div variants={FADE_IN} className="max-h-full h-screen">
+      <motion.div variants={FADE_IN} className="h-screen max-h-full">
         <div className="px-2">
-          <div className="bg-light-panels dark:bg-dark-panels rounded-lg py-4 px-8 main-panel__container">
+          <div className="main-panel__container rounded-lg bg-slate-100 px-8 py-4 dark:bg-zinc-900">
             <div className="p-8">
               <motion.h1 variants={FADE_FROM_LEFT} className="mb-8">
-                {organisation.name}
+                {organisation.name.split(" ").map((word, i) => (
+                  <span
+                    key={`${word}-${i}`}
+                    className="bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent dark:from-red-600 dark:to-pink-500"
+                  >
+                    {word}{" "}
+                  </span>
+                ))}
               </motion.h1>
               <div className="my-8">
                 <motion.div variants={FADE_FROM_LEFT} className="mb-4">
-                  <Button color="primary" onClick={() => setIsModalOpen(true)}>
+                  <Button variant="default" onClick={() => setIsModalOpen(true)}>
                     Create Team
                   </Button>
                 </motion.div>

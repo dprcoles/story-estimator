@@ -1,34 +1,43 @@
 @import "./_spinner.css";
-@import "../components/Core/button/button.css";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background-color: theme("colors.light.background");
-  --toggle-color: theme("colors.light.main");
-  --primary-color: theme("colors.light.main");
-  --button-color: theme("colors.light.buttons");
+  --color-background: theme("colors.neutral.200");
+  --color-primary: theme("colors.blue.400");
+  --color-secondary: theme("colors.pink.400");
+  --color-gradient-primary-start: theme("colors.blue.400");
+  --color-gradient-primary-end: theme("colors.purple.600");
+  --color-gradient-secondary-start: theme("colors.pink.400");
+  --color-gradient-secondary-end: theme("colors.red.500");
+  --modifier-gradient-opacity: 0.7;
 }
 
 [class="dark"] {
-  --background-color: theme("colors.dark.background");
-  --toggle-color: theme("colors.dark.main");
-  --primary-color: theme("colors.dark.main");
-  --button-color: theme("colors.dark.buttons");
+  --color-background: theme("colors.black");
+  --color-primary: theme("colors.pink.500");
+  --color-secondary: theme("colors.purple.400");
+  --color-gradient-primary-start: theme("colors.red.600");
+  --color-gradient-primary-end: theme("colors.pink.500");
+  --color-gradient-secondary-start: theme("colors.blue.400");
+  --color-gradient-secondary-end: theme("colors.purple.400");
+  --modifier-gradient-opacity: 0.35;
 }
 
 html {
-  background-color: var(--background-color);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: "grayscale";
 }
 
 h1 {
-  @apply font-heading text-5xl font-bold;
+  @apply font-heading text-4xl font-extrabold sm:text-5xl lg:text-6xl;
 }
 
 h2 {
-  @apply font-heading text-3xl font-bold;
+  @apply font-heading text-2xl font-bold sm:text-3xl lg:text-4xl;
 }
 
 .emoji-picker__backdrop {
@@ -41,17 +50,12 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 100;
+  z-index: 1000;
 }
 
 .emoji-picker__content {
   width: fit-content;
   margin: auto;
-}
-
-.toggle-button > input:checked ~ .dot {
-  transform: translateX(100%);
-  background-color: var(--toggle-color);
 }
 
 .main-panel__container {
@@ -75,7 +79,7 @@ h2 {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: theme("colors.dark.scrollbar");
+  background: var(--color-scrollbar);
   border-radius: 12px;
 }
 
@@ -96,14 +100,56 @@ textarea:focus {
   outline: 0 !important;
 }
 
-a,
-button,
-[tabindex] {
-  &:focus {
-    box-shadow: 0 0 0 1px var(--primary-color);
-  }
+a:focus,
+button:focus,
+[tabindex]:focus {
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
 
-  &:focus:not(:focus-visible) {
-    box-shadow: none;
-  }
+a:focus:not(:focus-visible),
+button:focus:not(:focus-visible),
+[tabindex]:focus:not(:focus-visible) {
+  box-shadow: none;
+}
+
+.page-background__gradient::before,
+.page-background__gradient::after {
+  content: "";
+  position: absolute;
+  width: 45vw;
+  height: 300px;
+  top: -250px;
+  mix-blend-mode: normal;
+  opacity: var(--modifier-gradient-opacity);
+  filter: blur(150px);
+}
+
+.page-background__gradient::before {
+  left: 0;
+  background: linear-gradient(
+    180deg,
+    var(--color-gradient-primary-start),
+    var(--color-gradient-primary-end)
+  );
+}
+
+.page-background__gradient::after {
+  right: 0;
+  background: linear-gradient(
+    180deg,
+    var(--color-gradient-secondary-start),
+    var(--color-gradient-secondary-end)
+  );
+}
+
+.icon-gradient {
+  background: conic-gradient(
+    from 180deg at 50% 50%,
+    var(--color-gradient-primary-start) 0deg,
+    var(--color-gradient-secondary-end) 180deg,
+    var(--color-gradient-primary-end) 1turn
+  );
+  filter: blur(32px);
+  mix-blend-mode: normal;
+  will-change: filter;
 }

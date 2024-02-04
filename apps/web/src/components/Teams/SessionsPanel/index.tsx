@@ -10,10 +10,8 @@ interface SessionsPanelProps {
   sessions: TeamSession[];
 }
 
-const SessionsPanel: React.FC<SessionsPanelProps> = ({ sessions }) => {
-  const setIsSessionModalOpen = useSessionStore(
-    (state) => state.setIsSessionModalOpen,
-  );
+const SessionsPanel = ({ sessions }: SessionsPanelProps) => {
+  const setIsSessionModalOpen = useSessionStore((state) => state.setIsSessionModalOpen);
 
   const splitSessions = sessions.reduce(
     (r, o) => {
@@ -29,18 +27,13 @@ const SessionsPanel: React.FC<SessionsPanelProps> = ({ sessions }) => {
   return (
     <>
       <div className="flex">
-        <Button onClick={() => setIsSessionModalOpen(true)}>
-          Create New Session
-        </Button>
+        <Button onClick={() => setIsSessionModalOpen(true)}>Create New Session</Button>
       </div>
       <div className="my-8">
         <SessionList title="Active Sessions" sessions={splitSessions.active} />
       </div>
       <div className="my-8">
-        <SessionList
-          title="Inactive Sessions"
-          sessions={splitSessions.inactive}
-        />
+        <SessionList title="Inactive Sessions" sessions={splitSessions.inactive} />
       </div>
     </>
   );

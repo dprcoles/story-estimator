@@ -8,10 +8,10 @@ import { useTeamStore } from "@/stores/teamStore";
 import { EmitEvent } from "@/types/server";
 import { TeamDetails } from "@/types/team";
 
-const TeamProvider: React.FC<PropsWithChildren> = ({ children }) => {
+const TeamProvider = ({ children }: PropsWithChildren) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { alias } = useParams();
-  const { socket } = useSocketStore();
+  const { socket, emit } = useSocketStore();
   const { team, setTeam } = useTeamStore();
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const TeamProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (socket && !isLoading && team.id) {
-      socket.emit(EmitEvent.JoinTeam, {
+      emit(EmitEvent.JoinTeam, {
         id: team.id,
       });
     }
@@ -37,7 +37,7 @@ const TeamProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   if (!socket || isLoading)
     return (
-      <div className="min-h-[90vh] flex items-center justify-center">
+      <div className="flex min-h-[90vh] items-center justify-center">
         <Loader />
       </div>
     );

@@ -10,9 +10,7 @@ export class CreateTeamCommand {
 }
 
 @CommandHandler(CreateTeamCommand)
-export class CreateTeamHandler
-  implements ICommandHandler<CreateTeamCommand, string>
-{
+export class CreateTeamHandler implements ICommandHandler<CreateTeamCommand, string> {
   constructor(private repository: TeamRepository) {}
 
   async execute(command: CreateTeamCommand) {

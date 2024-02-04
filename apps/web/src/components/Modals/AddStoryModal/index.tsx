@@ -1,7 +1,16 @@
-import classNames from "classnames";
-import React, { useState } from "react";
+import { useState } from "react";
 
-import { Button, Modal, Tabs } from "@/components/Core";
+import { TabsContent, TabsList, TabsTrigger } from "@/components/Core";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  Tabs,
+} from "@/components/Core";
 import { useRoomStore } from "@/stores/roomStore";
 import { useSocketStore } from "@/stores/socketStore";
 import { EmitEvent } from "@/types/server";
@@ -15,7 +24,7 @@ interface AddStoryModalProps {
   setIsOpen: (isOpen: boolean) => void;
 }
 
-const AddStoryModal: React.FC<AddStoryModalProps> = ({ isOpen, setIsOpen }) => {
+const AddStoryModal = ({ isOpen, setIsOpen }: AddStoryModalProps) => {
   const [stories, setStories] = useState<Story[]>([]);
   const [tab, setTab] = useState<string>(AddStoryTab.Manual);
   const {
@@ -36,53 +45,71 @@ const AddStoryModal: React.FC<AddStoryModalProps> = ({ isOpen, setIsOpen }) => {
       id: AddStoryTab.Manual,
       label: "Manual",
     },
-    {
-      id: AddStoryTab.Jira,
-      label: "Jira",
-    },
   ];
 
+  if (Boolean(integrations?.jira)) {
+    tabs.push({
+      id: AddStoryTab.Jira,
+      label: "Jira",
+    });
+  }
+
   return (
-    <Modal
-      open={isOpen}
-      handleClose={() => setIsOpen(false)}
-      showClose
-      heading={<div className="text-lg font-medium">Add Stories</div>}
-      size="lg"
-      footer={
-        <div className="ml-auto">
-          <Button
-            onClick={() => handleAddStories(stories)}
-            disabled={stories.length === 0}
-            color="primary"
+    <Dialog open={isOpen} onOpenChange={(isOpen) => setIsOpen(isOpen)} modal>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Add Stories</DialogTitle>
+          <DialogDescription>Add stories to estimate in this session.</DialogDescription>
+        </DialogHeader>
+        {tabs.length > 1 ? (
+          <Tabs
+            defaultValue={AddStoryTab.Manual}
+            value={tab}
+            onValueChange={(tab) => setTab(tab)}
+            className="w-full"
           >
-            Add {stories.length} Stories
-          </Button>
-        </div>
-      }
-    >
-      <div
-        className={classNames("grid m-2 grid-cols-2", {
-          hidden: !Boolean(integrations?.jira),
-        })}
-      >
-        <Tabs tabs={tabs} activeTab={tab} setActiveTab={setTab} fullWidth />
-      </div>
-      <div className="p-4 h-72 overflow-y-scroll">
-        <div className={tab !== AddStoryTab.Manual ? "hidden" : ""}>
-          <ManualImportTab stories={stories} setStories={setStories} />
-        </div>
-        {integrations?.jira && (
-          <div className={tab !== AddStoryTab.Jira ? "hidden" : ""}>
-            <JiraImportTab
-              integrationId={integrations.jira}
-              setStories={setStories}
-              isOpen={tab === AddStoryTab.Jira}
-            />
+            <TabsList className="w-full">
+              {tabs.map((tab) => (
+                <TabsTrigger className="w-full" key={tab.id} value={tab.id}>
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            <TabsContent value={AddStoryTab.Manual}>
+              <div className="h-72 overflow-y-scroll py-4">
+                <ManualImportTab stories={stories} setStories={setStories} />
+              </div>
+            </TabsContent>
+            <TabsContent value={AddStoryTab.Jira}>
+              <div className="h-72 overflow-y-scroll py-4">
+                <JiraImportTab
+                  integrationId={integrations?.jira ?? undefined}
+                  setStories={setStories}
+                  isOpen={tab === AddStoryTab.Jira}
+                />
+              </div>
+            </TabsContent>
+          </Tabs>
+        ) : (
+          <div className="h-72 overflow-y-scroll py-4">
+            <ManualImportTab stories={stories} setStories={setStories} />
           </div>
         )}
-      </div>
-    </Modal>
+        <DialogFooter>
+          <div className="ml-auto">
+            {stories.length > 0 && (
+              <Button
+                onClick={() => handleAddStories(stories)}
+                disabled={stories.length === 0}
+                variant="default"
+              >
+                Add {stories.length} Stor{stories.length === 1 ? "y" : "ies"}
+              </Button>
+            )}
+          </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
 

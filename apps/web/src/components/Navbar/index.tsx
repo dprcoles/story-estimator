@@ -1,5 +1,3 @@
-import React from "react";
-
 import { usePlayerStore } from "@/stores/playerStore";
 import { useThemeStore } from "@/stores/themeStore";
 
@@ -7,26 +5,30 @@ import AnimatedLogo from "./AnimatedLogo";
 import ThemeToggle from "./ThemeToggle";
 import UserIcon from "./UserIcon";
 
-const Navbar: React.FC = () => {
+const Navbar = () => {
   const { player, setIsPlayerModalOpen } = usePlayerStore((state) => state);
   const { theme, setTheme } = useThemeStore();
 
   return (
     <div className="top-0 z-20 pb-2 md:px-0">
       <div className="flex">
-        <div className="flex pt-3">
+        <div className="flex items-center">
           <a
             href="https://www.danielcoles.dev"
             target="_blank"
             rel="noreferrer"
-            className="focus:shadow-none"
+            className="flex focus:shadow-none"
           >
             <AnimatedLogo theme={theme} />
           </a>
-          <div className="hidden md:flex">
-            <span className="px-2">|</span>
-            <div className="font-bold pb-2">STORY ESTIMATOR</div>
-          </div>
+          <span className="hidden px-2 md:flex">|</span>
+          <img
+            className="mr-2 hidden h-10 w-10 md:flex"
+            src="/assets/estimator-logo.png"
+            alt="logo"
+            loading="lazy"
+          />
+          <div className="hidden font-bold md:flex">STORY ESTIMATOR</div>
         </div>
         <div className="ml-auto flex space-x-4">
           <ThemeToggle theme={theme} setTheme={setTheme} />

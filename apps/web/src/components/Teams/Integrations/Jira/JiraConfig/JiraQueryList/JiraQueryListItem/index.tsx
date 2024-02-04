@@ -14,10 +14,7 @@ interface JiraQueryListProps {
   query: JqlQuery;
 }
 
-const JiraQueryListItem: React.FC<JiraQueryListProps> = ({
-  integrationId,
-  query,
-}) => {
+const JiraQueryListItem = ({ integrationId, query }: JiraQueryListProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showResults, setShowResults] = useState<boolean>(false);
   const [results, setResults] = useState<JiraIssue[]>([]);
@@ -44,37 +41,37 @@ const JiraQueryListItem: React.FC<JiraQueryListProps> = ({
 
   const { name, query: jql } = query;
   return (
-    <div className="bg-light-buttons dark:bg-dark-buttons rounded-md p-4">
-      <div className="flex mb-4">
+    <div className="rounded-md bg-neutral-100 p-4 dark:bg-white">
+      <div className="mb-4 flex">
         <div className="text-xl font-bold">{name}</div>
-        <div className="flex ml-auto">
+        <div className="ml-auto flex">
           <Button
             onClick={() => {
               showResults ? handleOnHide() : handleOnTest();
             }}
-            color="primary"
+            variant="default"
           >
             {showResults ? "Hide" : "Test"}
           </Button>
         </div>
       </div>
-      <div className="overflow-x-auto rounded-md p-2 border border-light-border-color dark:border-dark-border-color bg-light-hover dark:bg-dark-hover">
+      <div className="overflow-x-auto rounded-md border border-blue-400 bg-neutral-200 p-2 dark:border-pink-500 dark:bg-zinc-800">
         <pre>{jql}</pre>
       </div>
       {showResults ? (
-        <div className="mt-4 py-2 border-t border-light-border-color dark:border-dark-border-color">
+        <div className="mt-4 border-t border-blue-400 py-2 dark:border-pink-500">
           <div className="flex items-baseline">
             <div className="text-lg font-bold">Results</div>
             <button
               onClick={fetchResults}
-              className="ml-auto rounded-full hover:bg-light-hover dark:hover:bg-dark-hover w-10 h-10 items-center"
+              className="ml-auto h-10 w-10 items-center rounded-full hover:bg-neutral-200 dark:hover:bg-zinc-800"
             >
-              <span className="text-light-text dark:text-dark-text text-2xl">
+              <span className="text-2xl text-black dark:text-white">
                 <AiOutlineReload className="mx-auto" />
               </span>
             </button>
           </div>
-          <div className="py-2 overflow-y-auto max-h-96">
+          <div className="max-h-96 overflow-y-auto py-2">
             {isLoading ? (
               <Loader />
             ) : (

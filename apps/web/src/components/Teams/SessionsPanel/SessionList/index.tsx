@@ -11,11 +11,11 @@ interface SessionListProps {
   sessions: TeamSession[];
 }
 
-const SessionList: React.FC<SessionListProps> = ({ title, sessions }) => {
+const SessionList = ({ title, sessions }: SessionListProps) => {
   return (
     <motion.div variants={STAGGER}>
-      <div className="font-semibold text-2xl mb-4">{title}</div>
-      <div className="gap-2 grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1">
+      <h2 className="mb-4">{title}</h2>
+      <div className="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-4">
         {sessions.length > 0 ? (
           sessions.map((s) => (
             <motion.div key={s.id} variants={FADE_IN}>
@@ -23,7 +23,7 @@ const SessionList: React.FC<SessionListProps> = ({ title, sessions }) => {
             </motion.div>
           ))
         ) : (
-          <div className="text-light-text dark:text-dark-text">
+          <div className="text-black dark:text-white">
             There are currently no sessions to display
           </div>
         )}

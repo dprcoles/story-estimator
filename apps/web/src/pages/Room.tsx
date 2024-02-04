@@ -5,16 +5,13 @@ import React, { useState } from "react";
 
 import MobileTabBar, { MobileTabBarType } from "@/components/MobileTabBar";
 import AddStoryModal from "@/components/Modals/AddStoryModal";
-import RoomSettingsModal from "@/components/Modals/RoomSettingsModal";
 import MainPanel from "@/components/Panels/MainPanel";
 import PlayerPanel from "@/components/Panels/PlayerPanel";
 import StoryPanel from "@/components/Panels/StoryPanel";
 import { useRoomStore } from "@/stores/roomStore";
 import { FADE_IN } from "@/utils/variants";
 
-const RoomPage: React.FC = () => {
-  const [isSettingsModalOpen, setIsSettingsModalOpen] =
-    useState<boolean>(false);
+const RoomPage = () => {
   const [isStoryModalOpen, setIsStoryModalOpen] = useState<boolean>(false);
   const [activeMobileTab, setActiveMobileTab] = useState<MobileTabBarType>(
     MobileTabBarType.Estimate,
@@ -23,16 +20,9 @@ const RoomPage: React.FC = () => {
 
   return (
     <RoomProvider>
-      <motion.div variants={FADE_IN} className="max-h-full h-[90vh]">
-        <RoomSettingsModal
-          isOpen={isSettingsModalOpen}
-          setIsOpen={setIsSettingsModalOpen}
-        />
-        <AddStoryModal
-          isOpen={isStoryModalOpen}
-          setIsOpen={setIsStoryModalOpen}
-        />
-        <div className="lg:flex md:space-x-2 min-h-full">
+      <motion.div variants={FADE_IN} className="h-[90vh] max-h-full">
+        <AddStoryModal isOpen={isStoryModalOpen} setIsOpen={setIsStoryModalOpen} />
+        <div className="min-h-full md:space-x-2 lg:flex">
           {room.stories.length > 0 && (
             <div
               className={classNames("lg:max-w-1xl lg:block", {
@@ -44,15 +34,12 @@ const RoomPage: React.FC = () => {
             </div>
           )}
           <div
-            className={classNames("lg:w-full lg:block", {
+            className={classNames("lg:block lg:w-full", {
               block: activeMobileTab === MobileTabBarType.Estimate,
               hidden: activeMobileTab !== MobileTabBarType.Estimate,
             })}
           >
-            <MainPanel
-              setIsSettingsModalOpen={setIsSettingsModalOpen}
-              setIsStoryModalOpen={setIsStoryModalOpen}
-            />
+            <MainPanel setIsStoryModalOpen={setIsStoryModalOpen} />
           </div>
           <div
             className={classNames("lg:max-w-1xl lg:block", {
@@ -64,10 +51,7 @@ const RoomPage: React.FC = () => {
           </div>
         </div>
         <div className="lg:hidden">
-          <MobileTabBar
-            activeTab={activeMobileTab}
-            setActiveTab={setActiveMobileTab}
-          />
+          <MobileTabBar activeTab={activeMobileTab} setActiveTab={setActiveMobileTab} />
         </div>
       </motion.div>
     </RoomProvider>

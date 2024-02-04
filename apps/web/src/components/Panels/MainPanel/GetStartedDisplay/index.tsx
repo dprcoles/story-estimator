@@ -13,16 +13,15 @@ interface GetStartedDisplayProps {
   firstStoryId: number;
 }
 
-const GetStartedDisplay: React.FC<GetStartedDisplayProps> = ({
+const GetStartedDisplay = ({
   setIsStoryModalOpen,
   hasStories,
   firstStoryId,
-}) => {
+}: GetStartedDisplayProps) => {
   const { emit } = useSocketStore();
   const [clicked, setClicked] = useState<boolean>(false);
 
-  const handleStartEstimating = () =>
-    emit(EmitEvent.SetActiveStory, { id: firstStoryId });
+  const handleStartEstimating = () => emit(EmitEvent.SetActiveStory, { id: firstStoryId });
 
   const handleInvitePlayers = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -33,15 +32,22 @@ const GetStartedDisplay: React.FC<GetStartedDisplayProps> = ({
 
   return (
     <motion.div className="p-8" variants={STAGGER}>
-      <div className="max-w-xl mx-auto">
-        <motion.div
-          variants={FADE_DOWN}
-          className="flex justify-center items-center mb-8 text-8xl"
-        >
-          <GiCardRandom />
+      <div className="mx-auto max-w-xl">
+        <motion.div variants={FADE_DOWN} className="mb-8 flex items-center justify-center text-8xl">
+          <GiCardRandom className="fill-blue-400 dark:fill-pink-500" />
         </motion.div>
-        <motion.div variants={FADE_UP} className="text-center mb-16">
-          <h1>Let's get started!</h1>
+        <motion.div variants={FADE_UP} className="mb-16 text-center">
+          <h1>
+            <span className="bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent dark:from-red-600 dark:to-pink-500">
+              Let's{" "}
+            </span>
+            <span className="bg-gradient-to-l from-blue-400 to-purple-600 bg-clip-text text-transparent dark:from-red-600 dark:to-pink-500">
+              get{" "}
+            </span>
+            <span className="bg-gradient-to-r from-pink-400 to-red-500 bg-clip-text text-transparent dark:from-blue-400 dark:to-purple-400">
+              started
+            </span>
+          </h1>
         </motion.div>
         <motion.div variants={FADE_UP}>
           <div className="grid grid-cols-1 md:grid-cols-2 md:space-x-4">
@@ -59,7 +65,7 @@ const GetStartedDisplay: React.FC<GetStartedDisplayProps> = ({
         </motion.div>
         <motion.div variants={EXPAND_IN} className="flex justify-center py-4">
           {hasStories && (
-            <Button fullWidth color="primary" onClick={handleStartEstimating}>
+            <Button fullWidth variant="default" onClick={handleStartEstimating}>
               <div className="p-2 text-lg font-semibold">Start Estimating</div>
             </Button>
           )}

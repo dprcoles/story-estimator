@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { motion } from "framer-motion";
 import React from "react";
 
@@ -8,30 +9,22 @@ interface OptionProps {
   disabled?: boolean;
 }
 
-const Option: React.FC<OptionProps> = ({
-  value,
-  onClick,
-  selected,
-  disabled,
-}) => {
+const Option = ({ value, onClick, selected, disabled }: OptionProps) => {
   return (
-    <motion.div
+    <motion.button
       whileHover={!disabled ? { scale: 1.02 } : {}}
       whileTap={!disabled ? { scale: 0.98 } : {}}
-      className="flex justify-center"
+      className={classNames(
+        "hocus:bg-neutral-100 dark:hocus:bg-zinc-900 disabled:hocus:opacity-40 font-button ho inline-flex h-24 w-full items-center justify-center rounded-md border-2 bg-neutral-200 p-4 align-middle text-2xl font-bold shadow-sm transition-all duration-150 ease-linear disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc-800",
+        selected
+          ? "border-blue-400 dark:border-pink-500"
+          : "hocus:border-black dark:hocus:border-white border-transparent",
+      )}
+      onClick={onClick}
+      disabled={disabled}
     >
-      <button
-        className={`p-4 border-2 rounded-md bg-light-buttons dark:bg-dark-buttons hover:bg-light-hover dark:hover:bg-dark-hover shadow-sm h-24 w-full text-2xl font-bold ease-linear transition-all duration-150 ${
-          selected
-            ? "border-light-main dark:border-dark-main"
-            : "border-transparent"
-        } disabled:hover:bg-light-buttons dark:disabled:hover:bg-dark-buttons disabled:opacity-50`}
-        onClick={onClick}
-        disabled={disabled}
-      >
-        {value}
-      </button>
-    </motion.div>
+      {value}
+    </motion.button>
   );
 };
 

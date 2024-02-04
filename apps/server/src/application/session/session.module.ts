@@ -8,11 +8,7 @@ import { SessionService } from "./session.service";
 
 @Module({
   imports: [InfrastructureModule, TeamGatewayModule, CqrsModule],
-  providers: [
-    SessionService,
-    ...SessionQueryHandlers,
-    ...SessionCommandHandlers,
-  ],
+  providers: [SessionService, ...SessionQueryHandlers, ...SessionCommandHandlers],
   exports: [SessionService],
 })
 export class SessionModule {}

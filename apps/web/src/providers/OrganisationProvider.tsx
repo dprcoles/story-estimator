@@ -7,7 +7,7 @@ import { useOrganisationStore } from "@/stores/organisationStore";
 import { useSocketStore } from "@/stores/socketStore";
 import { EmitEvent } from "@/types/server";
 
-const OrganisationProvider: React.FC<PropsWithChildren> = ({ children }) => {
+const OrganisationProvider = ({ children }: PropsWithChildren) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { alias } = useParams();
   const { socket } = useSocketStore();
@@ -36,7 +36,7 @@ const OrganisationProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   if (!socket || isLoading)
     return (
-      <div className="min-h-[90vh] flex items-center justify-center">
+      <div className="flex min-h-[90vh] items-center justify-center">
         <Loader />
       </div>
     );

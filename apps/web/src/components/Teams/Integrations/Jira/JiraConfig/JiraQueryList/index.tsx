@@ -9,10 +9,7 @@ interface JiraQueryListProps {
   queries: JqlQuery[];
 }
 
-const JiraQueryList: React.FC<JiraQueryListProps> = ({
-  integrationId,
-  queries,
-}) => {
+const JiraQueryList = ({ integrationId, queries }: JiraQueryListProps) => {
   return (
     <div>
       {queries &&

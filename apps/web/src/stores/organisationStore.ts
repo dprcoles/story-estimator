@@ -9,14 +9,13 @@ type OrganisationStore = {
 };
 
 export const useOrganisationStore = create<OrganisationStore>(
-  (set, get): OrganisationStore => ({
+  (set): OrganisationStore => ({
     organisation: {
       id: DEFAULT_ORGANISATION_ID,
       name: "Default Organisation",
       alias: "default",
       teams: [],
     },
-    setOrganisation: (organisation: Organisation) =>
-      set((state) => ({ ...state, organisation })),
+    setOrganisation: (organisation: Organisation) => set((state) => ({ ...state, organisation })),
   }),
 );

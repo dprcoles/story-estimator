@@ -28,10 +28,7 @@ export class TeamsGateway implements OnGatewayInit {
   }
 
   @SubscribeMessage(TeamMessage.Join)
-  async connect(
-    @ConnectedSocket() client: Socket,
-    @MessageBody() data: { id: number },
-  ) {
+  async connect(@ConnectedSocket() client: Socket, @MessageBody() data: { id: number }) {
     const { playerId } = getSocketInfo(client);
 
     await this.teamEventsHandler.connectAsync(data.id, playerId, client);

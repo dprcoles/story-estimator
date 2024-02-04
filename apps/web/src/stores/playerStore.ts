@@ -12,7 +12,7 @@ type PlayerStore = {
 };
 
 export const usePlayerStore = create<PlayerStore>(
-  (set, get): PlayerStore => ({
+  (set): PlayerStore => ({
     player: { id: 0, emoji: "", name: "", defaultType: PlayerType.Voter },
     setPlayer: (player: PlayerInfo) => set((state) => ({ ...state, player })),
     isPlayerModalOpen: false,

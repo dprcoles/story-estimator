@@ -1,10 +1,15 @@
 import { Player } from "./player";
 import { Room } from "./room";
+import { RoomToasterEventType, ToasterEventDataMap } from "./toaster";
 
-export type UpdateResponse = {
+export interface UpdateResponse {
   players: Player[];
   room: Room;
-};
+  event?: {
+    type: RoomToasterEventType;
+    data: ToasterEventDataMap[RoomToasterEventType];
+  };
+}
 
 export enum EmitEvent {
   ConnectionError = "connectionError",

@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -9,7 +10,7 @@ interface SessionCardProps {
   session: TeamSession;
 }
 
-const SessionCard: React.FC<SessionCardProps> = ({ session }) => {
+const SessionCard = ({ session }: SessionCardProps) => {
   const navigate = useNavigate();
   const { active, id, name, playerCount, storyCount } = session;
 
@@ -19,29 +20,25 @@ const SessionCard: React.FC<SessionCardProps> = ({ session }) => {
 
   return (
     <div
-      className={`md:w-150 p-4 bg-light-buttons dark:bg-dark-buttons rounded-md border-2 ease-linear transition-all duration-150 ${
-        active
-          ? "border-light-main dark:border-dark-main"
-          : "border-transparent"
-      }`}
+      className={classNames(
+        "md:w-150 rounded-md border-2 bg-neutral-200 p-4 transition-all duration-150 ease-linear dark:bg-black",
+        active ? "border-blue-400 dark:border-pink-500" : "border-transparent",
+      )}
     >
-      <div className="text-lg font-bold mb-4">{name}</div>
+      <div className="mb-4 text-lg font-bold">{name}</div>
       <div className="flex">
         <div>
-          <div className="text-sm text-light-text dark:text-dark-text font-semibold">
+          <div className="text-sm font-semibold text-black dark:text-white">
             Players: {playerCount}
           </div>
           {!active && (
-            <div className="text-sm text-light-text dark:text-dark-text font-semibold">
+            <div className="text-sm font-semibold text-black dark:text-white">
               Stories: {storyCount}
             </div>
           )}
         </div>
         <div className="ml-auto flex">
-          <Button
-            color={active ? "primary" : "default"}
-            onClick={handleOnClick}
-          >
+          <Button variant={active ? "default" : "outline"} onClick={handleOnClick}>
             {active ? "Join" : "View Summary"}
           </Button>
         </div>

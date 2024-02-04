@@ -10,8 +10,11 @@ import Organisation from "./pages/Organisation";
 import Room from "./pages/Room";
 import Summary from "./pages/Summary";
 import Team from "./pages/Team";
+import { useThemeStore } from "./stores/themeStore";
 
 const App = () => {
+  useThemeStore();
+
   return (
     <BrowserRouter>
       <AppProvider>

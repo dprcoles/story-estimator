@@ -19,12 +19,7 @@ import { RoomGatewayService } from "./room.service";
     StoryModule,
     PlayerGatewayModule,
   ],
-  providers: [
-    RoomGatewayService,
-    RoomGateway,
-    RoomRepository,
-    RoomEventsHandler,
-  ],
+  providers: [RoomGatewayService, RoomGateway, RoomRepository, RoomEventsHandler],
   exports: [RoomGatewayService, RoomGateway],
 })
 export class RoomGatewayModule {}

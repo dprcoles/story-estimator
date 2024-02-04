@@ -2,7 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { createTeam } from "@/api/team";
-import { Button, Modal } from "@/components/Core";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  Input,
+} from "@/components/Core";
 import { useOrganisationStore } from "@/stores/organisationStore";
 import { ROUTE_TEAM } from "@/utils/constants";
 
@@ -11,10 +19,7 @@ interface CreateTeamModalProps {
   setIsOpen: (isOpen: boolean) => void;
 }
 
-const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
-  isOpen,
-  setIsOpen,
-}) => {
+const CreateTeamModal = ({ isOpen, setIsOpen }: CreateTeamModalProps) => {
   const [name, setName] = useState<string>("");
   const [alias, setAlias] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -44,38 +49,35 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
     alias.replace(/^\s+|\s+$|\s+(?=\s)/g, "").length > 0;
 
   return (
-    <Modal
-      open={isOpen}
-      handleClose={() => setIsOpen(false)}
-      size="sm"
-      heading={<div className="text-lg font-medium">Create Team</div>}
-      showClose
-      footer={
-        <Button
-          onClick={() => handleOnCreate()}
-          disabled={!isValid || isLoading}
-          color="primary"
-        >
-          Create
-        </Button>
-      }
-    >
-      <div className="py-4 px-6 flex-auto">
-        <div className="py-1">Team Name</div>
-        <input
-          className="p-4 mb-4 border bg-light-hover dark:bg-dark-hover border-transparent hover:border-dark-border-color dark:hover:border-dark-border-color focus:border-black dark:focus:border-white focus:outline-none w-full md:w-96 rounded-md"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Enter a name for your team"
-        />
-        {alias.length > 0 && (
-          <div className="py-2 text-xs">
-            Your team link will be: https://storyestimator.dev{ROUTE_TEAM}/
-            {alias}
-          </div>
-        )}
-      </div>
-    </Modal>
+    <Dialog open={isOpen} onOpenChange={(isOpen) => setIsOpen(isOpen)} modal>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Create Team</DialogTitle>
+        </DialogHeader>
+        <div className="flex-auto px-6 py-4">
+          <div className="py-1">Team Name</div>
+          <Input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Enter a name for your team"
+          />
+          {alias.length > 0 && (
+            <div className="py-2 text-xs">
+              Your team link will be: https://storyestimator.dev{ROUTE_TEAM}/{alias}
+            </div>
+          )}
+        </div>
+        <DialogFooter>
+          <Button
+            onClick={() => handleOnCreate()}
+            disabled={!isValid || isLoading}
+            variant="default"
+          >
+            Create
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
 

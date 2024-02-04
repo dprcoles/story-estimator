@@ -11,11 +11,11 @@ interface TeamListProps {
   teams: OrganisationTeam[];
 }
 
-const TeamList: React.FC<TeamListProps> = ({ title, teams }) => {
+const TeamList = ({ title, teams }: TeamListProps) => {
   return (
     <motion.div variants={STAGGER}>
-      <div className="font-semibold text-2xl mb-4">{title}</div>
-      <div className="gap-2 grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1">
+      <div className="mb-4 text-2xl font-semibold">{title}</div>
+      <div className="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-4">
         {teams.length > 0 ? (
           teams.map((t) => (
             <motion.div key={t.id} variants={FADE_IN}>
@@ -23,9 +23,7 @@ const TeamList: React.FC<TeamListProps> = ({ title, teams }) => {
             </motion.div>
           ))
         ) : (
-          <div className="text-light-text dark:text-dark-text">
-            There are currently no teams to display
-          </div>
+          <div className="text-black dark:text-white">There are currently no teams to display</div>
         )}
       </div>
     </motion.div>

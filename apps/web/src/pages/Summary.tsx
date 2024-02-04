@@ -9,7 +9,7 @@ import { useTeamStore } from "@/stores/teamStore";
 import { SessionDetails } from "@/types/session";
 import { FADE_IN } from "@/utils/variants";
 
-const SummaryPage: React.FC = () => {
+const SummaryPage = () => {
   const { id } = useParams();
   const [isLoadingData, setIsLoadingData] = useState<boolean>(false);
   const [sessionData, setSessionData] = useState<SessionDetails>();
@@ -30,21 +30,19 @@ const SummaryPage: React.FC = () => {
 
       fetchSessionData();
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   if (isLoadingData || !sessionData)
     return (
-      <div className="min-h-[90vh] flex items-center justify-center">
+      <div className="flex min-h-[90vh] items-center justify-center">
         <Loader />
       </div>
     );
 
   return (
-    <motion.div variants={FADE_IN} className="max-h-[90vh] h-full">
+    <motion.div variants={FADE_IN} className="h-full max-h-[90vh]">
       <div className="px-2">
-        <div className="bg-light-panels dark:bg-dark-panels rounded-lg py-4 px-8 main-panel__container">
+        <div className="main-panel__container rounded-lg bg-neutral-100 px-8 py-4 dark:bg-zinc-900">
           <SessionSummary session={sessionData} />
         </div>
       </div>

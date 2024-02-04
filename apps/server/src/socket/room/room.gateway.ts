@@ -36,10 +36,7 @@ export class RoomGateway implements OnGatewayInit {
   }
 
   @SubscribeMessage(RoomMessage.Join)
-  async connect(
-    @ConnectedSocket() client: Socket,
-    @MessageBody() data: { id: number },
-  ) {
+  async connect(@ConnectedSocket() client: Socket, @MessageBody() data: { id: number }) {
     const { playerId } = getSocketInfo(client);
 
     await this.roomEventsHandler.connectAsync(data.id, playerId, client);
@@ -67,30 +64,21 @@ export class RoomGateway implements OnGatewayInit {
   }
 
   @SubscribeMessage(RoomMessage.Vote)
-  async vote(
-    @ConnectedSocket() client: Socket,
-    @MessageBody() data: { vote: string },
-  ) {
+  async vote(@ConnectedSocket() client: Socket, @MessageBody() data: { vote: string }) {
     const { playerId, roomId } = getSocketInfo(client);
 
     await this.roomEventsHandler.voteAsync(roomId, playerId, data.vote);
   }
 
   @SubscribeMessage(RoomMessage.Settings)
-  async setting(
-    @ConnectedSocket() client: Socket,
-    @MessageBody() data: { settings: Settings },
-  ) {
+  async setting(@ConnectedSocket() client: Socket, @MessageBody() data: { settings: Settings }) {
     const { roomId } = getSocketInfo(client);
 
     await this.roomEventsHandler.settingsAsync(roomId, data.settings);
   }
 
   @SubscribeMessage(RoomMessage.Show)
-  async show(
-    @ConnectedSocket() client: Socket,
-    @MessageBody() data: { type: ShowType },
-  ) {
+  async show(@ConnectedSocket() client: Socket, @MessageBody() data: { type: ShowType }) {
     const { roomId } = getSocketInfo(client);
 
     await this.roomEventsHandler.showAsync(roomId, data.type);
@@ -124,10 +112,7 @@ export class RoomGateway implements OnGatewayInit {
   }
 
   @SubscribeMessage(RoomMessage.StoryDelete)
-  async deleteStory(
-    @ConnectedSocket() client: Socket,
-    @MessageBody() data: { id: number },
-  ) {
+  async deleteStory(@ConnectedSocket() client: Socket, @MessageBody() data: { id: number }) {
     const { roomId } = getSocketInfo(client);
 
     await this.roomEventsHandler.deleteStoryAsync(roomId, data.id);
@@ -144,10 +129,7 @@ export class RoomGateway implements OnGatewayInit {
   }
 
   @SubscribeMessage(RoomMessage.StorySetActive)
-  async setActiveStory(
-    @ConnectedSocket() client: Socket,
-    @MessageBody() data: { id: number },
-  ) {
+  async setActiveStory(@ConnectedSocket() client: Socket, @MessageBody() data: { id: number }) {
     const { roomId } = getSocketInfo(client);
 
     await this.roomEventsHandler.setActiveStoryAsync(roomId, data.id);

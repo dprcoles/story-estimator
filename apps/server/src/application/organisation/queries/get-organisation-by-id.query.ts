@@ -7,9 +7,7 @@ export class GetOrganisationByIdQuery {
 }
 
 @QueryHandler(GetOrganisationByIdQuery)
-export class GetOrganisationByIdHandler
-  implements IQueryHandler<GetOrganisationByIdQuery>
-{
+export class GetOrganisationByIdHandler implements IQueryHandler<GetOrganisationByIdQuery> {
   constructor(private repository: OrganisationRepository) {}
 
   async execute(query: GetOrganisationByIdQuery) {

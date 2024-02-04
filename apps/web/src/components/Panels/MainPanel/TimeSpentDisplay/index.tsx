@@ -7,27 +7,20 @@ interface TimeSpentDisplayProps {
   totalTimeSpent: number;
 }
 
-const TimeSpentDisplay: React.FC<TimeSpentDisplayProps> = ({
-  startTime,
-  totalTimeSpent,
-}) => {
+const TimeSpentDisplay = ({ startTime, totalTimeSpent }: TimeSpentDisplayProps) => {
   const [timeSpent, setTimeSpent] = useState<string>("");
 
   useInterval(() => {
     const currentTimeSeconds = new Date().getTime() / 1000;
     const seconds = Math.floor(currentTimeSeconds - startTime);
 
-    setTimeSpent(
-      new Date(seconds * 1000 + totalTimeSpent).toISOString().substr(14, 5),
-    );
+    setTimeSpent(new Date(seconds * 1000 + totalTimeSpent).toISOString().substr(14, 5));
   }, 1000);
 
   return (
-    <div className="align-middle items-center py-2 text-light-text dark:text-dark-text">
+    <div className="items-center py-2 align-middle text-black dark:text-white">
       Time Spent:
-      <div className="font-bold text-2xl text-black dark:text-white">
-        {timeSpent}
-      </div>
+      <div className="text-2xl font-bold text-black dark:text-white">{timeSpent}</div>
     </div>
   );
 };

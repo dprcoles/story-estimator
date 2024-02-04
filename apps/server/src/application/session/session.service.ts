@@ -20,9 +20,7 @@ export class SessionService {
   async createAsync(data: CreateSessionCommand): Promise<number> {
     const command = new CreateSessionCommand(data.name, data.teamId);
 
-    const result = await this.commandBus.execute<CreateSessionCommand, number>(
-      command,
-    );
+    const result = await this.commandBus.execute<CreateSessionCommand, number>(command);
 
     await this.handleTeamUpdateAsync(result);
 
@@ -32,9 +30,7 @@ export class SessionService {
   async getAsync(id: number): Promise<Session> {
     const query = new GetSessionQuery(id);
 
-    const data = await this.queryBus.execute<GetSessionQuery, SessionDto>(
-      query,
-    );
+    const data = await this.queryBus.execute<GetSessionQuery, SessionDto>(query);
 
     return SessionMap.toDomain(data);
   }
@@ -42,10 +38,7 @@ export class SessionService {
   async addPlayerAsync(data: AddSessionPlayerCommand) {
     const command = new AddSessionPlayerCommand(data.id, data.playerId);
 
-    const result = await this.commandBus.execute<
-      AddSessionPlayerCommand,
-      number
-    >(command);
+    const result = await this.commandBus.execute<AddSessionPlayerCommand, number>(command);
 
     await this.handleTeamUpdateAsync(result);
   }
@@ -53,10 +46,7 @@ export class SessionService {
   async completeAsync(id: number) {
     const command = new CompleteSessionCommand(id);
 
-    const result = await this.commandBus.execute<
-      CompleteSessionCommand,
-      number
-    >(command);
+    const result = await this.commandBus.execute<CompleteSessionCommand, number>(command);
 
     await this.handleTeamUpdateAsync(result);
   }

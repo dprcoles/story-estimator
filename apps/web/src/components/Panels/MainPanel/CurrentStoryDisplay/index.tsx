@@ -21,26 +21,24 @@ interface CurrentStoryDisplayProps {
   players: Array<Player>;
 }
 
-const CurrentStoryDisplay: React.FC<CurrentStoryDisplayProps> = ({
+const CurrentStoryDisplay = ({
   currentStory,
   vote,
   setVote,
   showVotes,
   players,
-}) => {
+}: CurrentStoryDisplayProps) => {
   const defaultType = usePlayerStore((state) => state.player.defaultType);
   const isAdmin = useRoomStore((state) => state.isAdmin);
 
   return (
     <div>
-      <div className="grid grid-cols-2 mb-4 items-center">
+      <div className="mb-4 grid grid-cols-2 items-center">
         <div className="mr-auto">
           <TimeSpentDisplay
             startTime={currentStory.startSeconds as number}
             totalTimeSpent={
-              typeof currentStory.totalTimeSpent !== "undefined"
-                ? currentStory.totalTimeSpent
-                : 0
+              typeof currentStory.totalTimeSpent !== "undefined" ? currentStory.totalTimeSpent : 0
             }
           />
         </div>
@@ -50,25 +48,14 @@ const CurrentStoryDisplay: React.FC<CurrentStoryDisplayProps> = ({
           </div>
         )}
       </div>
-      <InfoCard
-        vote={vote}
-        showVotes={showVotes}
-        players={players}
-        options={OPTIONS}
-      />
-      <div className="mx-auto py-8">
-        {!showVotes && defaultType === PlayerType.Voter && (
+      <InfoCard vote={vote} showVotes={showVotes} players={players} options={OPTIONS} />
+      {!showVotes && defaultType === PlayerType.Voter && (
+        <div className="mx-auto mb-8 mt-4">
           <motion.div variants={STAGGER}>
-            <div className="m-2 text-light-text dark:text-dark-text">
-              Select an Estimate:
-            </div>
-            <div className="m-2 gap-2 grid justify-center xl:grid-cols-6 md:grid-cols-4 grid-cols-3">
+            <div className="m-2 text-black dark:text-white">Select an estimate:</div>
+            <div className="m-2 grid grid-cols-3 justify-center gap-2 md:grid-cols-4 xl:grid-cols-6">
               {OPTIONS.map((option: string) => (
-                <motion.div
-                  variants={FADE_IN}
-                  className="text-center"
-                  key={`${option}-component`}
-                >
+                <motion.div variants={FADE_IN} className="text-center" key={`${option}-component`}>
                   <Option
                     value={option}
                     onClick={() => setVote(option)}
@@ -78,8 +65,8 @@ const CurrentStoryDisplay: React.FC<CurrentStoryDisplayProps> = ({
               ))}
             </div>
           </motion.div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

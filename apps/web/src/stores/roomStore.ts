@@ -1,10 +1,6 @@
 import { create } from "zustand";
 
-import {
-  CountdownStatus,
-  CountdownTimer,
-  CountdownType,
-} from "@/types/countdown";
+import { CountdownStatus, CountdownTimer, CountdownType } from "@/types/countdown";
 import { Player } from "@/types/player";
 import { Room } from "@/types/room";
 import { Story } from "@/types/story";
@@ -47,7 +43,7 @@ type RoomStore = {
 };
 
 export const useRoomStore = create<RoomStore>(
-  (set, get): RoomStore => ({
+  (set): RoomStore => ({
     room: DEFAULT_ROOM,
     setRoom: (room: Room) =>
       set((state) => ({
@@ -64,15 +60,13 @@ export const useRoomStore = create<RoomStore>(
     players: [],
     setPlayers: (players: Player[]) => set((state) => ({ ...state, players })),
     showVotes: false,
-    setShowVotes: (showVotes: boolean) =>
-      set((state) => ({ ...state, showVotes })),
+    setShowVotes: (showVotes: boolean) => set((state) => ({ ...state, showVotes })),
     countdown: {
       timer: CountdownTimer.Standard,
       status: CountdownStatus.STOPPED,
       type: CountdownType.Standard,
     },
-    setCountdown: (countdown: Countdown) =>
-      set((state) => ({ ...state, countdown })),
+    setCountdown: (countdown: Countdown) => set((state) => ({ ...state, countdown })),
     admin: 0,
     isAdmin: false,
   }),

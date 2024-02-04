@@ -6,7 +6,7 @@ interface InviteButtonProps {
   linkToCopy: string;
 }
 
-const InviteButton: React.FC<InviteButtonProps> = ({ linkToCopy }) => {
+const InviteButton = ({ linkToCopy }: InviteButtonProps) => {
   const [clicked, setClicked] = useState<boolean>(false);
 
   const handleClick = () => {
@@ -22,13 +22,9 @@ const InviteButton: React.FC<InviteButtonProps> = ({ linkToCopy }) => {
         <span>
           <Button onClick={handleClick}>
             {!clicked ? (
-              <span className="flex align-middle items-center">
-                Invite Players
-              </span>
+              <span className="flex items-center align-middle">Invite Players</span>
             ) : (
-              <span className="flex align-middle items-center">
-                Copied Link
-              </span>
+              <span className="flex items-center align-middle">Copied Link</span>
             )}
           </Button>
         </span>

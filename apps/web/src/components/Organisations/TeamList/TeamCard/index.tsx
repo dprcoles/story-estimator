@@ -9,7 +9,7 @@ interface TeamCardProps {
   team: OrganisationTeam;
 }
 
-const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
+const TeamCard = ({ team }: TeamCardProps) => {
   const navigate = useNavigate();
   const { name, alias } = team;
 
@@ -18,11 +18,11 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
   };
 
   return (
-    <div className="md:w-150 p-4 bg-light-buttons dark:bg-dark-buttons rounded-md border-2 ease-linear transition-all duration-150 border-transparent">
-      <div className="text-lg font-bold mb-4">{name}</div>
+    <div className="md:w-150 rounded-md border-2 border-transparent bg-neutral-100 p-4 transition-all duration-150 ease-linear dark:bg-black">
+      <div className="mb-4 text-lg font-bold">{name}</div>
       <div className="flex">
         <div className="ml-auto flex">
-          <Button color={"primary"} onClick={handleOnClick}>
+          <Button variant="default" onClick={handleOnClick}>
             View
           </Button>
         </div>

@@ -1,8 +1,4 @@
-import {
-  IssueType,
-  Priority,
-  Status,
-} from "src/domain/models/jira-issue.model";
+import { IssueType, Priority, Status } from "src/domain/models/jira-issue.model";
 
 export class JiraIssueResponse {
   key: string;

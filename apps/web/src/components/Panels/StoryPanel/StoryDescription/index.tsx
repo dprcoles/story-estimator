@@ -10,11 +10,7 @@ interface StoryDescriptionProps {
   setDescription: (description: string) => void;
 }
 
-const StoryDescription: React.FC<StoryDescriptionProps> = ({
-  active,
-  description,
-  setDescription,
-}) => {
+const StoryDescription = ({ active, description, setDescription }: StoryDescriptionProps) => {
   const isAdmin = useRoomStore((state) => state.isAdmin);
   const [localDescription, setLocalDescription] = useState<string>("");
   const [showInput, setShowInput] = useState<boolean>(false);
@@ -34,25 +30,20 @@ const StoryDescription: React.FC<StoryDescriptionProps> = ({
         {showInput ? (
           <>
             <input
-              className="text-black dark:text-white p-2 bg-light-panels dark:bg-dark-panels focus:outline-none rounded-xl border-2 border-light-border-hover dark:border-dark-border-hover"
+              className="rounded-xl border-2 border-black bg-slate-100 p-2 text-black focus:outline-none dark:border-white dark:bg-zinc-900 dark:text-white"
               value={localDescription}
               onChange={(e) => setLocalDescription(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSetDescription()}
             />
-            <div className="pt-2 space-x-2">
+            <div className="space-x-2 pt-2">
               <IconButton icon={<FaCheck />} onClick={handleSetDescription} />
-              <IconButton
-                icon={<FaTimes />}
-                onClick={() => setShowInput(false)}
-              />
+              <IconButton icon={<FaTimes />} onClick={() => setShowInput(false)} />
             </div>
           </>
         ) : (
           <span
-            className={`font-bold rounded-md hover:bg-light-hover dark:hover:bg-dark-hover p-1 ${
-              active
-                ? "text-black dark:text-white"
-                : "text-light-text dark:text-dark-text"
+            className={`rounded-md p-1 font-bold hover:bg-neutral-200 dark:hover:bg-zinc-800 ${
+              active ? "text-black dark:text-white" : "text-black dark:text-white"
             }`}
             onClick={isAdmin ? () => setShowInput(true) : undefined}
           >

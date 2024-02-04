@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { IoMdAdd } from "react-icons/io";
 
+import { IconButton } from "@/components/Core";
 import IncompleteStoryModal from "@/components/Modals/IncompleteStoryModal";
 import { useRoomStore } from "@/stores/roomStore";
 import { useSocketStore } from "@/stores/socketStore";
@@ -11,7 +13,7 @@ interface StoryPanelProps {
   setIsStoryModalOpen: (isStoryModalOpen: boolean) => void;
 }
 
-const StoryPanel: React.FC<StoryPanelProps> = ({ setIsStoryModalOpen }) => {
+const StoryPanel = ({ setIsStoryModalOpen }: StoryPanelProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedStoryId, setSelectedStoryId] = useState<number | null>(null);
   const {
@@ -64,23 +66,19 @@ const StoryPanel: React.FC<StoryPanelProps> = ({ setIsStoryModalOpen }) => {
         setIsOpen={setIsModalOpen}
         onSubmit={handleOnIncompleteStorySubmit}
       />
-      <div className="bg-light-panels dark:bg-dark-panels min-h-full h-96 rounded-lg p-4">
+      <div className="h-96 min-h-full rounded-lg bg-neutral-100 p-4 dark:bg-zinc-900">
         <div className="flex items-baseline pb-2">
-          <div className="text-md font-medium text-light-text dark:text-dark-text">
-            Stories
-          </div>
+          <div className="text-md font-medium text-black dark:text-white">Stories</div>
           {isAdmin && (
-            <button
-              onClick={() => setIsStoryModalOpen(true)}
-              className="ml-auto rounded-full hover:bg-light-hover dark:hover:bg-dark-hover w-10 h-10 items-center"
-            >
-              <span className="text-light-text dark:text-dark-text text-2xl">
-                +
-              </span>
-            </button>
+            <div className="ml-auto items-center">
+              <IconButton
+                icon={<IoMdAdd size="1.25em" />}
+                onClick={() => setIsStoryModalOpen(true)}
+              />
+            </div>
           )}
         </div>
-        <div className="pr-2 space-y-2 overflow-y-scroll overflow-x-hidden panel__card-container">
+        <div className="panel__card-container space-y-2 overflow-x-hidden overflow-y-scroll pr-2">
           <StoryCardContainer
             handleDeleteStory={handleDeleteStory}
             handleSaveStory={handleSaveStory}
