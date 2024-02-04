@@ -46,7 +46,7 @@ const Results = ({ players, options, currentStoryId }: ResultsProps) => {
 
   return (
     <motion.div variants={FADE_IN}>
-      <div className="mb-4 border-b-2 border-b-black dark:border-b-white">
+      <div className="my-4 border-b-2 border-b-black dark:border-b-white">
         <div className="mb-2 text-lg text-black dark:text-white">Average:</div>
         <div className="flex items-center gap-4">
           <span className="mb-2 text-8xl font-bold">{formattedAverage(average)}</span>
