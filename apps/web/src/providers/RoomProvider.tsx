@@ -23,7 +23,7 @@ const RoomProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (player.id && socket) {
-      socket.emit(EmitEvent.Join, {
+      emit(EmitEvent.Join, {
         id: id ? parseInt(id, 10) : null,
         playerId: player.id,
       });
@@ -31,7 +31,7 @@ const RoomProvider = ({ children }: PropsWithChildren) => {
 
     return () => {
       if (player.id && socket) {
-        socket.emit(EmitEvent.Disconnect, {
+        emit(EmitEvent.Disconnect, {
           id: id ? parseInt(id, 10) : null,
           playerId: player.id,
         });

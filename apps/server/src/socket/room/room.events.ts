@@ -22,7 +22,7 @@ export class RoomEventsHandler {
     try {
       await this.roomGatewayService.connectAsync(id, playerId);
 
-      client.join(`${SocketRoomPrefix.Room}${id.toString()}`);
+      await client.join(`${SocketRoomPrefix.Room}${id.toString()}`);
       client.emit(RoomClientEvent.Connected);
     } catch (e) {
       client.emit(RoomClientEvent.Error, e);

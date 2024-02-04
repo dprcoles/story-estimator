@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 
 import { ROUTE_HOME } from "@/utils/constants";
 
+import { Toaster } from "../Core";
 import Navbar from "../Navbar";
 
 const Layout = ({ children }: PropsWithChildren) => {
@@ -21,6 +22,7 @@ const Layout = ({ children }: PropsWithChildren) => {
           </div>
         </main>
       </motion.div>
+      <Toaster />
     </div>
   );
 };

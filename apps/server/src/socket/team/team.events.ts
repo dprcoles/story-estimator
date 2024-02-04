@@ -11,7 +11,7 @@ export class TeamEventsHandler {
   public server: Server = null;
 
   async connectAsync(id: number, playerId: number, client: Socket) {
-    client.join(`${SocketRoomPrefix.Team}${id.toString()}`);
+    await client.join(`${SocketRoomPrefix.Team}${id.toString()}`);
   }
 
   async updateAsync(id: number) {

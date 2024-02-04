@@ -11,7 +11,7 @@ import { TeamDetails } from "@/types/team";
 const TeamProvider = ({ children }: PropsWithChildren) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { alias } = useParams();
-  const { socket } = useSocketStore();
+  const { socket, emit } = useSocketStore();
   const { team, setTeam } = useTeamStore();
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const TeamProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (socket && !isLoading && team.id) {
-      socket.emit(EmitEvent.JoinTeam, {
+      emit(EmitEvent.JoinTeam, {
         id: team.id,
       });
     }

@@ -10,7 +10,7 @@ import { useSessionStore } from "@/stores/sessionStore";
 import { useSocketStore } from "@/stores/socketStore";
 import { useTeamStore } from "@/stores/teamStore";
 import { StorageItem } from "@/types/storage";
-import { API_URL, ROUTE_ROOM } from "@/utils/constants";
+import { API_URL, ROUTE_ROOM, SOCKET_HUB_NAME, SOCKET_URL } from "@/utils/constants";
 
 const AppProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
@@ -43,9 +43,15 @@ const AppProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (!socket && player.id) {
-      const socket = io(API_URL, {
+      const options: any = {
         query: { playerId: player.id },
-      });
+      };
+
+      if (SOCKET_URL !== API_URL) {
+        options.path = `/clients/socketio/hubs/${SOCKET_HUB_NAME}`;
+      }
+
+      const socket = io(SOCKET_URL, options);
       setSocket(socket);
     }
   }, [player, setSocket, socket]);

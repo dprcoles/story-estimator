@@ -1,7 +1,8 @@
 import { Story } from "@/types/story";
 
 export const API_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:4000";
-
+export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || API_URL;
+export const SOCKET_HUB_NAME = import.meta.env.VITE_SOCKET_HUB_NAME || "story_estimator_hub";
 export const ROUTE_HOME = "/";
 export const ROUTE_ROOM = "/room";
 export const ROUTE_TEAM = "/team";

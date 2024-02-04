@@ -111,7 +111,7 @@ export class RoomGatewayService {
         const session = await this.sessionService.getAsync(id);
 
         if (session.stories.length === 0) {
-          bail(new Error("Stories not yet created"));
+          bail(new Error("Stories not yet created, retrying..."));
         }
 
         return;
