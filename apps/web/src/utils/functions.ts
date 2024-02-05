@@ -6,17 +6,7 @@ export const getTimeSpent = (total: number | undefined) => {
 };
 
 export const getClosestValidEstimate = (average: number) => {
-  const roundedAverage = Math.ceil(average);
-  let closestEstimate = NUMERIC_OPTIONS_NUMERIC[0];
-  let smallestDifference = Math.abs(roundedAverage - closestEstimate);
-
-  for (const estimate of NUMERIC_OPTIONS_NUMERIC) {
-    const difference = Math.abs(roundedAverage - estimate);
-    if (difference < smallestDifference) {
-      smallestDifference = difference;
-      closestEstimate = estimate;
-    }
-  }
-
-  return closestEstimate;
+  const validOptions = NUMERIC_OPTIONS_NUMERIC.filter((num) => num >= average);
+  validOptions.sort((a, b) => a - b);
+  return validOptions.length > 0 ? validOptions[0] : average;
 };
