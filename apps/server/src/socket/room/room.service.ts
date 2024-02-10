@@ -7,7 +7,7 @@ import { Story } from "src/domain/models/story.model";
 import { StoryService } from "src/application/story/story.service";
 import { TeamService } from "src/application/team/team.service";
 import { PlayerGatewayService } from "../player/player.service";
-import { Room, RoomIntegrations } from "./interfaces/room.interface";
+import { Room, RoomIntegrations, Settings } from "./interfaces/room.interface";
 import { RoomRepository } from "./room.repository";
 import { generateId } from "./utils/generate-id.utils";
 import { getTimeInSeconds, getTotalTimeSpent } from "./utils/time.utils";
@@ -26,11 +26,7 @@ export class RoomGatewayService {
     if (!id) throw Error("No room id was provided");
     if (!playerId) throw Error("No player id was provided");
 
-    const player = await this.playerGatewayService.getByIdAsync(playerId);
-
-    if (!player) {
-      await this.playerGatewayService.connectAsync(playerId);
-    }
+    await this.playerGatewayService.connectAsync(playerId);
 
     const session = await retry(
       async () => {
@@ -58,9 +54,11 @@ export class RoomGatewayService {
     const players = await this.playerGatewayService.getByRoomIdAsync(id);
 
     if (room && players.filter((p) => p.id !== playerId).length === 0) {
-      await this.roomRepository.updateAsync({
-        ...room,
-        settings: { ...room.settings, admin: playerId },
+      await this.roomRepository.updateAsync({ ...room });
+
+      await this.roomRepository.updateSettingsAsync(id, {
+        ...room.settings,
+        admin: playerId,
       });
     }
 
@@ -84,6 +82,10 @@ export class RoomGatewayService {
 
   async updateAsync(room: Room) {
     await this.roomRepository.updateAsync(room);
+  }
+
+  async updateSettingsAsync(id: number, settings: Settings) {
+    await this.roomRepository.updateSettingsAsync(id, settings);
   }
 
   async completeAsync(id: number) {
@@ -124,13 +126,13 @@ export class RoomGatewayService {
     await this.roomRepository.deleteAsync(id);
   }
 
-  async createStoryAsync(roomId: number, name: string) {
-    const stories = await this.roomRepository.getStoriesByRoomIdAsync(roomId);
+  async createStoriesAsync(roomId: number, stories: string[]) {
+    const currentStories = await this.roomRepository.getStoriesByRoomIdAsync(roomId);
 
-    const story: Story = {
+    const mappedStories: Story[] = stories.map((story) => ({
       id: generateId(roomId),
-      order: stories.length === 0 ? 0 : Math.max(...stories.map((s) => s.order)) + 1,
-      description: name,
+      order: currentStories.length === 0 ? 0 : Math.max(...currentStories.map((s) => s.order)) + 1,
+      description: story,
       roomId: roomId,
       active: false,
       votes: [],
@@ -140,9 +142,9 @@ export class RoomGatewayService {
       estimate: undefined,
       startSeconds: undefined,
       totalTimeSpent: undefined,
-    };
+    }));
 
-    await this.roomRepository.createStoryAsync(roomId, story);
+    await this.roomRepository.createStoriesAsync(roomId, mappedStories);
   }
 
   async updateStoryAsync(story: Story) {
@@ -163,16 +165,19 @@ export class RoomGatewayService {
 
     story.voterIds = voters?.map((v) => v.id);
     story.spectatorIds = spectators?.map((s) => s.id);
-    story.votes = voters?.map((v) => ({
-      playerId: v.id,
-      vote: v.vote,
-    }));
     story.estimate = vote;
     story.active = false;
     story.endSeconds = seconds;
     story.totalTimeSpent = getTotalTimeSpent(story.totalTimeSpent, story.startSeconds, seconds);
 
     await this.roomRepository.updateStoryAsync(story);
+
+    const votes = voters?.map((v) => ({
+      playerId: v.id,
+      vote: v.vote,
+    }));
+
+    await this.roomRepository.createStoryVotesAsync(story.id, votes);
 
     const stories = await this.roomRepository.getStoriesByRoomIdAsync(roomId);
 

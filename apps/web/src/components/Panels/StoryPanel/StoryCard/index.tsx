@@ -15,7 +15,7 @@ interface StoryCardProps {
   onClick?: (id: number) => void;
   onEdit: (story: Story) => void;
   onDelete?: (id: number) => void;
-  move: (id: number, to: number) => void;
+  move: (id: number, to: number, hasDropped?: boolean) => void;
   find: (id: number) => { index: number };
 }
 
@@ -50,6 +50,10 @@ const StoryCard = memo(({ story, onClick, onEdit, onDelete, move, find }: StoryC
           const { index: overIndex } = find(id);
           move(story.id, overIndex);
         }
+      },
+      drop(story: Story) {
+        const { index: overIndex } = find(id);
+        move(story.id, overIndex, true);
       },
     }),
     [find, move],

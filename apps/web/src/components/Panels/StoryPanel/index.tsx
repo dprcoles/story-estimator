@@ -47,9 +47,12 @@ const StoryPanel = ({ setIsStoryModalOpen }: StoryPanelProps) => {
     updateActiveStory(id);
   };
 
-  const handleUpdateStories = (stories: Story[]) => {
+  const handleUpdateStories = (stories: Story[], shouldEmit: boolean) => {
     setStories(stories);
-    emit(EmitEvent.EditStories, { stories });
+
+    if (shouldEmit) {
+      emit(EmitEvent.EditStories, { stories });
+    }
   };
 
   const handleOnIncompleteStorySubmit = () => {

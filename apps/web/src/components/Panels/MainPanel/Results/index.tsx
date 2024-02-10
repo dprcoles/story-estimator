@@ -17,7 +17,7 @@ interface ResultsProps {
 }
 
 const Results = ({ players, options, currentStoryId }: ResultsProps) => {
-  const isAdmin = useRoomStore((state) => state.isAdmin);
+  const { isAdmin, admin } = useRoomStore((state) => state);
 
   const getVotes = () =>
     options
@@ -77,7 +77,8 @@ const Results = ({ players, options, currentStoryId }: ResultsProps) => {
         <FinalEstimate options={OPTIONS} currentStoryId={currentStoryId} />
       ) : (
         <div className="w-100 m-8 animate-pulse text-center text-lg text-black dark:text-white">
-          Waiting for the room admin to select the final estimate for this story...
+          Waiting for <b>{admin ? `${admin.emoji} ${admin.name}` : "room admin"}</b> to select the
+          final estimate for this story...
         </div>
       )}
     </motion.div>

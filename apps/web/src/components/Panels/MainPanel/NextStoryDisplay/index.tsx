@@ -14,7 +14,7 @@ interface NextStoryDisplayProps {
 const NextStoryDisplay = ({ setIsStoryModalOpen }: NextStoryDisplayProps) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const isAdmin = useRoomStore((state) => state.isAdmin);
+  const { isAdmin, admin } = useRoomStore((state) => state);
   const { emit } = useSocketStore();
 
   const handleCompleteSession = () => {
@@ -56,7 +56,9 @@ const NextStoryDisplay = ({ setIsStoryModalOpen }: NextStoryDisplayProps) => {
             </div>
           </motion.div>
         ) : (
-          <div>Waiting for room admin...</div>
+          <div className="animate-pulse">
+            Waiting for <b>{admin ? `${admin.emoji} ${admin.name}` : "room admin"}</b>...
+          </div>
         )}
       </motion.div>
     </>

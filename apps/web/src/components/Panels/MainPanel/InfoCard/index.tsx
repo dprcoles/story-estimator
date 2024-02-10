@@ -15,18 +15,18 @@ import Results from "../Results";
 import TipsCard from "./TipsCard";
 
 interface InfoCardProps {
-  vote: string;
   showVotes: boolean;
   players: Array<Player>;
   options: Array<string>;
 }
 
-const InfoCard = ({ vote, showVotes, players, options }: InfoCardProps) => {
+const InfoCard = ({ showVotes, players, options }: InfoCardProps) => {
   const { stories, countdown } = useRoomStore((state) => ({
     stories: state.room.stories,
     countdown: state.countdown,
   }));
   const defaultType = usePlayerStore((state) => state.player.defaultType);
+  const isAdmin = useRoomStore((state) => state.isAdmin);
   const { emit } = useSocketStore();
 
   const currentStory = stories.find((s) => s.active);
@@ -38,7 +38,7 @@ const InfoCard = ({ vote, showVotes, players, options }: InfoCardProps) => {
   return (
     <div className="mx-auto">
       <div className="flex">
-        {(vote || defaultType === PlayerType.Spectator) &&
+        {(isAdmin || defaultType === PlayerType.Spectator) &&
         countdown.status === CountdownStatus.STOPPED &&
         !showVotes ? (
           <div className="ml-auto flex space-x-4">

@@ -1,8 +1,10 @@
+import classNames from "classnames";
 import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { GiCardRandom } from "react-icons/gi";
 
 import { Button } from "@/components/Core";
+import { useRoomStore } from "@/stores/roomStore";
 import { useSocketStore } from "@/stores/socketStore";
 import { EmitEvent } from "@/types/server";
 import { EXPAND_IN, FADE_DOWN, FADE_UP, STAGGER } from "@/utils/variants";
@@ -20,6 +22,7 @@ const GetStartedDisplay = ({
 }: GetStartedDisplayProps) => {
   const { emit } = useSocketStore();
   const [clicked, setClicked] = useState<boolean>(false);
+  const isAdmin = useRoomStore((state) => state.isAdmin);
 
   const handleStartEstimating = () => emit(EmitEvent.SetActiveStory, { id: firstStoryId });
 
@@ -51,12 +54,14 @@ const GetStartedDisplay = ({
         </motion.div>
         <motion.div variants={FADE_UP}>
           <div className="grid grid-cols-1 md:grid-cols-2 md:space-x-4">
-            <div className="pb-4">
-              <Button fullWidth onClick={() => setIsStoryModalOpen(true)}>
-                Create Story
-              </Button>
-            </div>
-            <div className="pb-4">
+            {isAdmin && (
+              <div className="pb-4">
+                <Button fullWidth onClick={() => setIsStoryModalOpen(true)}>
+                  Create Story
+                </Button>
+              </div>
+            )}
+            <div className={classNames("pb-4", !isAdmin && "col-span-2")}>
               <Button fullWidth onClick={handleInvitePlayers}>
                 {!clicked ? "Invite Players" : "Copied Link"}
               </Button>
@@ -64,7 +69,7 @@ const GetStartedDisplay = ({
           </div>
         </motion.div>
         <motion.div variants={EXPAND_IN} className="flex justify-center py-4">
-          {hasStories && (
+          {hasStories && isAdmin && (
             <Button fullWidth variant="default" onClick={handleStartEstimating}>
               <div className="p-2 text-lg font-semibold">Start Estimating</div>
             </Button>
