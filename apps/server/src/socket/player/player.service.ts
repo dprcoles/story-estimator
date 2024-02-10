@@ -49,6 +49,9 @@ export class PlayerGatewayService {
 
   async leaveRoomAsync(id: number) {
     const player = await this.playerRepository.getByIdAsync(id);
+
+    if (!player || !player.roomId) return;
+
     player.roomId = null;
     player.vote = undefined;
 
@@ -67,10 +70,6 @@ export class PlayerGatewayService {
   }
 
   async resetVotesByRoomIdAsync(roomId: number) {
-    const players = await this.getByRoomIdAsync(roomId);
-
-    players.forEach(async (player) => {
-      await this.playerRepository.updateAsync({ ...player, vote: undefined });
-    });
+    await this.playerRepository.resetRoomVotesAsync(roomId);
   }
 }

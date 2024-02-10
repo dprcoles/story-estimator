@@ -96,10 +96,10 @@ export class RoomEventsHandler {
 
   async settingsAsync(id: number, settings: Settings) {
     const room = await this.roomGatewayService.getAsync(id);
-
     room.settings = settings;
 
     await this.roomGatewayService.updateAsync(room);
+
     await this.updateAsync(id, {
       type: RoomNotificationEvent.Settings,
       data: settings,
@@ -113,9 +113,7 @@ export class RoomEventsHandler {
   }
 
   async createStoriesAsync(roomId: number, stories: string[]) {
-    stories.forEach(async (story) => {
-      await this.roomGatewayService.createStoryAsync(roomId, story);
-    });
+    await this.roomGatewayService.createStoriesAsync(roomId, stories);
 
     await this.updateAsync(roomId, {
       type: RoomNotificationEvent.StoryCreate,

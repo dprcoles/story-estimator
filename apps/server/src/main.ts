@@ -9,7 +9,7 @@ import { AzureSocketIoAdapter } from "./adapters/azure-socketio.adapter";
 require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` });
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { logger: ["error", "warn", "log"] });
 
   const isAzureWps = Boolean(process.env.HUB_CONNECTION_STRING);
 
