@@ -48,7 +48,7 @@ const CurrentStoryDisplay = ({
           </div>
         )}
       </div>
-      <InfoCard vote={vote} showVotes={showVotes} players={players} options={OPTIONS} />
+      <InfoCard showVotes={showVotes} players={players} options={OPTIONS} />
       {!showVotes && defaultType === PlayerType.Voter && (
         <div className="mx-auto mb-8 mt-4">
           <motion.div variants={STAGGER}>

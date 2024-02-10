@@ -118,16 +118,18 @@ const RoomProvider = ({ children }: PropsWithChildren) => {
       );
 
       if (showEventToastData) {
-        toast(showEventToastData.title, {
-          description: showEventToastData.description,
-          dismissible: true,
-          action: {
-            label: "Clear",
-            onClick: () => {
-              toast.dismiss();
+        setTimeout(() => {
+          toast(showEventToastData.title, {
+            description: showEventToastData.description,
+            dismissible: true,
+            action: {
+              label: "Clear",
+              onClick: () => {
+                toast.dismiss();
+              },
             },
-          },
-        });
+          });
+        }, 250);
       }
 
       if (type === ShowType.Hurry) {
@@ -167,6 +169,10 @@ const RoomProvider = ({ children }: PropsWithChildren) => {
     });
 
     socket?.on(EmitEvent.Ping, () => socket.emit(EmitEvent.Pong));
+
+    return () => {
+      socket?.offAny();
+    };
   }, [socket]);
 
   if (!socket || !room.id)

@@ -11,7 +11,7 @@ interface StoryCardContainerProps {
   handleSaveStory: (story: Story) => void;
   handleDeleteStory: (id: number) => void;
   handleSetActive: (id: number) => void;
-  handleUpdateStories: (stories: Story[]) => void;
+  handleUpdateStories: (stories: Story[], shouldEmit: boolean) => void;
 }
 
 const StoryCardContainer = memo(
@@ -38,7 +38,7 @@ const StoryCardContainer = memo(
     );
 
     const moveStory = useCallback(
-      (id: number, atIndex: number) => {
+      (id: number, atIndex: number, hasDropped?: boolean) => {
         const { story, index } = findStory(id);
         const newStories = update(stories, {
           $splice: [
@@ -47,7 +47,10 @@ const StoryCardContainer = memo(
           ],
         });
 
-        handleUpdateStories(newStories.map((x) => ({ ...x, order: newStories.indexOf(x) })));
+        handleUpdateStories(
+          newStories.map((x) => ({ ...x, order: newStories.indexOf(x) })),
+          hasDropped ?? false,
+        );
       },
       [findStory, stories, handleUpdateStories],
     );

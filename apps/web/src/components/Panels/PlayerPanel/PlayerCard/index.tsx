@@ -28,7 +28,7 @@ const PlayerCard = ({ player, showVote, countdownStatus, isCurrentPlayer }: Play
             isCurrentPlayer ? "text-blue-400 dark:text-pink-500" : "text-black dark:text-white"
           }`}
         >
-          {`${name}${admin === id ? ` ${ADMIN_ICON}` : ""}`}
+          {`${name}${admin?.id === id ? ` ${ADMIN_ICON}` : ""}`}
         </div>
         <div className="text-sm text-black dark:text-white">
           {defaultType === PlayerType.Voter && vote && <span>Voted</span>}

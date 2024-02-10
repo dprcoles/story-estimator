@@ -21,8 +21,8 @@ const FinalEstimate = ({ options, currentStoryId }: FinalEstimateProps) => {
   return (
     <div>
       <motion.div variants={STAGGER}>
-        <div className="m-2 text-black dark:text-white">Select Agreed Estimate:</div>
-        <div className="m-2 grid grid-cols-3 justify-center gap-1 lg:grid-cols-6">
+        <div className="text-black dark:text-white">Select Agreed Estimate:</div>
+        <div className="my-2 grid grid-cols-3 justify-center gap-1 lg:grid-cols-6">
           {options.map((option: string) => (
             <motion.div variants={FADE_IN} className="text-center" key={`${option}-component`}>
               <Option
@@ -34,7 +34,7 @@ const FinalEstimate = ({ options, currentStoryId }: FinalEstimateProps) => {
           ))}
         </div>
       </motion.div>
-      <div className="mt-8 flex w-auto items-center space-x-2 align-middle md:float-right">
+      <div className="mt-2 flex w-auto items-center space-x-2 align-middle md:float-right">
         <Button variant="outline" onClick={() => emit(EmitEvent.Reset)}>
           Reset Votes
         </Button>

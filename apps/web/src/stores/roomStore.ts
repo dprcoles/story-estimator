@@ -38,7 +38,7 @@ type RoomStore = {
   setShowVotes: (showVotes: boolean) => void;
   countdown: Countdown;
   setCountdown: (countdown: Countdown) => void;
-  admin: number;
+  admin?: Player;
   isAdmin: boolean;
 };
 
@@ -49,7 +49,7 @@ export const useRoomStore = create<RoomStore>(
       set((state) => ({
         ...state,
         room,
-        admin: room.settings.admin,
+        admin: state.players.find((p) => p.id === room.settings.admin) ?? undefined,
         isAdmin: room.settings.admin === usePlayerStore.getState().player.id,
       })),
     setStories: (stories: Story[]) =>
@@ -67,7 +67,7 @@ export const useRoomStore = create<RoomStore>(
       type: CountdownType.Standard,
     },
     setCountdown: (countdown: Countdown) => set((state) => ({ ...state, countdown })),
-    admin: 0,
+    admin: undefined,
     isAdmin: false,
   }),
 );

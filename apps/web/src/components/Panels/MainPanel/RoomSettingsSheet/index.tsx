@@ -56,7 +56,7 @@ const RoomSettingsSheet = () => {
     }
   };
 
-  const currentAdmin = (players.find((p) => p.id === admin)?.id || 0).toString();
+  const currentAdmin = (players.find((p) => p.id === admin?.id)?.id || 0).toString();
   const spectators = players.filter((p) => p.defaultType === PlayerType.Spectator);
   const voters = players.filter((p) => p.defaultType === PlayerType.Voter);
 
