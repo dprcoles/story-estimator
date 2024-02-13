@@ -1,40 +1,18 @@
 import { Injectable } from "@nestjs/common";
 import { Story } from "src/domain/models/story.model";
-import { PrismaService } from "src/infrastructure/prisma/prisma.service";
 import { Room, Settings } from "./interfaces/room.interface";
 
 @Injectable()
 export class RoomRepository {
-  constructor(private prisma: PrismaService) {}
+  private roomStore: Room[] = [];
+  private voteStore: { roomId: number; playerId: number; vote: string }[] = [];
 
   async createAsync(room: Room) {
-    await this.prisma.room.create({
-      data: {
-        id: room.id,
-        active: room.active,
-        name: room.name,
-        teamId: room.teamId,
-        jiraId: room.integrations?.jira ?? null,
-        settings: {
-          create: {
-            adminId: room.settings.admin,
-            countdown: room.settings.countdown,
-            fastMode: room.settings.fastMode,
-          },
-        },
-      },
-    });
+    this.roomStore.push(room);
   }
 
   async getByIdAsync(id: number) {
-    const room = await this.prisma.room
-      .findFirst({
-        where: { id },
-        include: { settings: true, stories: { include: { votes: true } } },
-      })
-      .catch(() => {
-        console.warn(`Can't find room with id ${id}`);
-      });
+    const room = this.roomStore.find((r) => r.id === id);
 
     if (!room) return null;
 
@@ -42,52 +20,27 @@ export class RoomRepository {
       id: room.id,
       active: room.active,
       name: room.name,
-      integrations: room.jiraId ? { jira: room.jiraId } : null,
-      settings: {
-        admin: room.settings.adminId,
-        countdown: room.settings.countdown,
-        fastMode: room.settings.fastMode,
-      },
+      integrations: room.integrations,
+      settings: room.settings,
       stories: room.stories,
       teamId: room.teamId,
     };
   }
 
   async updateAsync(room: Room) {
-    await this.prisma.room.update({
-      where: { id: room.id },
-      data: {
-        id: room.id,
-        active: room.active,
-        name: room.name,
-        teamId: room.teamId,
-        jiraId: room.integrations?.jira ?? null,
-      },
-    });
+    this.roomStore = this.roomStore.map((r) => (r.id === room.id ? room : r));
   }
 
   async updateSettingsAsync(id: number, settings: Settings) {
-    await this.prisma.roomSettings.update({
-      where: { roomId: id },
-      data: {
-        adminId: settings.admin,
-        countdown: settings.countdown,
-        fastMode: settings.fastMode,
-      },
-    });
+    this.roomStore = this.roomStore.map((r) => (r.id === id ? { ...r, settings } : r));
   }
 
   async deleteAsync(id: number) {
-    await this.prisma.room.delete({ where: { id } }).catch(() => {
-      console.warn(`Can't find room with id ${id}`);
-    });
+    this.roomStore = this.roomStore.filter((r) => r.id !== id);
   }
 
   async getStoryByIdAsync(roomId: number, id: number) {
-    const story = await this.prisma.roomStory.findFirst({
-      where: { id, roomId },
-      include: { votes: true },
-    });
+    const story = this.roomStore.find((r) => r.id === roomId)?.stories?.find((s) => s.id === id);
 
     if (!story) return null;
 
@@ -108,10 +61,7 @@ export class RoomRepository {
   }
 
   async getStoriesByRoomIdAsync(roomId: number) {
-    const stories = await this.prisma.roomStory.findMany({
-      where: { roomId },
-      include: { votes: true },
-    });
+    const stories = this.roomStore.find((r) => r.id === roomId)?.stories;
 
     return stories.map((story) => ({
       id: story.id,
@@ -130,53 +80,29 @@ export class RoomRepository {
   }
 
   async createStoriesAsync(id: number, stories: Story[]) {
-    await this.prisma.roomStory.createMany({
-      data: stories.map((story) => ({
-        roomId: id,
-        order: story.order,
-        active: story.active,
-        description: story.description,
-        startSeconds: story.startSeconds,
-        endSeconds: story.endSeconds,
-        totalTimeSpent: story.totalTimeSpent,
-        estimate: story.estimate,
-        spectatorIds: story.spectatorIds,
-        voterIds: story.voterIds,
-      })),
-    });
+    this.roomStore = this.roomStore.map((r) =>
+      r.id === id ? { ...r, stories: r.stories.concat(stories) } : r,
+    );
   }
 
   async updateStoryAsync(story: Story) {
-    await this.prisma.roomStory.update({
-      where: { id: story.id },
-      data: {
-        roomId: story.roomId,
-        order: story.order,
-        active: story.active,
-        description: story.description,
-        startSeconds: story.startSeconds,
-        endSeconds: story.endSeconds,
-        totalTimeSpent: story.totalTimeSpent,
-        estimate: story.estimate,
-        spectatorIds: story.spectatorIds,
-        voterIds: story.voterIds,
-      },
-    });
+    this.roomStore = this.roomStore.map((r) =>
+      r.id === story.roomId
+        ? {
+            ...r,
+            stories: r.stories.map((s) => (s.id === story.id ? story : s)),
+          }
+        : r,
+    );
   }
 
   async createStoryVotesAsync(storyId: number, votes: { playerId: number; vote: string }[]) {
-    await this.prisma.roomVote.createMany({
-      data: votes.map((vote) => ({
-        roomStoryId: storyId,
-        playerId: vote.playerId,
-        vote: vote.vote,
-      })),
-    });
+    this.voteStore = this.voteStore.concat(votes.map((vote) => ({ roomId: storyId, ...vote })));
   }
 
   async deleteStoryAsync(roomId: number, id: number) {
-    await this.prisma.roomStory.delete({ where: { id, roomId } }).catch(() => {
-      console.warn(`Can't find story with id ${id}`);
-    });
+    this.roomStore = this.roomStore.map((r) =>
+      r.id === roomId ? { ...r, stories: r.stories.filter((s) => s.id !== id) } : r,
+    );
   }
 }
