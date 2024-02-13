@@ -1,11 +1,54 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, OnApplicationBootstrap, OnApplicationShutdown } from "@nestjs/common";
 import { Story } from "src/domain/models/story.model";
+import { PrismaService } from "src/infrastructure/prisma/prisma.service";
 import { Room, Settings } from "./interfaces/room.interface";
 
 @Injectable()
-export class RoomRepository {
+export class RoomRepository implements OnApplicationShutdown, OnApplicationBootstrap {
+  constructor(private prisma: PrismaService) {}
+
   private roomStore: Room[] = [];
   private voteStore: { roomId: number; playerId: number; vote: string }[] = [];
+
+  async onApplicationBootstrap() {
+    console.log("⌛️ Loading room state...");
+
+    const loadedState = await this.prisma.applicationState.findMany({
+      select: {
+        id: true,
+        payload: true,
+      },
+      where: {
+        type: "roomStore",
+      },
+      orderBy: {
+        timestamp: "desc",
+      },
+      take: 1,
+    });
+
+    if (loadedState.length > 0) {
+      const state = JSON.parse(loadedState[0].payload);
+      this.roomStore = state;
+    }
+
+    console.log("✅ Room state loaded");
+  }
+
+  async onApplicationShutdown() {
+    console.log("💾 Saving room state...");
+
+    const payload = JSON.stringify(this.roomStore);
+
+    await this.prisma.applicationState.create({
+      data: {
+        payload,
+        type: "roomStore",
+      },
+    });
+
+    console.log("✅ Room state saved");
+  }
 
   async createAsync(room: Room) {
     this.roomStore.push(room);

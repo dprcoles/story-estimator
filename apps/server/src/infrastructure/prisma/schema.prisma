@@ -137,71 +137,11 @@ model JqlQueries {
   @@map("jql_queries")
 }
 
-model Room {
-  id     Int     @id @default(autoincrement())
-  name   String
-  active Boolean
-  teamId Int?    @map("team_id")
-  jiraId Int?    @map("jira_id")
+model ApplicationState {
+  id        Int      @id @default(autoincrement())
+  type      String
+  payload   String
+  timestamp DateTime @default(now())
 
-  settings RoomSettings?
-  stories  RoomStory[]
-  players  RoomPlayer[]
-
-  @@map("rooms")
-}
-
-model RoomSettings {
-  id        Int     @id @default(autoincrement())
-  roomId    Int     @unique @map("room_id")
-  countdown Boolean
-  fastMode  Boolean @map("fast_mode")
-  adminId   Int?    @map("admin_id")
-
-  room Room? @relation(fields: [roomId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  @@map("room_settings")
-}
-
-model RoomStory {
-  id             Int     @id @default(autoincrement())
-  roomId         Int     @map("room_id")
-  order          Int?
-  description    String
-  active         Boolean
-  startSeconds   Int?
-  endSeconds     Int?
-  estimate       String?
-  totalTimeSpent Int?
-  spectatorIds   Int[]
-  voterIds       Int[]
-
-  room  Room       @relation(fields: [roomId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  votes RoomVote[]
-
-  @@map("room_stories")
-}
-
-model RoomVote {
-  id          Int    @id @default(autoincrement())
-  roomStoryId Int    @map("room_story_id")
-  playerId    Int    @map("player_id")
-  vote        String
-
-  roomStory RoomStory @relation(fields: [roomStoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  @@map("room_votes")
-}
-
-model RoomPlayer {
-  id          Int     @id @default(autoincrement())
-  roomId      Int?    @map("room_id")
-  vote        String?
-  emoji       String
-  name        String
-  defaultType String  @map("default_type")
-
-  room Room? @relation(fields: [roomId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  @@map("room_players")
+  @@map("application_state")
 }
