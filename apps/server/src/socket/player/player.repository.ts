@@ -1,33 +1,65 @@
-import { Injectable } from "@nestjs/common";
-import { PrismaService } from "src/infrastructure/prisma/prisma.service";
+import { Injectable, OnApplicationBootstrap, OnApplicationShutdown } from "@nestjs/common";
 import { PlayerType } from "src/domain/enums/player.enums";
+import { PrismaService } from "src/infrastructure/prisma/prisma.service";
 import { RoomPlayer } from "./interfaces/room-player.interface";
 
 @Injectable()
-export class PlayerRepository {
+export class PlayerRepository implements OnApplicationShutdown, OnApplicationBootstrap {
   constructor(private prisma: PrismaService) {}
 
-  async createAsync(player: RoomPlayer) {
-    await this.prisma.roomPlayer.upsert({
-      create: {
-        id: player.id,
-        emoji: player.emoji,
-        name: player.name,
-        roomId: null,
-        defaultType: player.defaultType,
-        vote: null,
+  private playerStore: RoomPlayer[] = [];
+
+  async onApplicationBootstrap() {
+    console.log("⌛️ Loading player state...");
+
+    const loadedState = await this.prisma.applicationState.findMany({
+      select: {
+        id: true,
+        payload: true,
       },
-      update: {
-        emoji: player.emoji,
-        name: player.name,
-        defaultType: player.defaultType,
+      where: {
+        type: "playerStore",
       },
-      where: { id: player.id },
+      orderBy: {
+        timestamp: "desc",
+      },
+      take: 1,
     });
+
+    if (loadedState.length > 0) {
+      const state = JSON.parse(loadedState[0].payload);
+      this.playerStore = state;
+    }
+
+    console.log("✅ Player state loaded");
+  }
+
+  async onApplicationShutdown() {
+    console.log("💾 Saving player state...");
+
+    const payload = JSON.stringify(this.playerStore);
+
+    await this.prisma.applicationState.create({
+      data: {
+        payload,
+        type: "playerStore",
+      },
+    });
+
+    console.log("✅ Player state saved");
+  }
+
+  async createAsync(player: RoomPlayer) {
+    if (this.playerStore.find((p) => p.id === player.id)) {
+      this.playerStore = this.playerStore.map((p) => (p.id === player.id ? player : p));
+      return;
+    }
+
+    this.playerStore.push(player);
   }
 
   async getByIdAsync(id: number) {
-    const player = await this.prisma.roomPlayer.findFirst({ where: { id } });
+    const player = this.playerStore.find((p) => p.id === id);
 
     if (!player) return null;
 
@@ -42,7 +74,7 @@ export class PlayerRepository {
   }
 
   async getByRoomIdAsync(roomId: number) {
-    const players = await this.prisma.roomPlayer.findMany({ where: { roomId } });
+    const players = this.playerStore.filter((p) => p.roomId === roomId);
 
     return players.map((player) => ({
       emoji: player.emoji,
@@ -55,16 +87,14 @@ export class PlayerRepository {
   }
 
   async updateAsync(player: RoomPlayer) {
-    await this.prisma.roomPlayer.update({ where: { id: player.id }, data: player });
+    await this.createAsync(player);
   }
 
   async resetRoomVotesAsync(roomId: number) {
-    await this.prisma.roomPlayer.updateMany({ where: { roomId }, data: { vote: null } });
+    this.playerStore.filter((p) => p.roomId === roomId).forEach((p) => (p.vote = null));
   }
 
   async deleteAsync(id: number) {
-    await this.prisma.roomPlayer.delete({ where: { id } }).catch(() => {
-      console.warn(`Can't find player with id ${id}`);
-    });
+    this.playerStore = this.playerStore.filter((p) => p.id !== id);
   }
 }
