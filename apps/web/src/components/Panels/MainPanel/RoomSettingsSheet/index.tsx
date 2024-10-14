@@ -97,7 +97,7 @@ const RoomSettingsSheet = () => {
             <div className="my-2">{ADMIN_DESCRIPTION}</div>
             <Select
               onValueChange={(val) => handleSetValue(parseInt(val, 10), "admin")}
-              value={currentAdmin}
+              value={localSettings?.admin.toString() || ""}
               defaultValue={currentAdmin}
             >
               <SelectTrigger id="admin-select" className="w-[180px]">
